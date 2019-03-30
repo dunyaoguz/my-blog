@@ -92,12 +92,12 @@
 </table>
 </div>
 
-<p>Let's create a simple scatter plot of X against Y, which I have engineered to have more or less a linear relationship with some random noise.</p>
+<p>Let's create a simple scatter plot of X against Y.</p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x118ab7710&gt;
+<div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x119841710&gt;
 </pre></div>
 
 
@@ -117,14 +117,14 @@
 <p><img alt="png" src="images/Matplotlib_hacks_10_0.png"></p>
 <p>See? Much better! But, I am not sure if I am a fan of the bland white background. Let's put some grid lines in there.</p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 </pre></div>
 
 
 <p><img alt="png" src="images/Matplotlib_hacks_12_0.png"></p>
 <p>We can get more granular with our grid lines if we want to by turning on minor ticks, and then customizing the minor grid by setting the 'which' argument to 'minor' inside plt.grid(). </p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">minorticks_on</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;minor&#39;</span><span class="p">)</span>
 </pre></div>
@@ -195,17 +195,16 @@
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;deepskyblue&#39;</span><span class="p">,</span><span class="s1">&#39;yellowgreen&#39;</span><span class="p">,</span><span class="s1">&#39;hotpink&#39;</span><span class="p">,</span><span class="s1">&#39;tomato&#39;</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">);</span>
 </pre></div>
 
 
 <p><img alt="png" src="images/Matplotlib_hacks_25_0.png"></p>
-<p>Now, that's really pretty! </p>
 <h1>Figures and axes</h1>
-<p>You'll often see people use matplotlib in one of the following two ways: 
-* Call plotting functions directly on the pyplot object like plt.plot(), plt.scatter(), plt.bar(), etc
-* Run 'fig, ax = plt.subplots()' first, and then call plotting functions on ax like ax.plot(), ax.bar(), etc</p>
+<p>You'll often see people use matplotlib in one of the following two ways: </p>
+<p>1) Call plotting functions directly on the pyplot object like plt.plot(), plt.scatter(), plt.bar(), etc</p>
+<p>2) Run 'fig, ax = plt.subplots()' first, and then call plotting functions on ax like ax.plot(), ax.bar(), etc</p>
 <p>What's the difference between them? </p>
 <p>TL;DR not that much, most of the time</p>
 <p>plt.subplots() is a function that returns a tuple containg a figure and an axes object. fig, ax = plt.subplots() unpacks this tuple onto the fig and ax variables. Fig stores the entire figure, and ax stores the axes object created.</p>
@@ -225,9 +224,9 @@
 </pre></div>
 
 
-<p><img alt="png" src="images/Matplotlib_hacks_31_0.png"></p>
+<p><img alt="png" src="images/Matplotlib_hacks_30_0.png"></p>
 <p>What's happening here? I created my subplot in the first line. I set it to have 1 row and 4 columns, and I specified that each subplot should be 15 inches wide and 5 inches tall. Then, I created a loop that goes through all the unique elements in Z, filters the dataframe by each element, and creates a scatterplot of the filtered dataframe's X's vs Y's. </p>
-<p>One thing I don't like about this figure is that the x and y ticks don't match, so it's hard to visually spot the differences in the spread of different colors. Normally, we would want such information to be immediately noticeable for our readers. I'll specify xlim and ylim parameters inside the set method so all the subplots have the same x and y ticks.</p>
+<p>One thing I don't like about this figure is that the X and Y ticks don't match, so it's hard to visually spot the differences in the spread of different colors. Normally, we would want such information to be immediately noticeable for our readers. I'll specify xlim and ylim parameters inside the set method so all the subplots have the same x and y ticks.</p>
 <div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;yellowgreen&#39;</span><span class="p">,</span><span class="s1">&#39;tomato&#39;</span><span class="p">,</span><span class="s1">&#39;deepskyblue&#39;</span><span class="p">,</span><span class="s1">&#39;hotpink&#39;</span><span class="p">]</span>
 
@@ -238,7 +237,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="images/Matplotlib_hacks_33_0.png"></p>
+<p><img alt="png" src="images/Matplotlib_hacks_32_0.png"></p>
 <p>The difference is subtle but important. See how different the pink subplot looks now, and how easier it is to see that it has a much tighter range than all the other colors.</p>
 <h1>Customization</h1>
 <p>We have created pretty charts and subplots but we haven't yet customized our plots with titles, x and y labels, fonts, markers etc. Matplotlib has a <em>toooon</em> of customization options, and that's actually my favorite aspect about it (and also why I keep going back to it although it's kind of a hassle to use). Here, I'll show you a few that I most frequently use.</p>
@@ -264,7 +263,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="images/Matplotlib_hacks_39_0.png"></p>
+<p><img alt="png" src="images/Matplotlib_hacks_38_0.png"></p>
 <p>Now let's name our plot and axes so our audience can understand what this chart is displaying.</p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
@@ -279,7 +278,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="images/Matplotlib_hacks_41_0.png"></p>
+<p><img alt="png" src="images/Matplotlib_hacks_40_0.png"></p>
 <p>Not sure I like the font, size and location of the title and labels. I can play around with these by changing the fontname, fontsize and loc arguments. I could also change the color if I wanted to with the color argument, but I like black for titles and labels.</p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
@@ -294,8 +293,8 @@
 </pre></div>
 
 
-<p><img alt="png" src="images/Matplotlib_hacks_43_0.png"></p>
-<p>Finally, I want to change the markers of the scatter plots of each color and put an appropriate legend.</p>
+<p><img alt="png" src="images/Matplotlib_hacks_42_0.png"></p>
+<p>Finally, I want to change the markers of the scatter plots for each color and put an appropriate legend.</p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;green&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;green&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;yellowgreen&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">);</span>
@@ -311,11 +310,11 @@
 </pre></div>
 
 
-<p><img alt="png" src="images/Matplotlib_hacks_45_0.png"></p>
-<p>Note that if we had defined matplotlib objects to create the charts, we would use the following methods on our axes objects in place of the ones we used:
-* plt.title --&gt; ax.set_title()
-* plt.xlabel --&gt; ax.set_xlabel()
-* plt.ylabel --&gt; ax.set_ylabel()</p>
+<p><img alt="png" src="images/Matplotlib_hacks_44_0.png"></p>
+<p>Note that if we had defined matplotlib objects to create the charts, we would use the following methods on our axes objects in place of the ones we used:</p>
+<p>1) plt.title --&gt; ax.set_title()</p>
+<p>2) plt.xlabel --&gt; ax.set_xlabel()</p>
+<p>3) plt.ylabel --&gt; ax.set_ylabel()</p>
 <h1>Some extra stuff</h1>
 <p>To change the size of a chart you have to run plt.figure(figsize=(width, height)) before you run your plotting function. Otherwise, the size of your chart won't actually change. This was something that I mixed up a lot in the past. This is <em>unless</em> you are defining matplotlib objects with fig, ax = plt.subplots(). In that case, you set your figsize inside the subplots() method. </p>
 <p>I'm going to demonstrate this with a time series chart, so I'm adding a column of random dates to the dataframe.</p>
@@ -339,7 +338,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="images/Matplotlib_hacks_50_1.png"></p>
+<p><img alt="png" src="images/Matplotlib_hacks_49_1.png"></p>
 <div class="highlight"><pre><span></span>&lt;Figure size 1200x500 with 0 Axes&gt;
 </pre></div>
 
@@ -356,7 +355,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="images/Matplotlib_hacks_52_0.png"></p>
+<p><img alt="png" src="images/Matplotlib_hacks_51_0.png"></p>
 <p>What happened here? I had to import a submodule called mdates from the dates module of Matplotlib to achieve the weekly x tick appearance I was aiming for. Since the xaxis method only exists for axes objects, I had to get the current axis of my plot with the .gca() method.  This is an example for when you may actually need to define matplotlib objects!</p>
 <p>Then, by passing the weekday locator inside the set_major_locator method, I grabbed the days that were Mondays from the date column of my dataframe and set them as my x tick labels.</p>
 <p>To be honest, I didn't know how to this. I just googled something along the lines of "matplotlib set custom x ticks for dates" and was able to find an answer within max 10-15 minutes. <em>That's precisely the beauty of Matplotlib</em>; it's been around for so long that there is an answer for pretty much any problem you may encounter! </p>
