@@ -88,27 +88,27 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="images/Matplotlib_hacks_7_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="images/Matplotlib_hacks_8_1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Firstly, we can disable the text output of Matplotlib by placing a &lt;code&gt;;&lt;/code&gt; at the end of the code. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="images/Matplotlib_hacks_9_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="images/Matplotlib_hacks_10_0.png"&gt;&lt;/p&gt;
 &lt;p&gt;The resolution of this chart is not the most optimal. We can improve it by running the following Ipython magic command, which improves the definition of image outputs. I usually do this at the beginning of my notebook, right below my imports so all my charts look nice and sharp. &lt;code&gt;%config InlineBackend.figure_format = 'retina'&lt;/code&gt; works as well.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="n"&gt;InlineBackend&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure_format&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;svg&amp;#39;&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_11_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_12_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;See? Much better! But, I am not sure if I am a fan of the bland white background. Let's put some grid lines in there.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;grid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;gray&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;linewidth&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_13_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_14_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;We can get more granular with our grid lines if we want to by turning on minor ticks, and then customizing the minor grid by setting the &lt;code&gt;which&lt;/code&gt; argument to &lt;code&gt;minor&lt;/code&gt; inside &lt;code&gt;plt.grid()&lt;/code&gt;. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;grid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;gray&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;linewidth&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -117,7 +117,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_15_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_16_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;You may also notice that it's hard to separate more crowded data points from sparse data points. The alpha argument allows us to adjust the transparency of each point so overlapping ones can be distinguished. An alpha of 1/2 means an opaque point will appear only if there is at least 2 points that fall into that region. Decreasing the alpha will increase the threshold for opaque points.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;alpha&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;grid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;gray&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;linewidth&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -126,7 +126,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_17_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_18_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;Next, let's spin up a bar chart to demonstrate how changing the default colors can help us achieve a more visually appealing aesthetic. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# group df by each color, get sum of the X column&lt;/span&gt;
 &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Z&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;X&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -137,13 +137,13 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_20_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_21_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;Personally, I am not thrilled with these colors. Thankfully, Matplotlib has a wide range of color options we can use. The full list can be viewed &lt;a href="https://matplotlib.org/gallery/color/named_colors.html"&gt;here&lt;/a&gt;. I also usually like to add an edgecolor to my charts make them look a bit neater.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;X&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;color&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;deepskyblue&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;yellowgreen&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;hotpink&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;tomato&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;edgecolor&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;black&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_22_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_23_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;Matplotlib also has alternative styling options we can use if we want to change the look of the figure. Here is a list of all the available styles. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;style&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;available&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -187,7 +187,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_26_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_27_0.svg"&gt;&lt;/p&gt;
 &lt;h4&gt;Figures and axes&lt;/h4&gt;
 &lt;hr&gt;
 &lt;p&gt;You'll often see people use matplotlib in one of the following two ways: &lt;/p&gt;
@@ -221,7 +221,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_31_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_34_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;What's happening here? I created my subplot in the first line. I set it to have 1 row and 4 columns, and I specified that each subplot should be 9.5 inches wide and 3 inches tall. Then, I created a loop that goes through all the unique elements in Z, filters the dataframe by each element, and creates a scatterplot of the filtered dataframe's X's vs Y's. &lt;/p&gt;
 &lt;p&gt;One thing I don't like about this figure is that the X and Y ticks don't match, so it's hard to visually spot the differences in the spread of different colors. Normally, we would want such information to be immediately noticeable for our readers. I'll specify xlim and ylim parameters inside the set method so all the subplots have the same x and y ticks.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplots&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;9.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
@@ -234,7 +234,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_33_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_36_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;The difference is subtle but important. See how different the pink subplot looks now, and how easier it is to see that it has a much tighter range than all the other colors.&lt;/p&gt;
 &lt;h4&gt;Customization&lt;/h4&gt;
 &lt;hr&gt;
@@ -269,7 +269,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_39_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_42_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;Now let's name our plot and axes so our audience can understand what this chart is displaying.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 
@@ -291,7 +291,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_41_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_44_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;Not sure I like the font, size and location of the title and labels. I can play around with these by changing the fontname, fontsize and loc arguments. I could also change the color if I wanted to with the color argument, but I like black for titles and labels.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 
@@ -314,7 +314,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_43_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_46_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;Finally, I want to change the markers of the scatter plots for each color and put an appropriate legend.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 
@@ -339,7 +339,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_45_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_48_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;Note that if we had defined matplotlib objects to create the charts, we would use the following methods on our axes objects in place of the ones we used:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -372,7 +372,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_50_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_54_0.svg"&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;lt;Figure size 1200x500 with 0 Axes&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -394,7 +394,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_52_0.svg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_56_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;What happened here? I had to import a submodule called mdates from the dates module of Matplotlib to achieve the weekly x tick appearance I was aiming for. Since the xaxis method only exists for axes objects, I had to get the current axis of my plot with the &lt;code&gt;.gca()&lt;/code&gt; method.  This is an example for when you may actually need to define matplotlib objects!&lt;/p&gt;
 &lt;p&gt;Then, by passing the weekday locator inside the set_major_locator method, I grabbed the days that were Mondays from the date column of my dataframe and set them as my x tick labels.&lt;/p&gt;
 &lt;p&gt;To be honest, I didn't know how to this. I just googled something along the lines of "matplotlib set custom x ticks for dates" and was able to find an answer within max 10-15 minutes. &lt;em&gt;That's precisely the beauty of Matplotlib&lt;/em&gt;; it's been around for so long that there is an answer for pretty much any problem you may encounter! &lt;/p&gt;
