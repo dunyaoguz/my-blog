@@ -4,7 +4,7 @@
 &lt;p&gt;Let's get some things straight. Matplotlib's design choices are ... let's just say ... not the most straightforward. Weird. Truly incomprehensible sometimes. It is also poorly documented and at times inconsistent. There's people out there who have been working with Phython for years  and still can't wrap their heads around Matplotlib. &lt;/p&gt;
 &lt;p&gt;Starting to learn Matplotlib was nothing short of a horror story for me. I had a lot of trouble understanding how it worked and got frustrated at myself for it, which was especially discouraging since I was a beginner in data analytics and python programming at the time. It wasn't after completing data visualisation courses on Udacity and DataCamp and most recently General Assembly's Data Science Immersive (DSI) where I'm currently enrolled that I had the "ah-ha- I think I finally know what's going on?" moment. I wish there was someone to tell me that I wasn't a dummy doomed for failure in the data world for having a hard time with Matplotlib in those early days.&lt;/p&gt;
 &lt;p&gt;In my DSI cohort at General Assembly, there seems to be two camps of people: those who hate Matplotlib and have pretty much given up on it (everyone except me) vs those who think it is not so bad (me). I've strangely come to appreciate some of Matplotlib's functionalities and found myself reaching back to it again and again even though I now have sexy new libraries like Altair under my belt. In this blog post, I am going to give some tips, tricks and general information that has been useful for me in my data viz journey with Matplotlib. I hope I'll be able to convert some of my hardline anti-Matplotlib class mates to the "matplotlib is not so bad! let's love and appreciate it!" camp. After all, matplotlib is the foundation upon which the bulk of python's data visualisation libraries are built. &lt;/p&gt;
-&lt;h4&gt;Making pretty charts&lt;/h4&gt;
+&lt;h3&gt;Making pretty charts&lt;/h3&gt;
 &lt;hr&gt;
 &lt;p&gt;We can all probably agree that Matplotlib's default charting style is really ugly. Let's see how we can make simple Matplotlib charts a bit easier on the eyes with a few simple lines of code. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
@@ -188,7 +188,7 @@
 
 
 &lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_27_0.svg"&gt;&lt;/p&gt;
-&lt;h4&gt;Figures and axes&lt;/h4&gt;
+&lt;h3&gt;Figures and axes&lt;/h3&gt;
 &lt;hr&gt;
 &lt;p&gt;You'll often see people use matplotlib in one of the following two ways: &lt;/p&gt;
 &lt;ol&gt;
@@ -203,7 +203,7 @@
 &lt;p&gt;TL;DR not that much, most of the time&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;plt.subplots()&lt;/code&gt; is a function that returns a tuple containg a figure and an axes object. &lt;code&gt;fig, ax = plt.subplots()&lt;/code&gt; unpacks this tuple onto the fig and ax variables. Fig stores the entire figure, and ax stores the axes object created.&lt;/p&gt;
 &lt;p&gt;By running &lt;code&gt;fig, ax = plt.subplots()&lt;/code&gt; you are essentially creating a matplotlib object for your plot. With &lt;code&gt;plt.plot()&lt;/code&gt;, you are still able to return a chart, but you are not creating an object. Having your chart defined as an object is useful, for example, if you want to save it as png (in which case you would call &lt;code&gt;fig.savefig('filename.png')&lt;/code&gt;) or if you are using a for loop to create multiple subplots. It can also be useful when you need access to more intricate functionalities, because creating a matplotlib object unlocks additional matplotlib features. But, for the most part, &lt;code&gt;plt.plot()&lt;/code&gt; will get done what you need get done. &lt;/p&gt;
-&lt;h4&gt;Subplots&lt;/h4&gt;
+&lt;h3&gt;Subplots&lt;/h3&gt;
 &lt;hr&gt;
 &lt;p&gt;With subplots, we can place multiple charts on the same figure for ease of viewing. It's especially useful when we are faceting charts by a categorical variable. Here is an example. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# look at X vs Y, faceted by the Z column&lt;/span&gt;
@@ -236,7 +236,7 @@
 
 &lt;p&gt;&lt;img alt="svg" src="images/Matplotlib_hacks_36_0.svg"&gt;&lt;/p&gt;
 &lt;p&gt;The difference is subtle but important. See how different the pink subplot looks now, and how easier it is to see that it has a much tighter range than all the other colors.&lt;/p&gt;
-&lt;h4&gt;Customization&lt;/h4&gt;
+&lt;h3&gt;Customization&lt;/h3&gt;
 &lt;hr&gt;
 &lt;p&gt;We have created pretty charts and subplots but we haven't yet customized our plots with titles, x and y labels, fonts, markers etc. Matplotlib has a &lt;em&gt;toooon&lt;/em&gt; of customization options, and that's actually my favorite aspect about it (and also why I keep going back to it although it's kind of a hassle to use). Here, I'll show you a few that I most frequently use.&lt;/p&gt;
 &lt;p&gt;To demonstrate this I am going to create a new column A and populate it based on the color in Z. My goal is to create a scatter plot of X vs A, in which the points will fall into clear cut groups based on what color they are. &lt;/p&gt;
@@ -352,7 +352,7 @@
 &lt;p&gt;&lt;code&gt;plt.ylabel()&lt;/code&gt; --&amp;gt; &lt;code&gt;ax.set_ylabel()&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h4&gt;Some extra stuff&lt;/h4&gt;
+&lt;h3&gt;Some extra stuff&lt;/h3&gt;
 &lt;hr&gt;
 &lt;p&gt;To change the size of a chart you have to run &lt;code&gt;plt.figure(figsize=(width, height))&lt;/code&gt; before you run your plotting function. Otherwise, the size of your chart won't actually change. This was something that I mixed up a lot in the past. This is &lt;em&gt;unless&lt;/em&gt; you are defining matplotlib objects with &lt;code&gt;fig, ax = plt.subplots()&lt;/code&gt;. In that case, you set your figsize inside the &lt;code&gt;subplots()&lt;/code&gt; method. &lt;/p&gt;
 &lt;p&gt;I'm going to demonstrate this with a time series chart, so I'm adding a column of random dates to the dataframe.&lt;/p&gt;
