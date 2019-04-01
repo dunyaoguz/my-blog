@@ -132,7 +132,7 @@
 
 
 <p><img alt="svg" src="images/Matplotlib_hacks_16_0.svg"></p>
-<p>You may also notice that it's hard to separate more crowded data points from sparse data points. The alpha argument allows us to adjust the transparency of each point so overlapping ones can be distinguished. An alpha of 1/2 means an opaque point will appear only if there is at least 2 points that fall into that region. Decreasing the alpha will increase the threshold for opaque points.</p>
+<p>You may also notice that it's hard to separate more crowded data points from sparse data points. The <code>alpha</code> argument allows us to adjust the transparency of each point so overlapping ones can be distinguished. An <code>alpha</code> of 1/2 means an opaque point will appear only if there is at least 2 points that fall into that region. Decreasing the alpha will increase the threshold for opaque points.</p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">minorticks_on</span><span class="p">()</span>
@@ -192,7 +192,8 @@
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span> <span class="c1"># run this to set a style</span>
+<div class="highlight"><pre><span></span><span class="c1"># run this code to set a style</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span> 
 </pre></div>
 
 
@@ -237,7 +238,7 @@
 
 <p><img alt="svg" src="images/Matplotlib_hacks_34_0.svg"></p>
 <p>What's happening here? I created my subplot in the first line. I set it to have 1 row and 4 columns, and I specified that each subplot should be 9.5 inches wide and 3 inches tall. Then, I created a loop that goes through all the unique elements in Z, filters the dataframe by each element, and creates a scatterplot of the filtered dataframe's X's vs Y's. </p>
-<p>One thing I don't like about this figure is that the X and Y ticks don't match, so it's hard to visually spot the differences in the spread of different colors. Normally, we would want such information to be immediately noticeable for our readers. I'll specify xlim and ylim parameters inside the set method so all the subplots have the same x and y ticks.</p>
+<p>One thing I don't like about this figure is that the X and Y ticks don't match, so it's hard to visually spot the differences in the spread of different colors. Normally, we would want such information to be immediately noticeable for our readers. I'll specify xlim and ylim parameters inside the set method so all the subplots have the same X and Y ticks.</p>
 <div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;yellowgreen&#39;</span><span class="p">,</span><span class="s1">&#39;tomato&#39;</span><span class="p">,</span><span class="s1">&#39;deepskyblue&#39;</span><span class="p">,</span><span class="s1">&#39;hotpink&#39;</span><span class="p">]</span>
 
@@ -252,7 +253,7 @@
 <p>The difference is subtle but important. See how different the pink subplot looks now, and how easier it is to see that it has a much tighter range than all the other colors.</p>
 <h3>Customization</h3>
 <hr>
-<p>We have created pretty charts and subplots but we haven't yet customized our plots with titles, x and y labels, fonts, markers etc. Matplotlib has a <em>toooon</em> of customization options, and that's actually my favorite aspect about it (and also why I keep going back to it although it's kind of a hassle to use). Here, I'll show you a few that I most frequently use.</p>
+<p>We have created pretty charts and subplots but we haven't yet customized our plots with titles, X and Y labels, fonts, markers etc. Matplotlib has a <em>toooon</em> of customization options, and that's actually my favorite aspect about it (and also why I keep going back to it although it's kind of a hassle to use). Here, I'll show you a few that I most frequently use.</p>
 <p>To demonstrate this I am going to create a new column A and populate it based on the color in Z. My goal is to create a scatter plot of X vs A, in which the points will fall into clear cut groups based on what color they are. </p>
 <div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="mi">250</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">30</span><span class="p">],[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">]):</span>    
     <span class="n">color_index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">Z</span> <span class="o">==</span> <span class="n">color</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
@@ -377,12 +378,12 @@
 <div class="highlight"><pre><span></span><span class="c1"># set new style</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;bmh&#39;</span><span class="p">)</span>  
 
-<span class="c1"># ignore this, running this to disable a depreciation warning</span>
+<span class="c1"># ignore this part, running it to disable a depreciation warning</span>
 <span class="kn">from</span> <span class="nn">pandas.plotting</span> <span class="kn">import</span> <span class="n">register_matplotlib_converters</span>
 <span class="n">register_matplotlib_converters</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]);</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">));</span>
 </pre></div>
 
 
@@ -391,7 +392,7 @@
 </pre></div>
 
 
-<p>Yikes. As can be seen, the size of the plot was not set to 16 inches wide and 5 inches tall when we ran <code>plt.figure()</code> after <code>plt.plot()</code>. Instead of changing figure size, the <code>plt.figure()</code> function returned the text output we see below the chart. In other bad news, the xtick labels are overlapping and the frequency with which matplotlib has decided to show the dates doesn't make sense. Let's fix these. It would be nice, for example, if we had x tick labels for the Monday of every week. </p>
+<p>Yikes. As can be seen, the size of the plot was not set to 10 inches wide and 2.5 inches tall when we ran <code>plt.figure()</code> after <code>plt.plot()</code>. Instead of changing figure size, the <code>plt.figure()</code> function returned the text output we see below the chart. In other bad news, the xtick labels are overlapping and the frequency with which matplotlib has decided to show the dates doesn't make sense. Let's fix these. It would be nice, for example, if we had x tick labels for the Monday of every week. </p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]);</span>
 
@@ -409,9 +410,9 @@
 
 
 <p><img alt="svg" src="images/Matplotlib_hacks_56_0.svg"></p>
-<p>What happened here? I had to import a submodule called mdates from the dates module of Matplotlib to achieve the weekly x tick appearance I was aiming for. Since the xaxis method only exists for axes objects, I had to get the current axis of my plot with the <code>.gca()</code> method.  This is an example for when you may actually need to define matplotlib objects!</p>
-<p>Then, by passing the weekday locator inside the set_major_locator method, I grabbed the days that were Mondays from the date column of my dataframe and set them as my x tick labels.</p>
-<p>To be honest, I didn't know how to this. I just googled something along the lines of "matplotlib set custom x ticks for dates" and was able to find an answer within max 10-15 minutes. <em>That's precisely the beauty of Matplotlib</em>; it's been around for so long that there is an answer for pretty much any problem you may encounter! </p>
+<p>What happened here? I had to import a submodule called mdates from the dates module of Matplotlib to achieve the weekly X tick appearance I was aiming for. Since the xaxis method only exists for axes objects, I had to get the current axis of my plot with the <code>.gca()</code> method.  This is an example for when you may actually need to define matplotlib objects!</p>
+<p>Then, by passing the weekday locator inside the set_major_locator method, I grabbed the days that were Mondays from the date column of my dataframe and set them as my X tick labels.</p>
+<p>To be honest, I didn't know how to this. I just googled something along the lines of "matplotlib set custom X ticks for dates" and was able to find an answer within max 10-15 minutes. <em>That's precisely the beauty of Matplotlib</em>; it's been around for so long that there is an answer for pretty much any problem you may encounter! </p>
 <p>... aand that's a wrap! I wish you all the very best in your data viz journey with Matplotlib!</p>
  </div>
 </div>
