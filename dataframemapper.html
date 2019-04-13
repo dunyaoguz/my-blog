@@ -918,12 +918,10 @@ Actual scores: [7.6, 2.3, 8.9]
 <p>Notice that I imported <code>CategoricalImputer</code> from <code>pandas</code> whereas I imported <code>SimpleImputer</code> from <code>sklearn.impute</code>. This is another great thing about <code>sklearn-pandas</code>: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn. </p>
 </li>
 <li>
-<p>The strategy argument in the imputation transformers lets us decide <em>what</em> we want to replace the null values with. Available strategies in <code>SimpleImputer</code> are median, mean, mode or any constant value of choice. Available strategies in <code>CategoricalImputer</code> are the most frequent value or a constant of choice. If strategy is set to constant, the <code>fill_value</code> argument also needs to be defined and set to the value is desired to replace the nulls, as I have done above.</p>
+<p>The strategy argument in the imputation transformers lets us decide <em>what</em> we want to replace the null values with. Available strategies in <code>SimpleImputer</code> are median, mean, mode or any constant value of choice. Available strategies in <code>CategoricalImputer</code> are the most frequent value or a constant of choice. If strategy is set to constant, the <code>fill_value</code> argument also needs to be defined, as I have done above.</p>
 </li>
 </ul>
 <h3>Happy mappin'! :)</h3>
-<div class="highlight"><pre><span></span>
-</pre></div>
  </div>
 </div>
  </div>
