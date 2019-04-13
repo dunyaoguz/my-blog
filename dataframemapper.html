@@ -26,10 +26,12 @@
 <p><strong>Enter DataFrameMapper.</strong> Fortunately, data preprocessing doesn't have to be as tedious as some Kaggle competitors I've seen have made it out to be (!). With DataFrameMapper, code that can clean and transform thousands, millions of rows of data can be written in a very concise, robust and standardized fashion.</p>
 <p>Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful. </p>
 <h3>What is DataFrameMapper?!</h3>
+<hr>
 <p>DataFrameMapper is a module in a third party scikit-learn library called pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit. </p>
 <p>The traditional way of doing things in data science is to clean and prepare the data in pandas, and then pass it on to scikit-learn to apply machine learning models. There are modules available in both pandas and scikit-learn to handle common data preprocessing tasks like imputing nulls and turning categorical columns into numeric values. But, without a standardized way to perform these tasks, the procedure of data preprocessing can get quite fragmented and messy, which becomes a problem when new data needs to be fed to a machine learning model. </p>
 <p>DataFrameMapper enables all the steps of data preprocessing to be grouped together and stored in a single object, and applied to any dataset with a single operation. </p>
 <h3>Woow! How does it work?</h3>
+<hr>
 <p>DataFrameMapper maps preprocessing tasks to each column of a given dataset via a list of tuples. Each tuple in the input list refers to a specific column of the dataframe. The first element in the tuple takes the name of the column, and the second element takes the preprocessing task or tasks that want to be applied to that particular column. If there is more than one task, the second element of the tuple needs to be a list, the order of which needs to match the desired order of operations. </p>
 <p>Let's see how DataFrameMapper works with an example. First, <code>pip install sklearn-pandas</code>, and import it onto your workspace as follows.</p>
 <div class="highlight"><pre><span></span><span class="ch">#!pip install sklearn-pandas</span>
@@ -43,16 +45,56 @@
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
 <span class="n">my_favorite_shows</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;sense_8&#39;</span><span class="p">,</span> <span class="s1">&#39;handmaidens_tale&#39;</span><span class="p">,</span> <span class="s1">&#39;the_good_place&#39;</span><span class="p">,</span> <span class="s1">&#39;big_little_lies&#39;</span><span class="p">,</span> <span class="s1">&#39;jane_the_virgin&#39;</span><span class="p">,</span> 
-             <span class="s1">&#39;game_of_thrones&#39;</span><span class="p">,</span> <span class="s1">&#39;mad_men&#39;</span><span class="p">,</span> <span class="s1">&#39;the_crown&#39;</span><span class="p">,</span> <span class="s1">&#39;narcos&#39;</span><span class="p">,</span> <span class="s1">&#39;house_of_cards&#39;</span><span class="p">,</span> <span class="s1">&#39;girls&#39;</span><span class="p">,</span> 
-             <span class="s1">&#39;breaking_bad&#39;</span><span class="p">,</span> <span class="s1">&#39;bad_blood&#39;</span><span class="p">,</span> <span class="s1">&#39;fauda&#39;</span><span class="p">,</span> <span class="s1">&#39;jessica_jones&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">140</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">80</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">170</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">205</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">600</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">300</span><span class="n">_000_000</span><span class="p">,</span> 
-             <span class="bp">None</span><span class="p">,</span> <span class="mi">400</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">500</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">112</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">380</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">10</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">75</span><span class="n">_000_000</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;sense_8&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;handmaidens_tale&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;the_good_place&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;big_little_lies&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;jane_the_virgin&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;game_of_thrones&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;mad_men&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;the_crown&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;narcos&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;house_of_cards&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;girls&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;breaking_bad&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;bad_blood&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;fauda&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;jessica_jones&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> 
+             <span class="mi">140</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">80</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">170</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">205</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">600</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">300</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="bp">None</span><span class="p">,</span> 
+             <span class="mi">400</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">500</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">112</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">380</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">10</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="mi">75</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="bp">None</span><span class="p">],</span>
     <span class="s1">&#39;seasons&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-    <span class="s1">&#39;popularity&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">5.8</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">5.7</span><span class="p">,</span> <span class="mf">7.3</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">,</span> <span class="mf">9.8</span><span class="p">,</span> <span class="mf">8.4</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">,</span> <span class="mf">7.9</span><span class="p">,</span> <span class="mf">9.3</span><span class="p">,</span> <span class="mf">7.1</span><span class="p">,</span> <span class="mf">8.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
-    <span class="s1">&#39;genre&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;science_fiction&#39;</span><span class="p">,</span> <span class="s1">&#39;speculative_fiction&#39;</span><span class="p">,</span> <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> <span class="s1">&#39;drama&#39;</span><span class="p">,</span> <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> <span class="s1">&#39;fantasy&#39;</span><span class="p">,</span> <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> 
-              <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> <span class="s1">&#39;crime&#39;</span><span class="p">,</span> <span class="s1">&#39;crime&#39;</span><span class="p">,</span> <span class="s1">&#39;crime&#39;</span><span class="p">,</span> <span class="s1">&#39;science_fiction&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;on_netflix&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">]</span>
+    <span class="s1">&#39;popularity&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">5.8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">5.7</span><span class="p">,</span> <span class="mf">7.3</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">,</span> <span class="mf">9.8</span><span class="p">,</span> <span class="mf">8.4</span><span class="p">,</span> 
+                   <span class="mf">7.6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mf">9.3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mf">8.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
+    <span class="s1">&#39;genre&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;science_fiction&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;speculative_fiction&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;drama&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;fantasy&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> 
+               <span class="bp">None</span><span class="p">,</span> 
+              <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;crime&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;crime&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;crime&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;science_fiction&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;on_netflix&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> 
+                   <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">]</span>
 <span class="p">}</span>
 
 <span class="n">my_favorite_shows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">my_favorite_shows</span><span class="p">)</span>
@@ -731,7 +773,8 @@ Actual scores: [7.6, 2.3, 8.9]
 </pre></div>
 
 
-<p>Notice that:</p>
+<h4>Notice that:</h4>
+<hr>
 <ul>
 <li>
 <p>We fit transform the training data, but only transform the test data or new data that we want to get a prediction for. </p>
