@@ -25,7 +25,7 @@
 <p>One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above. </p>
 <p><strong>Enter DataFrameMapper.</strong> Fortunately, data preprocessing doesn't have to be as tedious as some Kaggle competitors I've seen have made it out to be (!). With DataFrameMapper, code that can clean and transform thousands, millions of rows of data can be written in a very concise, robust and standardized fashion.</p>
 <p>Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful. </p>
-<h3>What is DataFrameMapper ?!</h3>
+<h3>What is DataFrameMapper?!</h3>
 <p>DataFrameMapper is a module in a third party scikit-learn library called pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit. </p>
 <p>The traditional way of doing things in data science is to clean and prepare the data in pandas, and then pass it on to scikit-learn to apply machine learning models. There are modules available in both pandas and scikit-learn to handle common data preprocessing tasks like imputing nulls and turning categorical columns into numeric values. But, without a standardized way to perform these tasks, the procedure of data preprocessing can get quite fragmented and messy, which becomes a problem when new data needs to be fed to a machine learning model. </p>
 <p>DataFrameMapper enables all the steps of data preprocessing to be grouped together and stored in a single object, and applied to any dataset with a single operation. </p>
@@ -731,13 +731,28 @@ Actual scores: [7.6, 2.3, 8.9]
 </pre></div>
 
 
-<p>Notice that:
-* We fit transform the training data, but only transform the test data or new data that we want to get a prediction for. 
-* The <code>df_out=True</code> argument enables us to get a dataframe output from the transform function. By default, <code>df_out</code> is set to <code>False</code>, so if we don't include it in the mapper we would get a numpy array as the output. Either is fine as far modelling goes, it's more a matter of convenience. I personally prefer seeing pandas dataframes over numpy arrays as I find them easier to read.
-* When using <code>SimpleImputer</code> - which is a sklearn imputation transformer for numeric values - we have to wrap the first element of the tuple, i.e., the column name, within brackets. Otherwise, the mapper will throw an error. This has to do with the fact that <code>SimpleImputer</code> needs to take lists as input. 
-* I passed two transformers to the genre column - the <code>CategoricalImputer</code> first, followed by the <code>LabelBinarizer</code>. If I had done the reverse, the mapper would throw an error because null values can't be label binarized. <strong>As a rule of thumb and general good practice, imputers need to be the first transformation in a mapper and they need to be applied to <em>all</em> columns.</strong>
-* Notice that I imported <code>CategoricalImputer</code> from <code>pandas</code> whereas I imported <code>SimpleImputer</code> from <code>sklearn.impute</code>. This is another great thing about <code>sklearn-pandas</code>: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn. 
-* The strategy argument in the imputation transformers let's us decide <em>what</em> we want to replace the null values with. Available strategies in <code>SimpleImputer</code> are median, mean, mode or a constant value. Available strategies in <code>CategoricalImputer</code> are the most frequent value or a constant. If strategy is set to constant, the <code>fill_value</code> argument also needs to be defined, as I have done above.</p>
+<p>Notice that:</p>
+<ul>
+<li>
+<p>We fit transform the training data, but only transform the test data or new data that we want to get a prediction for. </p>
+</li>
+<li>
+<p>The <code>df_out=True</code> argument enables us to get a dataframe output from the transform function. By default, <code>df_out</code> is set to <code>False</code>, so if we don't include it in the mapper we would get a numpy array as the output. Either is fine as far modelling goes, it's more a matter of convenience. I personally prefer seeing pandas dataframes over numpy arrays as I find them easier to read.</p>
+</li>
+<li>
+<p>When using <code>SimpleImputer</code> - which is a sklearn imputation transformer for numeric values - we have to wrap the first element of the tuple, i.e., the column name, within brackets. Otherwise, the mapper will throw an error. This has to do with the fact that <code>SimpleImputer</code> needs to take lists as input. </p>
+</li>
+<li>
+<p>I passed two transformers to the genre column - the <code>CategoricalImputer</code> first, followed by the <code>LabelBinarizer</code>. If I had done the reverse, the mapper would throw an error because null values can't be label binarized. <strong>As a rule of thumb and general good practice, imputers need to be the first transformation in a mapper and they need to be applied to <em>all</em> columns.</strong></p>
+</li>
+<li>
+<p>Notice that I imported <code>CategoricalImputer</code> from <code>pandas</code> whereas I imported <code>SimpleImputer</code> from <code>sklearn.impute</code>. This is another great thing about <code>sklearn-pandas</code>: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn. </p>
+</li>
+<li>
+<p>The strategy argument in the imputation transformers let's us decide <em>what</em> we want to replace the null values with. Available strategies in <code>SimpleImputer</code> are median, mean, mode or a constant value. Available strategies in <code>CategoricalImputer</code> are the most frequent value or a constant. If strategy is set to constant, the <code>fill_value</code> argument also needs to be defined, as I have done above.</p>
+</li>
+</ul>
+<h3>Happy mappin'! :)</h3>
  </div>
 </div>
  </div>
