@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>DataFrameMapper: A cleaner, more robust way to preprocess data</title>
+ <!-- Latest compiled and minified CSS -->
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+ <div class="container">
+  <h1><a href="https://dunyaoguz.github.io/my-blog">dunyaoguz.github.io</a></h1>
+ </div>
+</head>
+<body>
+ <div class="container">
+<div class="row">
+ <div class="col-md-8">
+  <h3>DataFrameMapper: A cleaner, more robust way to preprocess data</h3>
+  <label>2019-04-13</label>
+  <p>Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. </p>
+<p>It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. </p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;cartoon-machine-learning-class.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="jpeg" src="images/DataFrameMapper_1_0.jpeg"></p>
+<p>One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above. </p>
+<p><strong>Enter DataFrameMapper.</strong> Fortunately, data preprocessing doesn't have to be as tedious as some Kaggle competitors I've seen have made it out to be (!). With DataFrameMapper, code that can clean and transform thousands, millions of rows of data can be written in a very concise, robust and standardized fashion.</p>
+<p>Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful. </p>
+<h3>What is DataFrameMapper ?!</h3>
+<p>DataFrameMapper is a module in a third party scikit-learn library called pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit. </p>
+<p>The traditional way of doing things in data science is to clean and prepare the data in pandas, and then pass it on to scikit-learn to apply machine learning models. There are modules available in both pandas and scikit-learn to handle common data preprocessing tasks like imputing nulls and turning categorical columns into numeric values. But, without a standardized way to perform these tasks, the procedure of data preprocessing can get quite fragmented and messy, which becomes a problem when new data needs to be fed to a machine learning model. </p>
+<p>DataFrameMapper enables all the steps of data preprocessing to be grouped together and stored in a single object, and applied to any dataset with a single operation. </p>
+<h3>Woow! How does it work?</h3>
+<p>DataFrameMapper maps preprocessing tasks to each column of a given dataset via a list of tuples. Each tuple in the input list refers to a specific column of the dataframe. The first element in the tuple takes the name of the column, and the second element takes the preprocessing task or tasks that want to be applied to that particular column. If there is more than one task, the second element of the tuple needs to be a list, the order of which needs to match the desired order of operations. </p>
+<p>Let's see how DataFrameMapper works with an example. First, <code>pip install sklearn-pandas</code>, and import it onto your workspace as follows.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!pip install sklearn-pandas</span>
+<span class="kn">from</span> <span class="nn">sklearn_pandas</span> <span class="kn">import</span> <span class="n">DataFrameMapper</span>
+</pre></div>
+
+
+<p>I'm going to spin up a dataframe of my favorite tv shows, including information on their production cost (made up), number of seasons, mainstream popularity score out of 10 (made up), genre and whether or not they are on netflix.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="n">my_favorite_shows</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;sense_8&#39;</span><span class="p">,</span> <span class="s1">&#39;handmaidens_tale&#39;</span><span class="p">,</span> <span class="s1">&#39;the_good_place&#39;</span><span class="p">,</span> <span class="s1">&#39;big_little_lies&#39;</span><span class="p">,</span> <span class="s1">&#39;jane_the_virgin&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;game_of_thrones&#39;</span><span class="p">,</span> <span class="s1">&#39;mad_men&#39;</span><span class="p">,</span> <span class="s1">&#39;the_crown&#39;</span><span class="p">,</span> <span class="s1">&#39;narcos&#39;</span><span class="p">,</span> <span class="s1">&#39;house_of_cards&#39;</span><span class="p">,</span> <span class="s1">&#39;girls&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;breaking_bad&#39;</span><span class="p">,</span> <span class="s1">&#39;bad_blood&#39;</span><span class="p">,</span> <span class="s1">&#39;fauda&#39;</span><span class="p">,</span> <span class="s1">&#39;jessica_jones&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">140</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">80</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">170</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">205</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">600</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">300</span><span class="n">_000_000</span><span class="p">,</span> 
+             <span class="bp">None</span><span class="p">,</span> <span class="mi">400</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">500</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">112</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">380</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">10</span><span class="n">_000_000</span><span class="p">,</span> <span class="mi">75</span><span class="n">_000_000</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span>
+    <span class="s1">&#39;seasons&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;popularity&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">5.8</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">5.7</span><span class="p">,</span> <span class="mf">7.3</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">,</span> <span class="mf">9.8</span><span class="p">,</span> <span class="mf">8.4</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">,</span> <span class="mf">7.9</span><span class="p">,</span> <span class="mf">9.3</span><span class="p">,</span> <span class="mf">7.1</span><span class="p">,</span> <span class="mf">8.9</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">],</span>
+    <span class="s1">&#39;genre&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;science_fiction&#39;</span><span class="p">,</span> <span class="s1">&#39;speculative_fiction&#39;</span><span class="p">,</span> <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> <span class="s1">&#39;drama&#39;</span><span class="p">,</span> <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> <span class="s1">&#39;fantasy&#39;</span><span class="p">,</span> <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> <span class="s1">&#39;period_drama&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;comedy&#39;</span><span class="p">,</span> <span class="s1">&#39;crime&#39;</span><span class="p">,</span> <span class="s1">&#39;crime&#39;</span><span class="p">,</span> <span class="s1">&#39;crime&#39;</span><span class="p">,</span> <span class="s1">&#39;science_fiction&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;on_netflix&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">my_favorite_shows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">my_favorite_shows</span><span class="p">)</span>
+<span class="n">my_favorite_shows</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>cost</th>
+      <th>seasons</th>
+      <th>popularity</th>
+      <th>genre</th>
+      <th>on_netflix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>sense_8</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>5.8</td>
+      <td>science_fiction</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>handmaidens_tale</td>
+      <td>140000000.0</td>
+      <td>NaN</td>
+      <td>7.0</td>
+      <td>speculative_fiction</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>the_good_place</td>
+      <td>80000000.0</td>
+      <td>3.0</td>
+      <td>5.7</td>
+      <td>comedy</td>
+      <td>yes</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Let's say I want to predict the popularity score of a tv show using its production cost and genre. Before I can train a machine learning model with the data I have, I need to get rid of all the NaN values and encode all categorical attributes as numbers. </p>
+<p>Let's see how preprocessing this dataset would look like <em>without</em> using DataFrameMapper. </p>
+<p>Splitting our dataset into two - data with which we will train our model and data with which we will test the performance of our model - is the first thing we need to do.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">my_favorite_shows</span><span class="p">[[</span><span class="s1">&#39;cost&#39;</span><span class="p">,</span> <span class="s1">&#39;genre&#39;</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">my_favorite_shows</span><span class="p">[</span><span class="s1">&#39;popularity&#39;</span><span class="p">]</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cost</th>
+      <th>genre</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>600000000.0</td>
+      <td>fantasy</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>170000000.0</td>
+      <td>drama</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>500000000.0</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Next, we need to get rid of all the nulls, of which there is a few. I'll fill nulls in the cost column with the median cost value from the training data since it would likely be an approximation to what an average production cost for a tv show could look like. I'll fill null values in the genre column with 'unknown'.</p>
+<div class="highlight"><pre><span></span><span class="n">median_budget</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">median_budget</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;unknown&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>I also have to transform the genre column to numeric values. A common way to do this is with the <code>LabelBinarizer</code> function from sklearn, which creates a column for each unique value in a category, and represents membership with 1s and 0s. (1 for members, 0 for non members)</p>
+<p><strong>IMPORTANT ADVICE</strong>: Do NOT use the <code>get_dummies()</code> function from pandas to encode your categorical variables! Things will break apart and your model will not work if the categories in your test data does not match the categories in your training data, which is a <strong>VERY</strong> common occurance!</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelBinarizer</span>
+<span class="n">lb</span> <span class="o">=</span> <span class="n">LabelBinarizer</span><span class="p">()</span>
+<span class="n">binarized</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]),</span> <span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
+<span class="n">binarized</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>comedy</th>
+      <th>crime</th>
+      <th>drama</th>
+      <th>fantasy</th>
+      <th>period_drama</th>
+      <th>science_fiction</th>
+      <th>speculative_fiction</th>
+      <th>unknown</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>I now have to add these label binarized columns to my X_train, and remove the original genre column.</p>
+<div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">Z_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">binarized</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>key_0</th>
+      <th>cost</th>
+      <th>comedy</th>
+      <th>crime</th>
+      <th>drama</th>
+      <th>fantasy</th>
+      <th>period_drama</th>
+      <th>science_fiction</th>
+      <th>speculative_fiction</th>
+      <th>unknown</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5</td>
+      <td>600000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>170000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9</td>
+      <td>500000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Since the index of X_train turned to a column (key_0) during the merge, I need to reset it back to it's original state.</p>
+<div class="highlight"><pre><span></span><span class="n">Z_train</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;key_0&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cost</th>
+      <th>comedy</th>
+      <th>crime</th>
+      <th>drama</th>
+      <th>fantasy</th>
+      <th>period_drama</th>
+      <th>science_fiction</th>
+      <th>speculative_fiction</th>
+      <th>unknown</th>
+    </tr>
+    <tr>
+      <th>key_0</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>600000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>170000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>500000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The data is finally ready for modelling. Let's create a simple linear regression model and try to predict popularity scores.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Z_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">train_score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">Z_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Train score: {train_score}&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>Train score: 0.9384608290518329
+</pre></div>
+
+
+<p>Apparently, our simple linear regression model is able to predict 93.8% of the variability in popularity score with just the genre and the budget. Of course, this score is only based on the train dataset - to evaluate the true performance of our regression model, we need to score it on our test data.</p>
+<p>I now have go back and replicate everything I did on the training data on the test data in order to be able to pass it onto my model. </p>
+<div class="highlight"><pre><span></span><span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">median_budget</span><span class="p">)</span>
+<span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;unknown&#39;</span><span class="p">)</span>
+<span class="n">binarized</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]),</span> <span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
+<span class="n">binarized</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>comedy</th>
+      <th>crime</th>
+      <th>drama</th>
+      <th>fantasy</th>
+      <th>period_drama</th>
+      <th>science_fiction</th>
+      <th>speculative_fiction</th>
+      <th>unknown</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span></span><span class="n">X_test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">Z_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">binarized</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">Z_test</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;key_0&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">test_score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">Z_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Test score: {test_score}&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>Test score: 0.12297891216159229
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Predicted scores: {list(model.predict(Z_test))}&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Actual scores: {list(y_test)}&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>Predicted scores: [8.093545585388854, 5.177418234155541, 5.305960593577844]
+Actual scores: [7.6, 2.3, 8.9]
+</pre></div>
+
+
+<p>As expected, the model was grossly overfit and the performance of the model on the test dataset is pretty bad. (Not a concern since our data is fake and we are not trying to build an actual model here.)</p>
+<p>Let's see how much more easily reproducible data preprocessing would be had we used DataFrameMapper.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn_pandas</span> <span class="kn">import</span> <span class="n">CategoricalImputer</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="n">mapper</span> <span class="o">=</span> <span class="n">DataFrameMapper</span><span class="p">([</span>
+    <span class="p">([</span><span class="s1">&#39;cost&#39;</span><span class="p">],</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;genre&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">CategoricalImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;unknown&#39;</span><span class="p">),</span>
+               <span class="n">LabelBinarizer</span><span class="p">()]</span>
+    <span class="p">)</span>
+<span class="p">],</span> <span class="n">df_out</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">Z_train</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cost</th>
+      <th>genre_comedy</th>
+      <th>genre_crime</th>
+      <th>genre_drama</th>
+      <th>genre_fantasy</th>
+      <th>genre_period_drama</th>
+      <th>genre_science_fiction</th>
+      <th>genre_speculative_fiction</th>
+      <th>genre_unknown</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>600000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>170000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>500000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span></span><span class="n">Z_test</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">Z_test</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cost</th>
+      <th>genre_comedy</th>
+      <th>genre_crime</th>
+      <th>genre_drama</th>
+      <th>genre_fantasy</th>
+      <th>genre_period_drama</th>
+      <th>genre_science_fiction</th>
+      <th>genre_speculative_fiction</th>
+      <th>genre_unknown</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7</th>
+      <td>187500000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>10000000.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>380000000.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>That's it, friends!</strong> We were able to do everything that was done previously with just 5-6 lines of code. The best part is that now, I can transform any new data to a model-ready state and get a prediction.</p>
+<p>Let's pretend like we have to predict the popularity score of a new show, not included in our original dataset. Without DataFrameMapper, we would have to repeat the previous preprocessing steps for a third time. With DataFrameMapper, we can just pass the new data onto mapper.transform, and immediately get a prediction.</p>
+<div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;the_protector&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">196</span><span class="n">_000_000</span><span class="p">],</span>
+            <span class="s1">&#39;seasons&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">None</span><span class="p">],</span>
+            <span class="s1">&#39;genre&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;science_fiction&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;on_netflix&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;yes&#39;</span><span class="p">]}</span>
+
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">new_Z</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Predicted popularity score: {round(float(model.predict(new_Z)), 3)}&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>Predicted popularity score: 5.253
+</pre></div>
+
+
+<p>Notice that:
+* We fit transform the training data, but only transform the test data or new data that we want to get a prediction for. 
+* The <code>df_out=True</code> argument enables us to get a dataframe output from the transform function. By default, <code>df_out</code> is set to <code>False</code>, so if we don't include it in the mapper we would get a numpy array as the output. Either is fine as far modelling goes, it's more a matter of convenience. I personally prefer seeing pandas dataframes over numpy arrays as I find them easier to read.
+* When using <code>SimpleImputer</code> - which is a sklearn imputation transformer for numeric values - we have to wrap the first element of the tuple, i.e., the column name, within brackets. Otherwise, the mapper will throw an error. This has to do with the fact that <code>SimpleImputer</code> needs to take lists as input. 
+* I passed two transformers to the genre column - the <code>CategoricalImputer</code> first, followed by the <code>LabelBinarizer</code>. If I had done the reverse, the mapper would throw an error because null values can't be label binarized. <strong>As a rule of thumb and general good practice, imputers need to be the first transformation in a mapper and they need to be applied to <em>all</em> columns.</strong>
+* Notice that I imported <code>CategoricalImputer</code> from <code>pandas</code> whereas I imported <code>SimpleImputer</code> from <code>sklearn.impute</code>. This is another great thing about <code>sklearn-pandas</code>: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn. 
+* The strategy argument in the imputation transformers let's us decide <em>what</em> we want to replace the null values with. Available strategies in <code>SimpleImputer</code> are median, mean, mode or a constant value. Available strategies in <code>CategoricalImputer</code> are the most frequent value or a constant. If strategy is set to constant, the <code>fill_value</code> argument also needs to be defined, as I have done above.</p>
+ </div>
+</div>
+ </div>
+</body>
+</html>
