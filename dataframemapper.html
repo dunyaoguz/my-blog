@@ -98,7 +98,7 @@
 <span class="p">}</span>
 
 <span class="n">my_favorite_shows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">my_favorite_shows</span><span class="p">)</span>
-<span class="n">my_favorite_shows</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">my_favorite_shows</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
 
@@ -143,7 +143,7 @@
       <td>handmaidens_tale</td>
       <td>140000000.0</td>
       <td>NaN</td>
-      <td>7.0</td>
+      <td>6.0</td>
       <td>speculative_fiction</td>
       <td>no</td>
     </tr>
@@ -156,11 +156,74 @@
       <td>comedy</td>
       <td>yes</td>
     </tr>
+    <tr>
+      <th>3</th>
+      <td>big_little_lies</td>
+      <td>170000000.0</td>
+      <td>1.0</td>
+      <td>7.3</td>
+      <td>drama</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>jane_the_virgin</td>
+      <td>205000000.0</td>
+      <td>5.0</td>
+      <td>6.5</td>
+      <td>comedy</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>game_of_thrones</td>
+      <td>600000000.0</td>
+      <td>9.0</td>
+      <td>9.8</td>
+      <td>fantasy</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>mad_men</td>
+      <td>300000000.0</td>
+      <td>7.0</td>
+      <td>8.4</td>
+      <td>period_drama</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>the_crown</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>7.6</td>
+      <td>period_drama</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>narcos</td>
+      <td>400000000.0</td>
+      <td>3.0</td>
+      <td>8.0</td>
+      <td>period_drama</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>house_of_cards</td>
+      <td>500000000.0</td>
+      <td>5.0</td>
+      <td>9.3</td>
+      <td>None</td>
+      <td>yes</td>
+    </tr>
   </tbody>
 </table>
 </div>
 
-<p>Let's say I want to predict the popularity score of a tv show using its production cost and genre. Before I can train a machine learning model with the data I have, I need to get rid of all the NaN values and encode all categorical attributes as numbers. </p>
+<p>Let's say I want to predict the popularity score of a tv show using its production cost and genre. Before I can train a machine learning model with the data I have, I need to get rid of all the NaN values that I intentionally put, and encode all categorical attributes as numbers. </p>
 <p>Let's see how preprocessing this dataset would look like <em>without</em> using DataFrameMapper. </p>
 <p>Splitting our dataset into two - data with which we will train our model and data with which we will test the performance of our model - is the first thing we need to do.</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
@@ -172,7 +235,7 @@
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
 
@@ -214,6 +277,41 @@
       <td>500000000.0</td>
       <td>None</td>
     </tr>
+    <tr>
+      <th>8</th>
+      <td>400000000.0</td>
+      <td>period_drama</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>140000000.0</td>
+      <td>speculative_fiction</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>205000000.0</td>
+      <td>comedy</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>NaN</td>
+      <td>science_fiction</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>300000000.0</td>
+      <td>period_drama</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>75000000.0</td>
+      <td>crime</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>112000000.0</td>
+      <td>comedy</td>
+    </tr>
   </tbody>
 </table>
 </div>
@@ -230,7 +328,7 @@
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelBinarizer</span>
 <span class="n">lb</span> <span class="o">=</span> <span class="n">LabelBinarizer</span><span class="p">()</span>
 <span class="n">binarized</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]),</span> <span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
-<span class="n">binarized</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">binarized</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
 
@@ -296,6 +394,28 @@
       <td>0</td>
       <td>1</td>
     </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
   </tbody>
 </table>
 </div>
@@ -306,7 +426,7 @@
 
 
 <div class="highlight"><pre><span></span><span class="n">Z_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">binarized</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
 
@@ -380,13 +500,39 @@
       <td>0</td>
       <td>1</td>
     </tr>
+    <tr>
+      <th>3</th>
+      <td>8</td>
+      <td>400000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>140000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
   </tbody>
 </table>
 </div>
 
 <p>Since the index of X_train turned to a column (key_0) during the merge, I need to reset it back to it's original state.</p>
 <div class="highlight"><pre><span></span><span class="n">Z_train</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;key_0&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
 
@@ -468,6 +614,30 @@
       <td>0</td>
       <td>1</td>
     </tr>
+    <tr>
+      <th>8</th>
+      <td>400000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>140000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
   </tbody>
 </table>
 </div>
@@ -482,7 +652,7 @@
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>Train score: 0.9384608290518329
+<div class="highlight"><pre><span></span>Train score: 0.9472256796468306
 </pre></div>
 
 
@@ -491,75 +661,8 @@
 <div class="highlight"><pre><span></span><span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">median_budget</span><span class="p">)</span>
 <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;unknown&#39;</span><span class="p">)</span>
 <span class="n">binarized</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]),</span> <span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">classes_</span><span class="p">))</span>
-<span class="n">binarized</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>comedy</th>
-      <th>crime</th>
-      <th>drama</th>
-      <th>fantasy</th>
-      <th>period_drama</th>
-      <th>science_fiction</th>
-      <th>speculative_fiction</th>
-      <th>unknown</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
 
 <div class="highlight"><pre><span></span><span class="n">X_test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">Z_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">binarized</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -572,7 +675,7 @@
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>Test score: 0.12297891216159229
+<div class="highlight"><pre><span></span>Test score: 0.17822240109521673
 </pre></div>
 
 
@@ -581,7 +684,7 @@
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>Predicted scores: [8.093545585388854, 5.177418234155541, 5.305960593577844]
+<div class="highlight"><pre><span></span>Predicted scores: [8.058460717653483, 5.1433842870613935, 5.465658345327309]
 Actual scores: [7.6, 2.3, 8.9]
 </pre></div>
 
@@ -603,7 +706,7 @@ Actual scores: [7.6, 2.3, 8.9]
 
 
 <div class="highlight"><pre><span></span><span class="n">Z_train</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
-<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Z_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 
@@ -673,12 +776,36 @@ Actual scores: [7.6, 2.3, 8.9]
       <td>0</td>
       <td>1</td>
     </tr>
+    <tr>
+      <th>8</th>
+      <td>400000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>140000000.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
   </tbody>
 </table>
 </div>
 
 <div class="highlight"><pre><span></span><span class="n">Z_test</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="n">Z_test</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Z_test</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 
@@ -769,7 +896,7 @@ Actual scores: [7.6, 2.3, 8.9]
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>Predicted popularity score: 5.253
+<div class="highlight"><pre><span></span>Predicted popularity score: 5.257
 </pre></div>
 
 
