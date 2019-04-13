@@ -656,7 +656,7 @@
 </pre></div>
 
 
-<p>Apparently, our simple linear regression model is able to predict 93.8% of the variability in popularity score with just the genre and the budget. Of course, this score is only based on the train dataset - to evaluate the true performance of our regression model, we need to score it on our test data.</p>
+<p>Apparently, our simple linear regression model is able to predict 94.7% of the variability in popularity score with just the genre and the budget. Of course, this score is only based on the train dataset - to evaluate the true performance of our regression model, we need to score it on our test data.</p>
 <p>I now have go back and replicate everything I did on the training data on the test data in order to be able to pass it onto my model. </p>
 <div class="highlight"><pre><span></span><span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">median_budget</span><span class="p">)</span>
 <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;unknown&#39;</span><span class="p">)</span>
@@ -879,7 +879,7 @@ Actual scores: [7.6, 2.3, 8.9]
 </table>
 </div>
 
-<p><strong>That's it, friends!</strong> We were able to do everything that was done previously with just 5-6 lines of code. The best part is that now, I can transform any new data to a model-ready state and get a prediction.</p>
+<p><strong>That's it, friends!</strong> We were able to do everything that was done previously with just 5-6 lines of code. The best part is that now, I can transform any new data to a model-ready state with a single line of code.</p>
 <p>Let's pretend like we have to predict the popularity score of a new show, not included in our original dataset. Without DataFrameMapper, we would have to repeat the previous preprocessing steps for a third time. With DataFrameMapper, we can just pass the new data onto mapper.transform, and immediately get a prediction.</p>
 <div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;the_protector&#39;</span><span class="p">],</span>
             <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">196</span><span class="n">_000_000</span><span class="p">],</span>
@@ -901,10 +901,9 @@ Actual scores: [7.6, 2.3, 8.9]
 
 
 <h4>Notice that:</h4>
-<hr>
 <ul>
 <li>
-<p>We fit transform the training data, but only transform the test data or new data that we want to get a prediction for. </p>
+<p>We fit transform the training data, but only transform the test data and the data for which we want to get a prediction. </p>
 </li>
 <li>
 <p>The <code>df_out=True</code> argument enables us to get a dataframe output from the transform function. By default, <code>df_out</code> is set to <code>False</code>, so if we don't include it in the mapper we would get a numpy array as the output. Either is fine as far modelling goes, it's more a matter of convenience. I personally prefer seeing pandas dataframes over numpy arrays as I find them easier to read.</p>
@@ -919,10 +918,12 @@ Actual scores: [7.6, 2.3, 8.9]
 <p>Notice that I imported <code>CategoricalImputer</code> from <code>pandas</code> whereas I imported <code>SimpleImputer</code> from <code>sklearn.impute</code>. This is another great thing about <code>sklearn-pandas</code>: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn. </p>
 </li>
 <li>
-<p>The strategy argument in the imputation transformers let's us decide <em>what</em> we want to replace the null values with. Available strategies in <code>SimpleImputer</code> are median, mean, mode or a constant value. Available strategies in <code>CategoricalImputer</code> are the most frequent value or a constant. If strategy is set to constant, the <code>fill_value</code> argument also needs to be defined, as I have done above.</p>
+<p>The strategy argument in the imputation transformers lets us decide <em>what</em> we want to replace the null values with. Available strategies in <code>SimpleImputer</code> are median, mean, mode or any constant value of choice. Available strategies in <code>CategoricalImputer</code> are the most frequent value or a constant of choice. If strategy is set to constant, the <code>fill_value</code> argument also needs to be defined and set to the value is desired to replace the nulls, as I have done above.</p>
 </li>
 </ul>
 <h3>Happy mappin'! :)</h3>
+<div class="highlight"><pre><span></span>
+</pre></div>
  </div>
 </div>
  </div>
