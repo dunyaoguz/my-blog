@@ -713,7 +713,7 @@
 </pre></div>
 
 
-<p>Apparently, our simple linear regression model is able to predict ~98% of the variability in popularity score with just the genre and the budget. Of course, this score is only based on the train dataset - to evaluate the true performance of our regression model, we need to score it on our test data.</p>
+<p>Apparently, our simple linear regression model is able to predict ~98% of the variability in popularity score. Of course, this score is only based on the train dataset - to evaluate the true performance of our regression model, we need to score it on our test data.</p>
 <p>I now have go back and replicate everything I did on the training data on the test data in order to be able to pass it onto my model. </p>
 <div class="highlight"><pre><span></span><span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">median_budget</span><span class="p">)</span>
 <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;unknown&#39;</span><span class="p">)</span>
