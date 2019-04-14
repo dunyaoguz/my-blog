@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>dunyaoguz.github.io</title><link href="https://dunyaoguz.github.io/my-blog/" rel="alternate"></link><link href="https://dunyaoguz.github.io/my-blog/feeds/all.atom.xml" rel="self"></link><id>https://dunyaoguz.github.io/my-blog/</id><updated>2019-04-13T17:00:00-04:00</updated><entry><title>DataFrameMapper: A cleaner, more robust way to preprocess data</title><link href="https://dunyaoguz.github.io/my-blog/dataframemapper.html" rel="alternate"></link><published>2019-04-13T17:00:00-04:00</published><updated>2019-04-13T17:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-04-13:/my-blog/dataframemapper.html</id><summary type="html">&lt;p&gt;&lt;/s&gt;
-Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
-&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;/s&gt;
-Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
-&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. 
-&lt;/s&gt;&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>dunyaoguz.github.io</title><link href="https://dunyaoguz.github.io/my-blog/" rel="alternate"></link><link href="https://dunyaoguz.github.io/my-blog/feeds/all.atom.xml" rel="self"></link><id>https://dunyaoguz.github.io/my-blog/</id><updated>2019-04-13T17:00:00-04:00</updated><entry><title>DataFrameMapper: A cleaner, more robust way to preprocess data</title><link href="https://dunyaoguz.github.io/my-blog/dataframemapper.html" rel="alternate"></link><published>2019-04-13T17:00:00-04:00</published><updated>2019-04-13T17:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-04-13:/my-blog/dataframemapper.html</id><summary type="html">&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
+&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
+&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. &lt;/p&gt;
+&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img alt="jpeg" src="images/DataFrameMapper_1_0.jpeg"&gt;&lt;/p&gt;
 &lt;p&gt;&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above. &lt;/p&gt;
@@ -31,9 +31,9 @@ Data must be cleaned and put in a particular shape and form prior to applying ma
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;br&gt;
-I'm going to spin up a dataframe of my favorite tv shows, including information on their production cost (made up), number of seasons, mainstream popularity score out of 10 (made up), genre and whether or not they are on netflix.
-&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;I'm going to spin up a dataframe of my favorite tv shows, including information on their production cost (made up), number of seasons, mainstream popularity score out of 10 (made up), genre and whether or not they are on netflix.&lt;/p&gt;
+&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;my_favorite_shows&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sense_8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
              &lt;span class="s1"&gt;&amp;#39;handmaidens_tale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
@@ -310,6 +310,7 @@ I'm going to spin up a dataframe of my favorite tv shows, including information 
 
 
 &lt;p&gt;I need to transform the genre column to numeric values. A common way to do this is with the &lt;code&gt;LabelBinarizer&lt;/code&gt; function from sklearn, which creates a column for each unique value in a category, and represents membership with 1s and 0s. (1 for members, 0 for non members)&lt;/p&gt;
+&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;IMPORTANT ADVICE&lt;/strong&gt;: Do NOT use the &lt;code&gt;get_dummies()&lt;/code&gt; function from pandas to encode your categorical variables! Things will break apart and your model will not work if the categories in your test data does not match the categories in your training data, which is a &lt;strong&gt;VERY&lt;/strong&gt; common occurance!&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;LabelBinarizer&lt;/span&gt;
 &lt;span class="n"&gt;lb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;LabelBinarizer&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
