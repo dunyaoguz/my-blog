@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>dunyaoguz.github.io</title><link href="https://dunyaoguz.github.io/my-blog/" rel="alternate"></link><link href="https://dunyaoguz.github.io/my-blog/feeds/all.atom.xml" rel="self"></link><id>https://dunyaoguz.github.io/my-blog/</id><updated>2019-04-13T17:00:00-04:00</updated><entry><title>DataFrameMapper: A cleaner, more robust way to preprocess data</title><link href="https://dunyaoguz.github.io/my-blog/dataframemapper.html" rel="alternate"></link><published>2019-04-13T17:00:00-04:00</published><updated>2019-04-13T17:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-04-13:/my-blog/dataframemapper.html</id><summary type="html">&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
-&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
-&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>dunyaoguz.github.io</title><link href="https://dunyaoguz.github.io/my-blog/" rel="alternate"></link><link href="https://dunyaoguz.github.io/my-blog/feeds/all.atom.xml" rel="self"></link><id>https://dunyaoguz.github.io/my-blog/</id><updated>2019-04-13T17:00:00-04:00</updated><entry><title>DataFrameMapper: A cleaner, more robust way to preprocess data</title><link href="https://dunyaoguz.github.io/my-blog/dataframemapper.html" rel="alternate"></link><published>2019-04-13T17:00:00-04:00</published><updated>2019-04-13T17:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-04-13:/my-blog/dataframemapper.html</id><summary type="html">&lt;p&gt;&lt;s&gt;
+Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
+&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;s&gt;
+Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
+&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. 
+&lt;s&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img alt="jpeg" src="images/DataFrameMapper_1_0.jpeg"&gt;&lt;/p&gt;
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;&lt;/p&gt;
 &lt;p&gt;One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above. &lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Enter DataFrameMapper.&lt;/strong&gt; Fortunately, data preprocessing doesn't have to be as tedious as some Kaggle competitors I've seen have made it out to be (!). With DataFrameMapper, code that can clean and transform thousands, millions of rows of data can be written in a very concise, robust and standardized fashion.&lt;/p&gt;
 &lt;p&gt;Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful. &lt;/p&gt;
@@ -30,9 +31,9 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;I'm going to spin up a dataframe of my favorite tv shows, including information on their production cost (made up), number of seasons, mainstream popularity score out of 10 (made up), genre and whether or not they are on netflix.&lt;/p&gt;
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;
+I'm going to spin up a dataframe of my favorite tv shows, including information on their production cost (made up), number of seasons, mainstream popularity score out of 10 (made up), genre and whether or not they are on netflix.
+&lt;br&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;my_favorite_shows&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sense_8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
              &lt;span class="s1"&gt;&amp;#39;handmaidens_tale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
