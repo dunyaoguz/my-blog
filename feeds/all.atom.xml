@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>dunyaoguz.github.io</title><link href="https://dunyaoguz.github.io/my-blog/" rel="alternate"></link><link href="https://dunyaoguz.github.io/my-blog/feeds/all.atom.xml" rel="self"></link><id>https://dunyaoguz.github.io/my-blog/</id><updated>2019-04-13T00:00:00-04:00</updated><entry><title>DataFrameMapper: A cleaner, more robust way to preprocess data</title><link href="https://dunyaoguz.github.io/my-blog/dataframemapper.html" rel="alternate"></link><published>2019-04-13T00:00:00-04:00</published><updated>2019-04-13T00:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-04-13:/my-blog/dataframemapper.html</id><summary type="html">&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
-&lt;p&gt;Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
-&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
-&lt;p&gt;Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>dunyaoguz.github.io</title><link href="https://dunyaoguz.github.io/my-blog/" rel="alternate"></link><link href="https://dunyaoguz.github.io/my-blog/feeds/all.atom.xml" rel="self"></link><id>https://dunyaoguz.github.io/my-blog/</id><updated>2019-04-13T17:00:00-04:00</updated><entry><title>DataFrameMapper: A cleaner, more robust way to preprocess data</title><link href="https://dunyaoguz.github.io/my-blog/dataframemapper.html" rel="alternate"></link><published>2019-04-13T17:00:00-04:00</published><updated>2019-04-13T17:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-04-13:/my-blog/dataframemapper.html</id><summary type="html">&lt;p&gt;Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
+&lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. &lt;/p&gt;
 &lt;p&gt;It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. &lt;/p&gt;
-&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
+&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;cartoon-machine-learning-class.jpg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;&lt;img alt="jpeg" src="images/DataFrameMapper_1_0.jpeg"&gt;&lt;/p&gt;
-&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above. &lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Enter DataFrameMapper.&lt;/strong&gt; Fortunately, data preprocessing doesn't have to be as tedious as some Kaggle competitors I've seen have made it out to be (!). With DataFrameMapper, code that can clean and transform thousands, millions of rows of data can be written in a very concise, robust and standardized fashion.&lt;/p&gt;
 &lt;p&gt;Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful. &lt;/p&gt;
 &lt;h3&gt;What is DataFrameMapper?&lt;/h3&gt;
 &lt;hr&gt;
-&lt;p&gt;DataFrameMapper is a module in a third party scikit-learn library called pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit. &lt;/p&gt;
+&lt;p&gt;DataFrameMapper is a module in an experimental scikit-learn library called sklearn-pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit. &lt;/p&gt;
 &lt;p&gt;The traditional way of doing things in data science is to clean and prepare the data in pandas, and then pass it on to scikit-learn to apply machine learning models. There are modules available in both pandas and scikit-learn to handle common data preprocessing tasks like imputing nulls and turning categorical columns into numeric values. But, without a standardized way to perform these tasks, the procedure of data preprocessing can get quite fragmented and messy, which becomes a problem when new data needs to be fed to a machine learning model. &lt;/p&gt;
 &lt;p&gt;DataFrameMapper enables all the steps of data preprocessing to be grouped together and stored in a single object, and applied to any dataset with a single operation. &lt;/p&gt;
 &lt;h3&gt;How does it work?&lt;/h3&gt;
@@ -31,9 +32,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;I'm going to spin up a dataframe of my favorite tv shows, including information on their production cost (made up), number of seasons, mainstream popularity score out of 10 (made up), genre and whether or not they are on netflix.&lt;/p&gt;
-&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;my_favorite_shows&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sense_8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
              &lt;span class="s1"&gt;&amp;#39;handmaidens_tale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
@@ -89,11 +88,11 @@
 
 &lt;span class="n"&gt;my_favorite_shows&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_favorite_shows&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-&lt;span class="n"&gt;HTML&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_favorite_shows&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_html&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;classes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;table table-hover table-dark&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;HTML&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_favorite_shows&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_html&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;classes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;table table-stripped table-hover&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;table border="1" class="dataframe table table-hover table-dark"&gt;
+&lt;table border="1" class="dataframe table table-stripped table-hover table-dark"&gt;
   &lt;thead&gt;
     &lt;tr style="text-align: right;"&gt;
       &lt;th&gt;&lt;/th&gt;
@@ -310,7 +309,6 @@
 
 
 &lt;p&gt;I need to transform the genre column to numeric values. A common way to do this is with the &lt;code&gt;LabelBinarizer&lt;/code&gt; function from sklearn, which creates a column for each unique value in a category, and represents membership with 1s and 0s. (1 for members, 0 for non members)&lt;/p&gt;
-&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;IMPORTANT ADVICE&lt;/strong&gt;: Do NOT use the &lt;code&gt;get_dummies()&lt;/code&gt; function from pandas to encode your categorical variables! Things will break apart and your model will not work if the categories in your test data does not match the categories in your training data, which is a &lt;strong&gt;VERY&lt;/strong&gt; common occurance!&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.preprocessing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;LabelBinarizer&lt;/span&gt;
 &lt;span class="n"&gt;lb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;LabelBinarizer&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
