@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>CARTs, Random Forests, and their Hyperparameters</title>
+ <!-- Latest compiled and minified CSS -->
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+ <div class="container">
+  <h1><a href="https://dunyaoguz.github.io/my-blog">dunyaoguz.github.io</a></h1>
+ </div>
+</head>
+<body>
+ <div class="container">
+<div class="row">
+ <div class="col-md-8">
+  <h3>CARTs, Random Forests, and their Hyperparameters</h3>
+  <label>2019-04-20</label>
+  <h3>CART Basics</h3>
+<hr>
+<p>Classification And Regression Trees (CART), i.e. Decision Trees are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. That said, decision trees may lag begind other, more complex machine learning algorithms (sometimes referred to as 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is much more important than accuracy. </p>
+<p>So how do they work? Decision trees are essentially a bunch of if-then-else rules stacked on top of each other. Here is a silly example:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;decision_tree.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">450</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="images/CART_hyperparameters_3_0.png"></p>
+<ul>
+<li>"<em>Should I write this blog post?</em>" is the question I'm looking an answer for. </li>
+<li>"<em>Do I understand this concept?</em>" is the <strong>root node</strong>. </li>
+<li>"<em>Am I feeling tired?</em>" and "<em>Do I have tea nearby?</em>" are <strong>internal nodes</strong>. </li>
+<li>The colored boxes are <strong>leaf nodes</strong> and they store the target variable, i.e. the prediction made by the algorithm.</li>
+<li>The arrows pointing from internal nodes to leaf nodes are <strong>branches</strong>. </li>
+<li>Nodes that precede other nodes are called <strong>parent nodes</strong>. Nodes that immediately proceed them are referred to as their <strong>children</strong>. "<em>Am I feeling tired</em>?" and "<em>No</em>" are childrens of "<em>Do I understand the concept?</em>". </li>
+<li>The <strong>depth</strong> of a tree is length of the longest path from the root node to a leaf node. The decision tree above has a depth of 3.</li>
+</ul>
+<p>The decision tree algorithm operates by coming up with rules and splitting the data accordingly at each node in a sequential manner. But how does the algorithm figure out the logical order of rules? In the above case, how can it know that my understanding of the concept is the number one question that must be answered yes, before any other thing such as whether or not I have tea nearby?</p>
+<p>Answer: with the help of some good old math! Decision trees are built in a top-down fashion through finding the attribute that maximizes something called <strong>information gain</strong> at each split. Information gain is at maximum when the attribute in question is perfectly homogenous, i.e. pure. Information gain is at minimum when the attribute in question is perfectly heterogenous. In the context of a binary attribute that can be either yes or no, a perfectly homogenous class would be composed of all yes's, and a perfectly heterogenous class would be composed of 50% yes's and 50% no's.</p>
+<p>The formula for information gain is as follows:</p>
+<h2>$$ I.G. = H(\text{parent}) - \sum_{\text{children}}\frac{N_j}{N}H(\text{children}_j) $$</h2>
+<p>This can look intimidating at first but it's actually quite simple. The function H() is something called <strong>gini impurity</strong>. To compute information gain, we simply deduct the weighted sum of the gini impurities of the children nodes from the gini impurity of the parent node. The attribute that yields the highest IG when split to its children gets chosen as the root node. This process continues through all the nodes until there is no way to further split the tree, which is when there is one item left in each leaf node. When that is the case, the decision tree is considered complete. </p>
+<h4>Ok... but... WTF is gini impurity?</h4>
+<p>Note: Gini impurity is used interchangeably with something called <strong>entrophy.</strong> </p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="n">blog_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+                                                       <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;am_i_tired&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> 
+                                       <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+                                              <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;write_blog&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+                                         <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">]</span>
+                         <span class="p">})</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn_pandas</span> <span class="kn">import</span> <span class="n">DataFrameMapper</span><span class="p">,</span> <span class="n">CategoricalImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span><span class="p">,</span> <span class="n">LabelBinarizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">mapper</span> <span class="o">=</span> <span class="n">DataFrameMapper</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">,</span> <span class="n">LabelEncoder</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s1">&#39;am_i_tired&#39;</span><span class="p">,</span> <span class="n">LabelEncoder</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s1">&#39;is_there_coffee&#39;</span><span class="p">,</span> <span class="n">LabelEncoder</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s1">&#39;write_blog&#39;</span><span class="p">,</span> <span class="n">LabelEncoder</span><span class="p">())</span>
+<span class="p">],</span> <span class="n">df_out</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">blog_post</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">blog_post</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">blog_post</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">blog_post</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">]</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+            splitter=&#39;best&#39;)
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>  
+<span class="kn">import</span> <span class="nn">pydotplus</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+
+<span class="n">dot_data</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">export_graphviz</span><span class="p">(</span>
+    <span class="n">dt</span><span class="p">,</span> 
+    <span class="n">out_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">filled</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">rounded</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">feature_names</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="n">class_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Don</span><span class="se">\&#39;</span><span class="s1">t write&#39;</span><span class="p">,</span> <span class="s1">&#39;Write&#39;</span><span class="p">],</span>
+    <span class="n">proportion</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+
+<span class="n">graph</span> <span class="o">=</span> <span class="n">pydotplus</span><span class="o">.</span><span class="n">graph_from_dot_data</span><span class="p">(</span><span class="n">dot_data</span><span class="p">)</span>  
+<span class="n">Image</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">create_png</span><span class="p">())</span>
+</pre></div>
+
+
+<p><img alt="png" src="images/CART_hyperparameters_8_0.png"></p>
+<h3>Hyperparameters of CART</h3>
+<hr>
+<h3>Ensemble methods built on CART</h3>
+<hr>
+<h3>Hyperparameters of ensemble methods</h3>
+<hr>
+<div class="highlight"><pre><span></span>
+</pre></div>
+ </div>
+</div>
+ </div>
+</body>
+</html>
