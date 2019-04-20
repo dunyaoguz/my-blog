@@ -5,7 +5,7 @@
  <!-- Latest compiled and minified CSS -->
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
  <div class="container">
-  <h1><a href=".">dunyaoguz.github.io</a></h1>
+  <h1><a href="https://dunyaoguz.github.io/my-blog">dunyaoguz.github.io</a></h1>
  </div>
 </head>
 <body>
@@ -14,9 +14,9 @@
  <div class="col-md-8">
   <h3>CARTs, Random Forests, and their Hyperparameters</h3>
   <label>2019-04-20</label>
-  <h3>CART Basics</h3>
+  <p>Classification And Regression Trees (CART), i.e. Decision Trees are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. That said, decision trees may lag begind other, more complex machine learning algorithms (sometimes referred to as 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is much more important than accuracy. </p>
+<h3>CART Basics</h3>
 <hr>
-<p>Classification And Regression Trees (CART), i.e. Decision Trees are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. That said, decision trees may lag begind other, more complex machine learning algorithms (sometimes referred to as 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is much more important than accuracy. </p>
 <p>So how do they work? Decision trees are essentially a bunch of if-then-else rules stacked on top of each other. Here is a silly example:</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;decision_tree.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">450</span><span class="p">)</span>
@@ -36,6 +36,8 @@
 <p>The decision tree algorithm operates by coming up with rules and splitting the data accordingly at each node in a sequential manner. But how does the algorithm figure out the logical order of rules? In the above case, how can it know that my understanding of the concept is the number one question that must be answered yes, before any other thing such as whether or not I have tea nearby?</p>
 <p>Answer: with the help of some good old math! Decision trees are built in a top-down fashion through finding the attribute that maximizes something called <strong>information gain</strong> at each split. Information gain is at maximum when the attribute in question is perfectly homogenous, i.e. pure. Information gain is at minimum when the attribute in question is perfectly heterogenous. In the context of a binary attribute that can be either yes or no, a perfectly homogenous class would be composed of all yes's, and a perfectly heterogenous class would be composed of 50% yes's and 50% no's.</p>
 <p>The formula for information gain is as follows:</p>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
 <h2>$$ I.G. = H(\text{parent}) - \sum_{\text{children}}\frac{N_j}{N}H(\text{children}_j) $$</h2>
 <p>This can look intimidating at first but it's actually quite simple. The function H() is something called <strong>gini impurity</strong>. To compute information gain, we simply deduct the weighted sum of the gini impurities of the children nodes from the gini impurity of the parent node. The attribute that yields the highest IG when split to its children gets chosen as the root node. This process continues through all the nodes until there is no way to further split the tree, which is when there is one item left in each leaf node. When that is the case, the decision tree is considered complete. </p>
 <h4>Ok... but... WTF is gini impurity?</h4>
