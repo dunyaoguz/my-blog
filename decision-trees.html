@@ -5,7 +5,7 @@
  <!-- Latest compiled and minified CSS -->
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
  <div class="container">
-  <h1><a href=".">dunyaoguz.github.io</a></h1>
+  <h1><a href="https://dunyaoguz.github.io/my-blog">dunyaoguz.github.io</a></h1>
  </div>
 </head>
 <body>
@@ -14,13 +14,13 @@
  <div class="col-md-8">
   <h3>Decision Trees and their Hyperparameters</h3>
   <label>2019-04-21</label>
-  <p>Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is much more important than accuracy. </p>
+  <p>Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy. </p>
 <h3>Decision Tree Basics</h3>
 <hr>
 <p>Decision trees are essentially a bunch of <strong>if-then-else</strong> rules stacked on top of each other. Here is a silly example:</p>
 <h3><center> Question: Should I write this blog post? </center></h3>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">HTML</span>
-<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;decision_tree.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;decision_tree.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
 </pre></div>
 
 
@@ -34,25 +34,25 @@
 <li>The <strong>depth</strong> of a tree is length of the longest path from the root node to a leaf node. The decision tree above has a depth of 3.</li>
 </ul>
 <p>The decision tree algorithm operates by coming up with rules and partitioning the data accordingly at each node in a <strong>sequential</strong> manner. But how does the algorithm figure out the logical order of rules? In the above case, how can it know that my understanding of the concept is the number one question that must be answered yes, before any other thing such as whether or not there is coffee?</p>
-<p>Answer: with the help of some good old math! Decision trees are built in a top-down fashion through finding the attribute that maximizes something called <strong>information gain</strong> at each split. The idea is that, the higher the information gain, the higher the importance of the attribute in determining the outcome/target variable. Decision trees are often called a <strong>greedy</strong> algorithm because they find the best partition each step instead of the one that will ultimately lead to the most accurate prediction. </p>
+<p>Answer: with the help of some good old math! Decision trees are built in a top-down fashion through finding the attribute that maximizes something called <strong>information gain</strong> at each split. The idea is that, the higher the information gain, the higher the importance of the attribute in determining the outcome/target variable. Decision trees are often called a <strong>greedy</strong> algorithm since they find the best partition each individual step, rather than optimizing for a global tree structure that will deliver the best prediction.</p>
 <p>The formula for information gain is as follows:</p>
 <p>$$
 \begin{eqnarray<em>}
-\text{Information Gain} &amp;=&amp; G(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}G(\text{children}_j) 
+\text{Information Gain} &amp;=&amp; E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) 
 \end{eqnarray</em>}
 $$</p>
-<p>This can look intimidating at first but it's actually quite simple. The function G() is something called the <strong>gini index</strong>. To compute information gain, we simply deduct the weighted sum of the gini indexes of the children nodes from the gini index of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete. </p>
-<h4>Ok... but... WTF is the gini index?</h4>
+<p>This can look intimidating at first but it's actually quite simple. The function E() is something called <strong>entropy</strong>. To compute information gain, we simply deduct the weighted sum of the entropies of the children nodes from the entropy of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete. </p>
+<h4>Ok... but... WTF is entropy?</h4>
 <hr>
-<p>Gini index measures the probability of a particular variable being wrongly classified when randomly chosen. In practical terms, it is a measure of <strong>impurity</strong> of an attribute. Gini index ranges from 0 to 1. If the attribute in question is composed of a single class, for example, all yes's or all no's, then that attribute is considered <strong>pure</strong> and the gini index takes on a value of 0. If the classes are equally distributed, for example, 50% yes's and 50% no's, gini index takes on a value of 0.5. </p>
-<p>Here is the formula for the Gini index:</p>
+<p>Entropy measures the amount of unpredictability in a random variable. In practical terms, it is a measure of <strong>impurity</strong> of an attribute. If the attribute in question is composed of a single class, for example, all yes's or all no's, then that attribute is considered <strong>pure</strong> and entropy takes on a value of 0. If the classes are equally distributed, for example, 50% yes's and 50% no's, entropy takes on a value of 1. </p>
+<p>Here is the formula for entropy:</p>
 <p>$$
 \begin{eqnarray<em>}
-\text{Gini} &amp;=&amp; 1 - \sum_{i=1}^{classes} P(\text{class i})^2
+\text{Entropy} &amp;=&amp; \sum_{i=1}^{classes} - {P_i} * {log_2}{P_i}
 \end{eqnarray</em>}
 $$</p>
-<p>Gini index is used interchangeably with something called <strong>entropy</strong>, a slightly different measure of impurity which uses logarithms. They yield very similar results. </p>
-<p>To better understand the gini index and information gain, let's manually rebuild a decision tree.  </p>
+<p>Entropy and information gain are used interchangeably with something called <strong>gini index</strong>, a slightly different measure of node impurity. They yield very similar results. </p>
+<p>To better understand how decision trees work, let's manually rebuild one.  </p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
@@ -92,12 +92,12 @@ $$</p>
 
 <p>Check out <a href="https://dunyaoguz.github.io/my-blog/dataframemapper.html">my previous blog post</a> on DataFrameMapper for more information on how it works.</p>
 <div class="highlight"><pre><span></span><span class="c1"># instantiate the Decision Tree</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;entropy&#39;</span><span class="p">)</span>
 <span class="n">dt</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=None,
+<div class="highlight"><pre><span></span>DecisionTreeClassifier(class_weight=None, criterion=&#39;entropy&#39;, max_depth=None,
             max_features=None, max_leaf_nodes=None,
             min_impurity_decrease=0.0, min_impurity_split=None,
             min_samples_leaf=1, min_samples_split=2,
@@ -133,7 +133,7 @@ $$</p>
 
 
 <p><img alt="png" src="images/CART_11_0.png"></p>
-<p>We see that the algorithm was able to produce the exact same order of rules I came up with through logic, with math. Here, we can also see the number of samples that got partitioned at each node, along with the gini indexes that were calculated. Now, let's redo this manually.</p>
+<p>We see that the algorithm was able to produce the exact same order of rules I came up with through logic, with math. Here, we can also see the number of samples that got partitioned at each node, along with the entropies that were calculated. Now, let's redo this manually.</p>
 <p><strong>Step one:</strong> We have 100% of the train data (8 samples). Our train dataset includes 3 variables: <code>conceptual_understanding</code>, <code>am_i_tired</code> and <code>is_there_coffee</code>. </p>
 <div class="highlight"><pre><span></span><span class="n">train_data</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;key_0&#39;</span><span class="p">)</span>
 
@@ -197,57 +197,55 @@ $$</p>
   </tbody>
 </table>
 
-<div class="highlight"><pre><span></span><span class="c1"># Define Gini function.</span>
-<span class="k">def</span> <span class="nf">gini</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="c1"># Define Entropy function.</span>
+<span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">unique_elements</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">gini_sum</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">entropy_sum</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># Iterate through each class.</span>
     <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">unique_elements</span><span class="p">:</span>
-        <span class="c1"># Calculate observed probability of class i.</span>
+        <span class="c1"># Calculate observed probability of class i</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-        <span class="c1"># Square the probability and append it to gini_sum.</span>
-        <span class="n">gini_sum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prob</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">gini_sum</span><span class="p">)</span>
+        <span class="c1"># Perform the entropy formula</span>
+        <span class="n">entropy_sum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prob</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">prob</span><span class="p">))</span>
+    <span class="k">return</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">entropy_sum</span><span class="p">)</span>
 </pre></div>
 
 
 <div class="highlight"><pre><span></span><span class="c1"># Define Information Gain function.</span>
 <span class="k">def</span> <span class="nf">information_gain</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
-    <span class="c1"># Calculate parent_gini</span>
-    <span class="n">parent_gini</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="c1"># Calculate the weighted sum of child ginis</span>
-    <span class="n">child_0_gini</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="n">child_1_gini</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
+    <span class="c1"># Calculate parent_entropy</span>
+    <span class="n">parent_entropy</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
+    <span class="c1"># Calculate the weighted sum of child entropies</span>
+    <span class="n">child_0_entropy</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
+    <span class="n">child_1_entropy</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
     <span class="n">child_0_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
     <span class="n">child_1_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="n">child_ginis_weighted_sum</span> <span class="o">=</span> <span class="n">child_0_gini</span> <span class="o">*</span> <span class="n">child_0_count</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">child_1_gini</span> <span class="o">*</span> <span class="n">child_1_count</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
+    <span class="n">child_entropy_weighted_sum</span> <span class="o">=</span> <span class="n">child_0_entropy</span> <span class="o">*</span> <span class="n">child_0_count</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">child_1_entropy</span> <span class="o">*</span> <span class="n">child_1_count</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
     <span class="c1"># Return information gain</span>
-    <span class="k">return</span> <span class="n">parent_gini</span> <span class="o">-</span> <span class="n">child_ginis_weighted_sum</span>
+    <span class="k">return</span> <span class="n">parent_entropy</span> <span class="o">-</span> <span class="n">child_entropy_weighted_sum</span>
 </pre></div>
 
 
 <p>Let's calculate the information gain for each 3 variables at the root node.</p>
-<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent gini: {gini(train_data.write_blog)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent entropy: {entropy(train_data.write_blog)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Information gain at the root node:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="s1">&#39;am_i_tired&#39;</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">3. is_there_coffee: {round(c, 3)}&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>Parent gini: 0.5
+<div class="highlight"><pre><span></span>Parent entropy: 1.0
 
 Information gain at the root node:
 
-    1. conceptual_understanding: 0.3
-
-    2. am_i_tired: 0.033
-
-    3. is_there_coffee: 0.071
+    1. conceptual_understanding: 0.549
+    2. am_i_tired: 0.049
+    3. is_there_coffee: 0.138
 </pre></div>
 
 
@@ -257,26 +255,24 @@ Information gain at the root node:
 <span class="n">remaining_data</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># calculate information gain for the remaining data</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent gini: {round(gini(remaining_data.write_blog), 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent entropy: {round(entropy(remaining_data.write_blog), 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Information gain at the first internal node:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data</span><span class="p">,</span> <span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data</span><span class="p">,</span> <span class="s1">&#39;am_i_tired&#39;</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data</span><span class="p">,</span> <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">3. is_there_coffee: {round(c, 3)}&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>Parent gini: 0.32
+<div class="highlight"><pre><span></span>Parent entropy: 0.722
 
 Information gain at the first internal node:
 
     1. conceptual_understanding: 0.0
-
-    2. am_i_tired: 0.12
-
-    3. is_there_coffee: 0.02
+    2. am_i_tired: 0.322
+    3. is_there_coffee: 0.073
 </pre></div>
 
 
@@ -286,26 +282,24 @@ Information gain at the first internal node:
 <span class="n">remaining_data_2</span> <span class="o">=</span> <span class="n">remaining_data</span><span class="p">[</span><span class="n">remaining_data</span><span class="p">[</span><span class="s1">&#39;am_i_tired&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># calculate information gain for the remaining data</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent gini: {gini(remaining_data_2.write_blog)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent entropy: {entropy(remaining_data_2.write_blog)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Information gain at the second internal node:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data_2</span><span class="p">,</span> <span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data_2</span><span class="p">,</span> <span class="s1">&#39;am_i_tired&#39;</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data_2</span><span class="p">,</span> <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">3. is_there_coffee: {round(c, 3)}&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>Parent gini: 0.5
+<div class="highlight"><pre><span></span>Parent entropy: 1.0
 
-Information gain at the first internal node:
+Information gain at the second internal node:
 
     1. conceptual_understanding: 0.0
-
     2. am_i_tired: 0.0
-
-    3. is_there_coffee: 0.5
+    3. is_there_coffee: 1.0
 </pre></div>
 
 
@@ -314,41 +308,59 @@ Information gain at the first internal node:
 <hr>
 <p>Now that we understand how decision trees work, let's talk about their <strong>hyperparameters</strong>.</p>
 <p>In machine learning, <strong>hyperparameters</strong> are built in model configurations whose values are specified before the learning process begins. They are independent from the data on which the model is fit and can be <em>tuned</em> as desired. </p>
-<p>Hyperparameters can dramatically change the performance of a model, and finding the combination of hyperparameters that yield the best performance is an integral component of a machine learning workflow. </p>
+<p>Hyperparameters can dramatically change the performance of a model, and finding the combination of hyperparameters that yield the best performance is an integral component of building a machine learning model. </p>
 <p>Let's examine the hyperparameters available in decision trees.</p>
 <ul>
 <li>
 <p><code>criterion</code>: Measure of impurity that will be used to calculate information gain in building the tree. Options = [gini, entropy]. Default = gini.</p>
 </li>
 <li>
-<p><code>max_depth</code>: The maximum number of nodes in a decision tree. Unless max depth is specified, decision tree will automatically extend until all leaf nodes are pure or contain less than min_samples_split samples. Options = [None, int]. Default = None.</p>
+<p><code>splitter</code>: The strategy used to split the decision tree at each node. The default option 'best' computes information gain as explained above for each feature and partitions the data where information gain is maximized. If splitter is set to random, a random value is partitioned at each node. Options = [best, random]. Default = best.</p>
 </li>
 <li>
-<p><code>min_samples_split</code>: The minimum number of samples required to partition a node. If we had set min_samples_split to 3 when we instantiated the model above, the data would not be partitioned at is_there_coffee since only 2 samples remained at that node. Options = [int, float]. Default = 2.</p>
+<p><code>max_depth</code>: The maximum number of nodes in a decision tree. Unless max depth is specified, decision tree will automatically extend until all leaf nodes are pure or contain less than <code>min_samples_split</code> samples. Options = [None, int]. Default = None.</p>
 </li>
 <li>
-<p><code>min_samples_leaf</code>: The minimum number of samples required to be a leaf node. Data will not be partitioned at a node if any of its children to the right or left would have less samples than min_samples_leaf. As an example, if I had specified min_samples_leaf as 2, the data would not be split at is_there_coffee because both of its children have 1 sample. Options = [int, float]. Default = 1.</p>
+<p><code>min_samples_split</code>: The minimum number of samples required to partition a node. If we had set <code>min_samples_split</code> to 3 when we instantiated the model above, the data would not be partitioned at <code>is_there_coffee</code> since only 2 samples remained at that node. Options = [int, float]. Default = 2.</p>
 </li>
 <li>
-<p><code>max_features</code>: The maximum number of features to consider when looking for the best split. In the above example, we calculated information gain for all 3 features in the dataset at each partition. If max_features was specified as 2, information gain would be computed for only 2 of the features at each split. Options = [None, int, string, float]. Default = None.</p>
+<p><code>min_samples_leaf</code>: The minimum number of samples required to be a leaf node. Data will not be partitioned at a node if any of its children to the right or left would have less samples than min_samples_leaf. As an example, if I had specified <code>min_samples_leaf</code> as 2, the data would not be split at <code>is_there_coffee</code> because both of its children have 1 sample. Options = [int, float]. Default = 1.</p>
+</li>
+<li>
+<p><code>max_features</code>: The maximum number of features to consider when looking for the best split. In the above example, we calculated information gain for all 3 features in the dataset at each partition. If <code>max_features</code> was specified as 2, information gain would be computed for only 2 of the features at each split. Options = [None, int, string, float]. Default = None.</p>
 </li>
 <li>
 <p><code>max_leaf_nodes</code>: Maximum number of leaf nodes that can exist in the decision tree. If it is specified, the decision tree stops partitioning once it reaches the set number of leaf nodes. Options = [None, int]. Default = None.</p>
 </li>
 <li>
-<p><code>min_impurity_split</code>:</p>
+<p><code>min_impurity_decrease</code>: Minimum amount of decrease in impurity that needs to be induced by partitioning a node. If the decrease in impurity would be less than <code>min_impurity_decrease</code>, the said partition does not occur. Options = [None, float]. Default = None.</p>
 </li>
-<li><code>class_weight</code>:</li>
-<li><code>presort</code>:</li>
 </ul>
-<h3>Ensemble methods built on CART</h3>
+<h3>Tree based ensemble methods</h3>
 <hr>
+<p>Decision trees tend to suffer from overfitting and perform poorly on unseen data. Tree based ensemble methods combine several decision trees in order to improve the predictive performance of stand alone decision trees. Here, I'm going to talk about two techniques: <strong>bootstrap aggregated trees</strong> and <strong>random forests</strong>.</p>
+<p>Bootstrap aggregated trees, or bagging trees in short, withdraw several random samples from the dataset with replacement, and train a decision tree on each sample. When given a new dataset, bagging trees calculate the predictions by averaging the results from each bootstrapped decision tree. </p>
+<p>Random forests also build various decision trees on bootstrapped resamples from the original dataset, but differently than bagged trees, random forests only consider a subset of the features at each iteration. With bagging, the decision trees in the aggregation tend to be strongly correlated to each other since each tree includes all of the original features. The selection of features at random (called the <strong>random subspace method</strong>) in random forests counters the correlation between trees, resulting in an overall model that performs better on unseen data. It is typical to use $\sqrt{p}$ features in each split in a Random Forest Classifier, and $p/3$ features in a Random Forest Regressor.</p>
 <h3>Hyperparameters of ensemble methods</h3>
 <hr>
-<p>Final points
-* Pruning decision trees</p>
-<div class="highlight"><pre><span></span>
-</pre></div>
+<p>The hyperparameters of bagging trees and random forests are exactly the same as the hyperparameters of decision trees, with a few additions.</p>
+<ul>
+<li>
+<p><code>n_estimators</code>: The number of trees in the ensemble. Options = [int]. Default = 10. (The default option for Random Forest will change to 100 in the new version of sklearn.)</p>
+</li>
+<li>
+<p><code>bootstrap</code>: Whether samples are drawn with or without replacement. Options = [True, False]. Default = True. Don't change the default option for this argument as we should always sample with replacement in bagging and random forest. Otherwise, we'd be using the whole dataset and not benefiting from the reduction in variance introduced by bootstrapping.</p>
+</li>
+<li>
+<p><code>n_jobs</code>: The number of processors to run while training the model and computing predictions from it. If set to 1, no parallel computing code is used. If set to -1, all CPUs are used. If set to -2, all available CPUs minus 1 are used. Options = [None, int]. Default = None.</p>
+</li>
+<li>
+<p><code>oob_score</code>: On average, each bootstrapped sample uses about 2/3 of the observations. The remaining 1/3 of the observations not used to fit a given bootstrapped tree are referred to as the out-of-bag (OOB) observations. If set to true, OOB observations get treated as test data and used to score the performance each tree. Options = [True, False]. Default = False.</p>
+</li>
+<li>
+<p><code>verbose</code>: If set to true, the output for each decision tree in the ensemble gets printed. Options = [True, False]. Default = False.</p>
+</li>
+</ul>
  </div>
 </div>
  </div>
