@@ -321,7 +321,7 @@ Information gain at the second internal node:
 &lt;p&gt;Decision trees tend to suffer from overfitting and perform poorly on unseen data. Tree based ensemble methods combine several decision trees in order to improve the predictive performance of stand alone decision trees. Here, I'm going to talk about two techniques: &lt;strong&gt;bootstrap aggregated trees&lt;/strong&gt; and &lt;strong&gt;random forests&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;Bootstrap aggregated trees, or bagging trees in short, withdraw several random samples from the dataset with replacement, and train a decision tree on each sample. When given a new dataset, bagging trees calculate the predictions by averaging the results from each bootstrapped decision tree. &lt;/p&gt;
 &lt;p&gt;Random forests also build various decision trees on bootstrapped resamples from the original dataset, but differently than bagged trees, random forests only consider a subset of the features at each iteration. With bagging, the decision trees in the aggregation tend to be strongly correlated to each other since each tree includes all of the original features. The selection of features at random (called the &lt;strong&gt;random subspace method&lt;/strong&gt;) in random forests counters the correlation between trees, resulting in an overall model that performs better on unseen data. &lt;/p&gt;
-&lt;h3&gt;Hyperparameters of ensemble methods&lt;/h3&gt;
+&lt;h3&gt;Hyperparameters of Bagging Trees and Random Forests&lt;/h3&gt;
 &lt;hr&gt;
 &lt;p&gt;The hyperparameters of bagging trees and random forests are exactly the same as the hyperparameters of decision trees, with a few additions.&lt;/p&gt;
 &lt;ul&gt;
