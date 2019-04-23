@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <title>Decision Trees and their Hyperparameters</title>
+ <title>Decision Trees, Ensembles of Trees and their Hyperparameters</title>
  <!-- Latest compiled and minified CSS -->
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
  <div class="container">
-  <h1><a href=".">dunyaoguz.github.io</a></h1>
+  <h1><a href="https://dunyaoguz.github.io/my-blog">dunyaoguz.github.io</a></h1>
  </div>
 </head>
 <body>
  <div class="container">
 <div class="row">
  <div class="col-md-8">
-  <h3>Decision Trees and their Hyperparameters</h3>
+  <h3>Decision Trees, Ensembles of Trees and their Hyperparameters</h3>
   <label>2019-04-21</label>
-  <p>Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy. </p>
+  <p></s></p>
+<p>Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. </p>
+<p>That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy. </p>
 <h3>Decision Tree Basics</h3>
 <hr>
 <p>Decision trees are essentially a bunch of <strong>if-then-else</strong> rules stacked on top of each other. Here is a silly example:</p>
-<h3><center> Question: Should I write this blog post? </center></h3>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">HTML</span>
-<span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;decision_tree.png&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
-</pre></div>
-
-
+<h4><center> Question: Should I write this blog post? </center></h4>
 <p><img alt="png" src="images/CART_3_0.png"></p>
 <ul>
 <li>"<em>Do I understand the concept?</em>" is the <strong>root node</strong>. </li>
@@ -36,14 +33,14 @@
 <p>The decision tree algorithm operates by coming up with rules and partitioning the data accordingly at each node in a <strong>sequential</strong> manner. But how does the algorithm figure out the logical order of rules? In the above case, how can it know that my understanding of the concept is the number one question that must be answered yes, before any other thing such as whether or not there is coffee?</p>
 <p>Answer: with the help of some good old math! Decision trees are built in a top-down fashion through finding the attribute that maximizes something called <strong>information gain</strong> at each split. The idea is that, the higher the information gain, the higher the importance of the attribute in determining the outcome/target variable. Decision trees are often called a <strong>greedy</strong> algorithm since they find the best partition each individual step, rather than optimizing for a global tree structure that will deliver the best prediction.</p>
 <p>The formula for information gain is as follows:</p>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
 <p>$$
 \begin{eqnarray<em>}
 \text{Information Gain} &amp;=&amp; E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) 
 \end{eqnarray</em>}
 $$</p>
 <p>This can look intimidating at first but it's actually quite simple. The function E() is something called <strong>entropy</strong>. To compute information gain, we simply deduct the weighted sum of the entropies of the children nodes from the entropy of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete. </p>
-<h4>Ok... but... WTF is entropy?</h4>
-<hr>
 <p>Entropy measures the amount of unpredictability in a random variable. In practical terms, it is a measure of <strong>impurity</strong> of an attribute. If the attribute in question is composed of a single class, for example, all yes's or all no's, then that attribute is considered <strong>pure</strong> and entropy takes on a value of 0. If the classes are equally distributed, for example, 50% yes's and 50% no's, entropy takes on a value of 1. </p>
 <p>Here is the formula for entropy:</p>
 <p>$$
@@ -52,24 +49,20 @@ $$</p>
 \end{eqnarray</em>}
 $$</p>
 <p>Entropy and information gain are used interchangeably with something called <strong>gini index</strong>, a slightly different measure of node impurity. They yield very similar results. </p>
-<p>To better understand how decision trees work, let's manually rebuild one.  </p>
+<p>To better understand how decision trees work, let's manually rebuild one. </p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
-<span class="n">blog_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
-                                                       <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;am_i_tired&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> 
-                                         <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> 
-                                              <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;write_blog&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
-                                         <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">]</span>
+<span class="n">blog_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;am_i_tired&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;write_blog&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">]</span>
                          <span class="p">})</span>
 </pre></div>
 
 
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn_pandas</span> <span class="kn">import</span> <span class="n">DataFrameMapper</span><span class="p">,</span> <span class="n">CategoricalImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn_pandas</span> <span class="kn">import</span> <span class="n">DataFrameMapper</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span><span class="p">,</span> <span class="n">LabelBinarizer</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
@@ -85,7 +78,6 @@ $$</p>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">blog_post</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">blog_post</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">]</span>
-
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 </pre></div>
 
@@ -128,7 +120,7 @@ $$</p>
     <span class="n">class_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Don</span><span class="se">\&#39;</span><span class="s1">t write&#39;</span><span class="p">,</span> <span class="s1">&#39;Write&#39;</span><span class="p">])</span>
 
 <span class="n">graph</span> <span class="o">=</span> <span class="n">pydotplus</span><span class="o">.</span><span class="n">graph_from_dot_data</span><span class="p">(</span><span class="n">dot_data</span><span class="p">)</span>  
-<span class="n">Image</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">create_png</span><span class="p">(),</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">create_png</span><span class="p">(),</span> <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 
 
@@ -304,21 +296,22 @@ Information gain at the second internal node:
 
 
 <p>Now, <code>is_there_coffee</code> has the highest information gain because the other two variables no longer impact the outcome. If <code>is_there_coffee</code> is no, the target variable is <code>don't write</code>. If <code>is_there_coffee</code> is yes, the target variable is <code>write</code>. Since there is no way to further partition the tree at this point, our decision tree is complete.</p>
+<p>This example illustrated how decision trees work with a binary classification problem, but the principles and concepts shown here apply to decision tree regressors as well. </p>
 <h3>Hyperparameters of Decision Trees</h3>
 <hr>
 <p>Now that we understand how decision trees work, let's talk about their <strong>hyperparameters</strong>.</p>
 <p>In machine learning, <strong>hyperparameters</strong> are built in model configurations whose values are specified before the learning process begins. They are independent from the data on which the model is fit and can be <em>tuned</em> as desired. </p>
-<p>Hyperparameters can dramatically change the performance of a model, and finding the combination of hyperparameters that yield the best performance is an integral component of building a machine learning model. </p>
+<p>Hyperparameters can dramatically change the performance of a model, and finding the combination of hyperparameters that yield the best performance is a common component of machine learning workflows. </p>
 <p>Let's examine the hyperparameters available in decision trees.</p>
 <ul>
 <li>
-<p><code>criterion</code>: Measure of impurity that will be used to calculate information gain in building the tree. Options = [gini, entropy]. Default = gini.</p>
+<p><code>criterion</code>: Measure of impurity that will be used to partition the data. Options = [gini, entropy]. Default = gini.</p>
 </li>
 <li>
-<p><code>splitter</code>: The strategy used to split the decision tree at each node. The default option 'best' computes information gain as explained above for each feature and partitions the data where information gain is maximized. If splitter is set to random, a random value is partitioned at each node. Options = [best, random]. Default = best.</p>
+<p><code>splitter</code>: The strategy used to split the decision tree at each node. If this is set to random, a random value is partitioned at each node instead of the attribute that yields the highest information gain or gini impurity. Options = [best, random]. Default = best.</p>
 </li>
 <li>
-<p><code>max_depth</code>: The maximum number of nodes in a decision tree. Unless max depth is specified, decision tree will automatically extend until all leaf nodes are pure or contain less than <code>min_samples_split</code> samples. Options = [None, int]. Default = None.</p>
+<p><code>max_depth</code>: The maximum length of the longest path from the root node to a leaf node. Unless max depth is specified, decision tree will automatically extend until all leaf nodes are pure or contain less than <code>min_samples_split</code> samples. Options = [None, int]. Default = None.</p>
 </li>
 <li>
 <p><code>min_samples_split</code>: The minimum number of samples required to partition a node. If we had set <code>min_samples_split</code> to 3 when we instantiated the model above, the data would not be partitioned at <code>is_there_coffee</code> since only 2 samples remained at that node. Options = [int, float]. Default = 2.</p>
@@ -349,13 +342,13 @@ Information gain at the second internal node:
 <p><code>n_estimators</code>: The number of trees in the ensemble. Options = [int]. Default = 10. (The default option for Random Forest will change to 100 in the new version of sklearn.)</p>
 </li>
 <li>
-<p><code>bootstrap</code>: Whether samples are drawn with or without replacement. Options = [True, False]. Default = True. Don't change the default option for this argument as we should always sample with replacement in bagging and random forest. Otherwise, we'd be using the whole dataset and not benefiting from the reduction in variance introduced by bootstrapping.</p>
+<p><code>bootstrap</code>: Whether samples are drawn with replacement. Options = [True, False]. Default = True. This argument should never be set to False as drawing samples without replacement would be equivalent to duplicating the original dataset.</p>
 </li>
 <li>
-<p><code>n_jobs</code>: The number of processors to run while training the model and computing predictions from it. If set to 1, no parallel computing code is used. If set to -1, all CPUs are used. If set to -2, all available CPUs minus 1 are used. Options = [None, int]. Default = None.</p>
+<p><code>n_jobs</code>: The number of processors to run while training the model and computing predictions from it. If set to 1, no parallel computing code is used. If set to -1, all CPUs are used. Options = [None, int]. Default = None.</p>
 </li>
 <li>
-<p><code>oob_score</code>: On average, each bootstrapped sample uses about 2/3 of the observations. The remaining 1/3 of the observations not used to fit a given bootstrapped tree are referred to as the out-of-bag (OOB) observations. If set to true, OOB observations get treated as test data and used to score the performance each tree. Options = [True, False]. Default = False.</p>
+<p><code>oob_score</code>: On average, each bootstrapped sample uses about 2/3 of the observations. The remaining 1/3 of the observations not used to fit a given bootstrapped tree are referred to as the out-of-bag (OOB) observations. If this argument is set to true, OOB observations are used to score the performance each tree in the ensemble. Options = [True, False]. Default = False.</p>
 </li>
 <li>
 <p><code>verbose</code>: If set to true, the output for each decision tree in the ensemble gets printed. Options = [True, False]. Default = False.</p>
