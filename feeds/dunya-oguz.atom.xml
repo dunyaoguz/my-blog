@@ -335,7 +335,7 @@ Information gain at the second internal node:
 &lt;p&gt;&lt;code&gt;n_jobs&lt;/code&gt;: The number of processors to run while training the model and computing predictions from it. If set to 1, no parallel computing code is used. If set to -1, all CPUs are used. Options = [None, int]. Default = None.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;code&gt;oob_score&lt;/code&gt;: On average, each bootstrapped sample uses about 2/3 of the observations. The remaining 1/3 of the observations not used to fit a given bootstrapped tree are referred to as the out-of-bag (OOB) observations. If this argument is set to true, OOB observations are used to score the performance each tree in the ensemble. Options = [True, False]. Default = False.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;oob_score&lt;/code&gt;: On average, each bootstrapped sample uses about 2/3 of the observations. The remaining 1/3 of the observations not used to fit a given bootstrapped tree are referred to as the out-of-bag (OOB) observations. If this argument is set to true, OOB observations are used to score the performance of each tree in the ensemble. Options = [True, False]. Default = False.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;code&gt;verbose&lt;/code&gt;: If set to true, the output for each decision tree in the ensemble gets printed. Options = [True, False]. Default = False.&lt;/p&gt;
