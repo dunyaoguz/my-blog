@@ -22,7 +22,7 @@
 &lt;p&gt;The formula for information gain is as follows:&lt;/p&gt;
 &lt;script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async&gt;&lt;/script&gt;
 
-&lt;p&gt;$$ \begin{eqnarray&lt;em&gt;} \text{Information Gain} &amp;amp;=&amp;amp; E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) \end{eqnarray&lt;/em&gt;} $$&lt;/p&gt;
+&lt;p&gt;$$ \text{Information Gain} &amp;amp;=&amp;amp; E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) $$&lt;/p&gt;
 &lt;script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async&gt;&lt;/script&gt;
 
 &lt;p&gt;This can look intimidating at first but it's actually quite simple. The function E() is something called &lt;strong&gt;entropy&lt;/strong&gt;. To compute information gain, we simply deduct the weighted sum of the entropies of the children nodes from the entropy of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete. &lt;/p&gt;
