@@ -33,11 +33,7 @@
 <p>The decision tree algorithm operates by coming up with rules and partitioning the data accordingly at each node in a <strong>sequential</strong> manner. But how does the algorithm figure out the logical order of rules? In the above case, how can it know that my understanding of the concept is the number one question that must be answered yes, before any other thing such as whether or not there is coffee?</p>
 <p>Answer: with the help of some good old math! Decision trees are built in a top-down fashion through finding the attribute that maximizes something called <strong>information gain</strong> at each split. The idea is that, the higher the information gain, the higher the importance of the attribute in determining the outcome/target variable. Decision trees are often called a <strong>greedy</strong> algorithm since they find the best partition each individual step, rather than optimizing for a global tree structure that will deliver the best prediction.</p>
 <p>The formula for information gain is as follows:</p>
-<p>$$
-\begin{eqnarray<em>}
-\text{Information Gain} &amp;=&amp; E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) 
-\end{eqnarray</em>}
-$$</p>
+<p>$$\begin{eqnarray<em>}\text{Information Gain} &amp;=&amp; E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j)\end{eqnarray</em>}$$</p>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <p>This can look intimidating at first but it's actually quite simple. The function E() is something called <strong>entropy</strong>. To compute information gain, we simply deduct the weighted sum of the entropies of the children nodes from the entropy of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete. </p>
