@@ -13,15 +13,19 @@
 <div class="row">
  <div class="col-md-8">
   <h3>Decision Trees, Ensembles of Trees and their Hyperparameters</h3>
-  <label>2019-04-21</label>
+  <label>2019-04-22</label>
   <p></s></p>
 <p>Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. </p>
 <p>That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy. </p>
 <h3>Decision Tree Basics</h3>
 <hr>
 <p>Decision trees are essentially a bunch of <strong>if-then-else</strong> rules stacked on top of each other. Here is a silly example:</p>
+<p></s></p>
 <h4><center> Question: Should I write this blog post? </center></h4>
-<p><img alt="png" src="images/CART_3_0.png"></p>
+<p></s>
+</s></p>
+<p><img src="images/CART_3_0.png" alt="dt" width="700"/></p>
+<p></s></p>
 <ul>
 <li>"<em>Do I understand the concept?</em>" is the <strong>root node</strong>. </li>
 <li>"<em>Am I tired?</em>" and "<em>Is there coffee?</em>" are <strong>internal nodes</strong>. </li>
@@ -35,41 +39,24 @@
 <p>The formula for information gain is as follows:</p>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>MathJax example</title>
-  <script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async>
-</script>
-</head>
-<body>
-<p>
-  $$ \Information Gain = E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) $$
-</p>
-</body>
-</html>
-
-<p>$$ \Information Gain = E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) $$</p>
+<p>$$ Information</br>Gain = E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) $$</p>
 <p>This can look intimidating at first but it's actually quite simple. The function E() is something called <strong>entropy</strong>. To compute information gain, we simply deduct the weighted sum of the entropies of the children nodes from the entropy of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete. </p>
 <p>Entropy measures the amount of unpredictability in a random variable. In practical terms, it is a measure of <strong>impurity</strong> of an attribute. If the attribute in question is composed of a single class, for example, all yes's or all no's, then that attribute is considered <strong>pure</strong> and entropy takes on a value of 0. If the classes are equally distributed, for example, 50% yes's and 50% no's, entropy takes on a value of 1. </p>
 <p>Here is the formula for entropy:</p>
-<p>$$
-\begin{eqnarray<em>}
-\text{Entropy} &amp;=&amp; \sum_{i=1}^{classes} - {P_i} * {log_2}{P_i}
-\end{eqnarray</em>}
-$$</p>
+<p>$$ Entropy = \sum_{i=1}^{classes} - {P_i} * {log_2}{P_i} $$</p>
 <p>Entropy and information gain are used interchangeably with something called <strong>gini index</strong>, a slightly different measure of node impurity. They yield very similar results. </p>
 <p>To better understand how decision trees work, let's manually rebuild one. </p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
-<span class="n">blog_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;am_i_tired&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;write_blog&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">]</span>
+<span class="n">blog_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+                                                       <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;am_i_tired&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> 
+                                         <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> 
+                                              <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;write_blog&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
+                                         <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">]</span>
                          <span class="p">})</span>
 </pre></div>
 
@@ -346,7 +333,7 @@ Information gain at the second internal node:
 <hr>
 <p>Decision trees tend to suffer from overfitting and perform poorly on unseen data. Tree based ensemble methods combine several decision trees in order to improve the predictive performance of stand alone decision trees. Here, I'm going to talk about two techniques: <strong>bootstrap aggregated trees</strong> and <strong>random forests</strong>.</p>
 <p>Bootstrap aggregated trees, or bagging trees in short, withdraw several random samples from the dataset with replacement, and train a decision tree on each sample. When given a new dataset, bagging trees calculate the predictions by averaging the results from each bootstrapped decision tree. </p>
-<p>Random forests also build various decision trees on bootstrapped resamples from the original dataset, but differently than bagged trees, random forests only consider a subset of the features at each iteration. With bagging, the decision trees in the aggregation tend to be strongly correlated to each other since each tree includes all of the original features. The selection of features at random (called the <strong>random subspace method</strong>) in random forests counters the correlation between trees, resulting in an overall model that performs better on unseen data. It is typical to use $\sqrt{p}$ features in each split in a Random Forest Classifier, and $p/3$ features in a Random Forest Regressor.</p>
+<p>Random forests also build various decision trees on bootstrapped resamples from the original dataset, but differently than bagged trees, random forests only consider a subset of the features at each iteration. With bagging, the decision trees in the aggregation tend to be strongly correlated to each other since each tree includes all of the original features. The selection of features at random (called the <strong>random subspace method</strong>) in random forests counters the correlation between trees, resulting in an overall model that performs better on unseen data. It is typical to use sqrt(p) features in each split in a Random Forest Classifier, and p/3 features in a Random Forest Regressor.</p>
 <h3>Hyperparameters of ensemble methods</h3>
 <hr>
 <p>The hyperparameters of bagging trees and random forests are exactly the same as the hyperparameters of decision trees, with a few additions.</p>
