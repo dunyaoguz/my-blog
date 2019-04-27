@@ -1,13 +1,13 @@
 Title: Matplotlib Hacks
-Date: 2019-03-30 19:00
+Date: March 30th, 2019
 Tags: python
 Slug: matplotlib_hacks
+
+</s>
 
 New to python and struggling to understand Matplotlib? Actually scratch the first part. Struggling to understand Matplotlib *period*? You are **NOT** alone my friend. 
 
 Let's get some things straight. Matplotlib's design choices are ... let's just say ... not the most straightforward. Weird. Truly incomprehensible sometimes. It is also poorly documented and at times inconsistent. There's people out there who have been working with Python for years  and still can't wrap their heads around Matplotlib. 
-
-Starting to learn Matplotlib was nothing short of a horror story for me. I had a lot of trouble understanding how it worked and got frustrated at myself for it, which was especially discouraging since I was a beginner in data analytics and python programming at the time. It wasn't after completing data visualisation courses on Udacity and DataCamp and most recently General Assembly's Data Science Immersive (DSI) where I'm currently enrolled that I had the "ah-ha- I think I finally know what's going on!" moment. I wish there was someone to tell me that I wasn't a dummy doomed for failure in the data world for having a hard time with Matplotlib in those early days.
 
 In my DSI cohort at General Assembly, there seems to be two camps of people: those who hate Matplotlib and have pretty much given up on it (everyone except me) vs those who think it is not so bad (me). I've strangely come to appreciate some of Matplotlib's functionalities and found myself reaching back to it again and again even though I now have sexy new libraries like Altair under my belt. In this blog post, I am going to give some tips, tricks and general information that has been useful for me in my data viz journey with Matplotlib. I hope I'll be able to convert some of my hardline anti-Matplotlib class mates to the "matplotlib is not so bad! let's love and appreciate it!" camp. After all, matplotlib is the foundation upon which the bulk of python's data visualisation libraries are built. 
 
@@ -23,6 +23,7 @@ We can all probably agree that Matplotlib's default charting style is really ugl
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from IPython.display import HTML
 
 # spin up a random dataframe of size 100
 np.random.seed(13)
@@ -30,27 +31,13 @@ X = np.random.normal(50, 20, size=100)
 Y = 2 * X + np.random.randint(25)
 Z = np.random.choice(['pink', 'blue', 'green', 'red'], p=[0.1, 0.3, 0.4, 0.2], size=100)
 df = pd.DataFrame({'X': X, 'Y': Y, 'Z': Z})
-df.head()
+HTML(df.head().to_html(classes="table table-stripped table-hover"))
 ```
 
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
+<table border="1" class="dataframe table table-stripped table-hover">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -92,7 +79,6 @@ df.head()
     </tr>
   </tbody>
 </table>
-</div>
 
 
 
