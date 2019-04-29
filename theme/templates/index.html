@@ -5,8 +5,8 @@
  <div class="col-md-8">
   {% for article in articles %}
    <h3><a href="{{ SITEURL }}/{{ article.slug }}.html">{{ article.title }}</a></h3>
-   <label>{{ article.date.strftime('%Y-%m-%d') }}</label>
-   {{ article.content|truncate(500) }}
+   <label>{{ article.date.strftime('%d %B %Y') }}</label>
+   {{ article.content|truncate(200) }}
   {% else %}
    No posts yet!
   {% endfor %}
