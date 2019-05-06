@@ -2,9 +2,9 @@
 {% block title %}{{ article.title }}{% endblock %}
 {% block content %}
 <div class="row">
- <div class="col-md-8">
+ <div class="col-md-9">
   <h3>{{ article.title }}</h3>
-  <label>{{ article.date.strftime('%d %B %Y') }}</label>
+  <b><label>{{ article.date.strftime('%d %B %Y') }}</label></b>
   {{ article.content }}
  </div>
 </div>

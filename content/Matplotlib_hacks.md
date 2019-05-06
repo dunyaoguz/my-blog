@@ -3,8 +3,6 @@ Date: March 30th, 2019
 Tags: python
 Slug: matplotlib_hacks
 
-</s>
-
 New to python and struggling to understand Matplotlib? Actually scratch the first part. Struggling to understand Matplotlib *period*? You are **NOT** alone my friend. 
 
 Let's get some things straight. Matplotlib's design choices are ... let's just say ... not the most straightforward. Weird. Truly incomprehensible sometimes. It is also poorly documented and at times inconsistent. There's people out there who have been working with Python for years  and still can't wrap their heads around Matplotlib. 
@@ -18,8 +16,7 @@ In my DSI cohort at General Assembly, there seems to be two camps of people: tho
 
 We can all probably agree that Matplotlib's default charting style is really ugly. Let's see how we can make simple Matplotlib charts a bit easier on the eyes with a few simple lines of code. 
 
-
-```python
+<pre class="prettyprint">
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -31,13 +28,13 @@ X = np.random.normal(50, 20, size=100)
 Y = 2 * X + np.random.randint(25)
 Z = np.random.choice(['pink', 'blue', 'green', 'red'], p=[0.1, 0.3, 0.4, 0.2], size=100)
 df = pd.DataFrame({'X': X, 'Y': Y, 'Z': Z})
-HTML(df.head().to_html(classes="table table-stripped table-hover"))
-```
+HTML(df.head().to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
 
-<table border="1" class="dataframe table table-stripped table-hover">
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -87,9 +84,9 @@ HTML(df.head().to_html(classes="table table-stripped table-hover"))
 Let's create a simple scatter plot of X against Y.
 
 
-```python
+<pre class="prettyprint">
 plt.scatter(X, Y)
-```
+</pre>
 
 
 
@@ -105,9 +102,10 @@ plt.scatter(X, Y)
 Firstly, we can disable the text output of Matplotlib by placing a `;` at the end of the code. 
 
 
-```python
+
+<pre class="prettyprint">
 plt.scatter(X, Y);
-```
+</pre>
 
 
 ![png](images/Matplotlib_hacks_10_0.png)
@@ -116,10 +114,10 @@ plt.scatter(X, Y);
 The resolution of this chart is not the most optimal. We can improve it by running the following Ipython magic command, which improves the definition of image outputs. I usually do this at the beginning of my notebook, right below my imports so all my charts look nice and sharp. `%config InlineBackend.figure_format = 'retina'` works as well.
 
 
-```python
+<pre class="prettyprint">
 %config InlineBackend.figure_format = 'svg'
 plt.scatter(X, Y);
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_12_0.svg)
@@ -128,10 +126,10 @@ plt.scatter(X, Y);
 See? Much better! But, I am not sure if I am a fan of the bland white background. Let's put some grid lines in there.
 
 
-```python
+<pre class="prettyprint">
 plt.scatter(X, Y);
 plt.grid(color='gray', linewidth=0.4)
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_14_0.svg)
@@ -140,12 +138,12 @@ plt.grid(color='gray', linewidth=0.4)
 We can get more granular with our grid lines if we want to by turning on minor ticks, and then customizing the minor grid by setting the `which` argument to `minor` inside `plt.grid()`. 
 
 
-```python
+<pre class="prettyprint">
 plt.scatter(X, Y);
 plt.grid(color='gray', linewidth=0.4)
 plt.minorticks_on()
 plt.grid(color='lightgray', linestyle=':', linewidth=0.2, which='minor')
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_16_0.svg)
@@ -154,12 +152,12 @@ plt.grid(color='lightgray', linestyle=':', linewidth=0.2, which='minor')
 You may also notice that it's hard to separate more crowded data points from sparse data points. The `alpha` argument allows us to adjust the transparency of each point so overlapping ones can be distinguished. An `alpha` of 1/2 means an opaque point will appear only if there is at least 2 points that fall into that region. Decreasing the alpha will increase the threshold for opaque points.
 
 
-```python
+<pre class="prettyprint">
 plt.scatter(X, Y, alpha=1/2);
 plt.grid(color='gray', linewidth=0.4)
 plt.minorticks_on()
 plt.grid(color='lightgray', linestyle=':', linewidth=0.2, which='minor')
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_18_0.svg)
@@ -168,15 +166,11 @@ plt.grid(color='lightgray', linestyle=':', linewidth=0.2, which='minor')
 Next, let's spin up a bar chart to demonstrate how changing the default colors can help us achieve a more visually appealing aesthetic. 
 
 
-```python
+<pre class="prettyprint">
 # group df by each color, get sum of the X column
 s = df.groupby('Z')[['X']].sum()
-```
-
-
-```python
 plt.bar(s.index, s['X'], color=['blue','green','pink','red']);
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_21_0.svg)
@@ -185,9 +179,9 @@ plt.bar(s.index, s['X'], color=['blue','green','pink','red']);
 Personally, I am not thrilled with these colors. Thankfully, Matplotlib has a wide range of color options we can use. The full list can be viewed [here](https://matplotlib.org/gallery/color/named_colors.html). I also usually like to add an edgecolor to my charts make them look a bit neater.
 
 
-```python
+<pre class="prettyprint">
 plt.bar(s.index, s['X'], color=['deepskyblue','yellowgreen','hotpink','tomato'], edgecolor='black');
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_23_0.svg)
@@ -196,12 +190,9 @@ plt.bar(s.index, s['X'], color=['deepskyblue','yellowgreen','hotpink','tomato'],
 Matplotlib also has alternative styling options we can use if we want to change the look of the figure. Here is a list of all the available styles. 
 
 
-```python
+<pre class="prettyprint">
 plt.style.available
-```
-
-
-
+</pre>
 
     ['seaborn-dark',
      'seaborn-darkgrid',
@@ -233,16 +224,17 @@ plt.style.available
 
 
 
-```python
+<pre class="prettyprint">
 # run this code to set a style
 plt.style.use('fivethirtyeight') 
-```
+</pre>
 
 
-```python
+<pre class="prettyprint">
 plt.figure(figsize= (4, 4))
 plt.bar(s.index, s['X'], color=['deepskyblue','yellowgreen','hotpink','tomato'], edgecolor='black');
-```
+</pre>
+
 
 
 ![svg](images/Matplotlib_hacks_27_0.svg)
@@ -275,7 +267,7 @@ By running `fig, ax = plt.subplots()` you are essentially creating a matplotlib 
 With subplots, we can place multiple charts on the same figure for ease of viewing. It's especially useful when we are faceting charts by a categorical variable. Here is an example. 
 
 
-```python
+<pre class="prettyprint">
 # look at X vs Y, faceted by the Z column
 
  # let's try a different style
@@ -288,7 +280,8 @@ for i, color in enumerate(df.Z.unique()):
     filtered_df = df[df.Z == color]
     ax[i].scatter(filtered_df.X, filtered_df.Y, c=colors[i])
     ax[i].set(title=color)
-```
+</pre>
+
 
 
 ![svg](images/Matplotlib_hacks_34_0.svg)
@@ -299,7 +292,7 @@ What's happening here? I created my subplot in the first line. I set it to have 
 One thing I don't like about this figure is that the X and Y ticks don't match, so it's hard to visually spot the differences in the spread of different colors. Normally, we would want such information to be immediately noticeable for our readers. I'll specify xlim and ylim parameters inside the set method so all the subplots have the same X and Y ticks.
 
 
-```python
+<pre class="prettyprint">
 fig, ax = plt.subplots(1, 4, figsize=(9.5, 3))
 colors=['yellowgreen','tomato','deepskyblue','hotpink']
  
@@ -307,7 +300,7 @@ for i, color in enumerate(df.Z.unique()):
     filtered_df = df[df.Z == color]
     ax[i].set(title=color, xlim=(X.min()-10, X.max()+10), ylim=(Y.min()-10, Y.max()+10)) 
     ax[i].scatter(filtered_df.X, filtered_df.Y, c=colors[i])
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_36_0.svg)
@@ -323,18 +316,18 @@ We have created pretty charts and subplots but we haven't yet customized our plo
 To demonstrate this I am going to create a new column A and populate it based on the color in Z. My goal is to create a scatter plot of X vs A, in which the points will fall into clear cut groups based on what color they are. 
 
 
-```python
+<pre class="prettyprint">
 for size, color in zip([250, 80, 175, 30],['blue','green','pink','red']):    
     color_index = df[df.Z == color].index
     color_array = np.random.normal(size, 10, size = len(color_index))
     for i in range(len(color_index)):
         df.at[color_index[i], 'A'] = color_array[i]
-```
+</pre>
 
 Before going further, I need to reset the style to matplotlib's default because alternative styles can override the customizations we set.
 
 
-```python
+<pre class="prettyprint">
 # reset style to default matplotlib
 import matplotlib as mpl
 plt.rcParams.update(mpl.rcParamsDefault) 
@@ -352,7 +345,8 @@ plt.scatter(df[df['Z'] == 'pink'].X, df[df['Z'] == 'pink'].A
 
 plt.scatter(df[df['Z'] == 'red'].X, df[df['Z'] == 'red'].A
             , color='tomato');
-```
+</pre>
+
 
 
 ![svg](images/Matplotlib_hacks_42_0.svg)
@@ -361,7 +355,7 @@ plt.scatter(df[df['Z'] == 'red'].X, df[df['Z'] == 'red'].A
 Now let's name our plot and axes so our audience can understand what this chart is displaying.
 
 
-```python
+<pre class="prettyprint">
 plt.figure(figsize= (5, 3))
 
 plt.scatter(df[df['Z'] == 'green'].X, df[df['Z'] == 'green'].A
@@ -379,7 +373,8 @@ plt.scatter(df[df['Z'] == 'red'].X, df[df['Z'] == 'red'].A
 plt.title('X vs A based on color group');
 plt.xlabel('X values');
 plt.ylabel('A values');
-```
+</pre>
+
 
 
 ![svg](images/Matplotlib_hacks_44_0.svg)
@@ -388,7 +383,7 @@ plt.ylabel('A values');
 Not sure I like the font, size and location of the title and labels. I can play around with these by changing the fontname, fontsize and loc arguments. I could also change the color if I wanted to with the color argument, but I like black for titles and labels.
 
 
-```python
+<pre class="prettyprint">
 plt.figure(figsize= (5, 3))
 
 plt.scatter(df[df['Z'] == 'green'].X, df[df['Z'] == 'green'].A
@@ -407,7 +402,7 @@ plt.title('X vs A based on color group', fontname='serif'
           , fontsize=15, loc='left');
 plt.xlabel('X values', fontname='serif', fontsize=11);
 plt.ylabel('A values', fontname='serif', fontsize=11);
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_46_0.svg)
@@ -416,7 +411,7 @@ plt.ylabel('A values', fontname='serif', fontsize=11);
 Finally, I want to change the markers of the scatter plots for each color and put an appropriate legend.
 
 
-```python
+<pre class="prettyprint">
 plt.figure(figsize= (5, 3))
 
 plt.scatter(df[df['Z'] == 'green'].X, df[df['Z'] == 'green'].A
@@ -437,7 +432,8 @@ plt.title('X vs A based on color group', fontname='serif'
           , fontsize=15, loc='left');
 plt.xlabel('X values', fontname='serif', fontsize=11);
 plt.ylabel('A values', fontname='serif', fontsize=11);
-```
+</pre>
+
 
 
 ![svg](images/Matplotlib_hacks_48_0.svg)
@@ -461,12 +457,9 @@ To change the size of a chart you have to run `plt.figure(figsize=(width, height
 I'm going to demonstrate this with a time series chart, so I'm adding a column of random dates to the dataframe.
 
 
-```python
+<pre class="prettyprint">
 df['date'] = pd.date_range('20180101','20181230')[0:100]
-```
 
-
-```python
 # set new style
 plt.style.use('bmh')  
 
@@ -476,7 +469,7 @@ register_matplotlib_converters()
 
 plt.plot(df['date'], df['X']);
 plt.figure(figsize= (10, 2.5));
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_54_0.svg)
@@ -489,7 +482,7 @@ plt.figure(figsize= (10, 2.5));
 Yikes. As can be seen, the size of the plot was not set to 10 inches wide and 2.5 inches tall when we ran `plt.figure()` after `plt.plot()`. Instead of changing figure size, the `plt.figure()` function returned the text output we see below the chart. In other bad news, the xtick labels are overlapping and the frequency with which matplotlib has decided to show the dates doesn't make sense. Let's fix these. It would be nice, for example, if we had x tick labels for the Monday of every week. 
 
 
-```python
+<pre class="prettyprint">
 plt.figure(figsize= (10, 2.5))
 plt.plot(df['date'], df['X']);
 
@@ -503,7 +496,7 @@ import matplotlib.dates as mdates
 # get current axis
 ax = plt.gca() 
 ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=0, interval=1)) # tick on mondays every week
-```
+</pre>
 
 
 ![svg](images/Matplotlib_hacks_56_0.svg)

@@ -3,8 +3,6 @@ Date: 2019-04-13 17:00
 Tags: python
 Slug: dataframemapper
 
-</s>
-
 Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. 
 
 It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. 
@@ -37,7 +35,7 @@ DataFrameMapper maps preprocessing tasks to each column of a given dataset via a
 Let's see how DataFrameMapper works with an example. First, `pip install sklearn-pandas`, and import it onto your workspace as follows.
 
 
-```python
+<pre class="prettyprint">
 #!pip install sklearn-pandas
 from sklearn_pandas import DataFrameMapper
 
@@ -47,12 +45,12 @@ import pandas as pd
 import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
-```
+</pre>
 
 I'm going to spin up a dataframe of my favorite tv shows, including information on their production cost (made up), number of seasons, mainstream popularity score out of 10 (made up), genre and whether or not they are on netflix.
 
 
-```python
+<pre class="prettyprint">
 my_favorite_shows = {
     'name': ['sense_8', 
              'handmaidens_tale', 
@@ -70,19 +68,19 @@ my_favorite_shows = {
              'fauda', 
              'jessica_jones'],
     'cost': [None, 
-             140_000_000, 
-             80_000_000, 
-             170_000_000, 
-             205_000_000, 
-             600_000_000, 
-             300_000_000, 
+             140000000, 
+             80000000, 
+             170000000, 
+             205000000, 
+             600000000, 
+             300000000, 
              None, 
-             400_000_000, 
-             500_000_000, 
-             112_000_000, 
-             380_000_000, 
-             10_000_000, 
-             75_000_000, 
+             400000000, 
+             500000000, 
+             112000000, 
+             380000000, 
+             10000000, 
+             75000000, 
              None],
     'seasons': [2, None, 3, 1, 5, 9, 7, 2, 3, 5, 6, 5, 2, None, 2],
     'popularity': [5.8, 6, 5.7, 7.3, 6.5, 9.8, 8.4, 
@@ -107,9 +105,8 @@ my_favorite_shows = {
 }
 
 my_favorite_shows = pd.DataFrame(my_favorite_shows)
-
-HTML(my_favorite_shows.head(10).to_html(classes="table table-stripped table-hover"))
-```
+HTML(my_favorite_shows.head(10).to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
@@ -229,24 +226,18 @@ Let's see how preprocessing this dataset would look like *without* using DataFra
 Splitting our dataset into two - data with which we will train our model and data with which we will test the performance of our model - is the first thing we need to do.
 
 
-```python
+<pre class="prettyprint">
 from sklearn.model_selection import train_test_split
-
 X = my_favorite_shows.drop(columns=['name', 'popularity'], axis=1)
 y = my_favorite_shows['popularity']
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=13)
-```
-
-
-```python
-HTML(X_train.head(10).to_html(classes="table table-stripped table-hover"))
-```
+HTML(X_train.head(10).to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
 
-<table border="1" class="dataframe table table-stripped table-hover">
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -335,31 +326,31 @@ HTML(X_train.head(10).to_html(classes="table table-stripped table-hover"))
 Next, we need to get rid of all the nulls. I'll fill the null values in numerical columns with the median value for the respective column and the nulls in categorical columns with 'unknown'.
 
 
-```python
+<pre class="prettyprint">
 median_budget = X_train['cost'].quantile(0.5)
 median_season = X_train['seasons'].quantile(0.5)
 X_train['cost'] = X_train['cost'].fillna(median_budget)
 X_train['genre'] = X_train['genre'].fillna('unknown')
 X_train['seasons'] = X_train['seasons'].fillna(median_season)
 X_train['on_netflix'] = X_train['on_netflix'].fillna('unknown')
-```
+</pre>
 
 I need to transform the genre column to numeric values. A common way to do this is with the `LabelBinarizer` function from sklearn, which creates a column for each unique value in a category, and represents membership with 1s and 0s. (1 for members, 0 for non members)
 
 **IMPORTANT ADVICE**: Do NOT use the `get_dummies()` function from pandas to encode your categorical variables! Things will break apart and your model will not work if the categories in your test data does not match the categories in your training data, which is a **VERY** common occurance!
 
 
-```python
+<pre class="prettyprint">
 from sklearn.preprocessing import LabelBinarizer
 lb = LabelBinarizer()
 binarized = pd.DataFrame(lb.fit_transform(X_train['genre']), columns=list(lb.classes_))
-HTML(binarized.head(5).to_html(classes="table table-stripped table-hover"))
-```
+HTML(binarized.head(5).to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
 
-<table border="1" class="dataframe table table-stripped table-hover">
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -437,20 +428,15 @@ HTML(binarized.head(5).to_html(classes="table table-stripped table-hover"))
 I now have to add these label binarized columns to my X_train, and remove the original genre column.
 
 
-```python
+<pre class="prettyprint">
 X_train.drop(columns=['genre'], axis=1, inplace=True)
-```
-
-
-```python
 Z_train = pd.merge(X_train, binarized, how='left', on = X_train.index)
-HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover"))
-```
+HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
-
-<table border="1" class="dataframe table table-stripped table-hover">
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -552,15 +538,14 @@ HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover"))
 Since the index of X_train turned to a column (key_0) during the merge, I need to reset it back to it's original state.
 
 
-```python
+<pre class="prettyprint">
 Z_train.set_index('key_0', inplace=True)
-HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover"))
-```
+HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
-
-<table border="1" class="dataframe table table-stripped table-hover">
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -670,21 +655,20 @@ HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover"))
 I also need to encode the on_netflix column as numbers. 
 
 
-```python
+<pre class="prettyprint">
 Z_train['on_netflix'] = Z_train['on_netflix'].replace({'no': 0, 'yes': 2, 'unknown': 1})
-```
+</pre>
 
 The data is finally ready for modelling. Let's create a simple linear regression model and try to predict popularity scores.
 
 
-```python
+<pre class="prettyprint">
 from sklearn.linear_model import LinearRegression
-
 model = LinearRegression()
 model.fit(Z_train, y_train)
 train_score = model.score(Z_train, y_train)
 print(f'Train score: {train_score}')
-```
+</pre>
 
     Train score: 0.9791971116650907
 
@@ -694,36 +678,32 @@ Apparently, our simple linear regression model is able to predict ~98% of the va
 I now have go back and replicate everything I did on the training data on the test data in order to be able to pass it onto my model. 
 
 
-```python
+<pre class="prettyprint">
 X_test['cost'] = X_test['cost'].fillna(median_budget)
 X_test['genre'] = X_test['genre'].fillna('unknown')
 X_test['seasons'] = X_test['seasons'].fillna(median_season)
 X_test['on_netflix'] = X_test['on_netflix'].fillna('unknown')
 binarized = pd.DataFrame(lb.transform(X_test['genre']), columns=list(lb.classes_))
-```
-
-
-```python
 X_test.drop(columns=['genre'], axis=1, inplace=True)
 Z_test = pd.merge(X_test, binarized, how='left', on = X_test.index)
 Z_test['on_netflix'] = Z_test['on_netflix'].replace({'no': 0, 'yes': 2, 'unknown': 1})
 Z_test.set_index('key_0', inplace=True)
-```
+</pre>
 
 
-```python
+<pre class="prettyprint">
 test_score = model.score(Z_test, y_test)
 print(f'Test score: {test_score}')
-```
+</pre>
 
     Test score: 0.43538804012831567
 
 
 
-```python
+<pre class="prettyprint">
 print(f'Predicted scores: {list(model.predict(Z_test))}')
 print(f'Actual scores: {list(y_test)}')
-```
+</pre>
 
     Predicted scores: [6.937697253068383, 4.820338983050848, 6.25195791934541]
     Actual scores: [7.6, 2.3, 8.9]
@@ -734,13 +714,11 @@ As expected, the model was grossly overfit and the performance of the model on t
 Let's see how much more easily reproducible data preprocessing would be had we used DataFrameMapper.
 
 
-```python
+<pre class="prettyprint">
 from sklearn.impute import SimpleImputer
 from sklearn_pandas import CategoricalImputer
 from sklearn.preprocessing import LabelEncoder
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=13)
-
 mapper = DataFrameMapper([
     (['cost'], SimpleImputer(strategy='median')),
     (['seasons'], SimpleImputer(strategy='median')),
@@ -749,18 +727,14 @@ mapper = DataFrameMapper([
     ('on_netflix', [CategoricalImputer(strategy='constant', fill_value='unknown'),
                    LabelEncoder()])
 ], df_out=True)
-```
-
-
-```python
 Z_train = mapper.fit_transform(X_train)
-HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover"))
-```
+HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
 
-<table border="1" class="dataframe table table-stripped table-hover">
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -854,15 +828,15 @@ HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover"))
 
 
 
-```python
+<pre class="prettyprint">
 Z_test = mapper.transform(X_test)
-HTML(Z_test.head(3).to_html(classes="table table-stripped table-hover"))
-```
+HTML(Z_test.head(3).to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
 
-<table border="1" class="dataframe table table-stripped table-hover">
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -932,21 +906,16 @@ HTML(Z_test.head(3).to_html(classes="table table-stripped table-hover"))
 Let's pretend like we have to predict the popularity score of a new show, not included in our original dataset. Without DataFrameMapper, we would have to repeat the previous preprocessing steps for a third time. With DataFrameMapper, we can just pass the new data onto mapper.transform, and immediately get a prediction.
 
 
-```python
+<pre class="prettyprint">
 new_data = {'name': ['the_protector'],
             'cost': [5_000_000],
             'seasons': [1],
             'genre': ['science_fiction'],
             'on_netflix': ['yes']}
-
 new_data = pd.DataFrame(new_data)
-```
-
-
-```python
 new_Z = mapper.transform(new_data)
 print(f'Predicted popularity score: {round(float(model.predict(new_Z)), 3)}')
-```
+</pre>
 
     Predicted popularity score: 9.885
 

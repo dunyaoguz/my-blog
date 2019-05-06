@@ -3,8 +3,6 @@ Date: 2019-04-22
 Tags: python 
 Slug: decision-trees
 
-</s>
-
 Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. 
 
 That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy. 
@@ -56,9 +54,13 @@ Entropy and information gain are used interchangeably with something called **gi
 To better understand how decision trees work, let's manually rebuild one. 
 
 
-```python
+<pre class="prettyprint">
 import numpy as np
 import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn_pandas import DataFrameMapper
+from sklearn.preprocessing import LabelEncoder, LabelBinarizer
+from sklearn.model_selection import train_test_split
 
 blog_post = pd.DataFrame({'conceptual_understanding': ['No', 'No', 'No', 'No', 'Yes', 
                                                        'Yes', 'Yes', 'Yes', 'Yes', 'Yes'],
@@ -69,15 +71,6 @@ blog_post = pd.DataFrame({'conceptual_understanding': ['No', 'No', 'No', 'No', '
                           'write_blog': ['No', 'No', 'No', 'No', 'Yes', 
                                          'Yes', 'Yes', 'Yes', 'Yes', 'No']
                          })
-```
-
-
-```python
-from sklearn.tree import DecisionTreeClassifier
-from sklearn_pandas import DataFrameMapper
-from sklearn.preprocessing import LabelEncoder, LabelBinarizer
-from sklearn.model_selection import train_test_split
-
 # preprocessing the data
 mapper = DataFrameMapper([
     ('conceptual_understanding', LabelEncoder()),
@@ -85,22 +78,20 @@ mapper = DataFrameMapper([
     ('is_there_coffee', LabelEncoder()),
     ('write_blog', LabelEncoder())
 ], df_out=True)
-
 blog_post = mapper.fit_transform(blog_post)
-
 X = blog_post.iloc[:, :-1]
 y = blog_post['write_blog']
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, test_size=0.2)
-```
+</pre>
 
 Check out [my previous blog post](https://dunyaoguz.github.io/my-blog/dataframemapper.html) on DataFrameMapper for more information on how it works.
 
 
-```python
+<pre class="prettyprint">
 # instantiate the Decision Tree
 dt = DecisionTreeClassifier(criterion='entropy')
 dt.fit(X_train, y_train)
-```
+</pre>
 
 
 
@@ -115,9 +106,10 @@ dt.fit(X_train, y_train)
 
 
 
-```python
+<pre class="prettyprint">
 dt.score(X_test, y_test)
-```
+</pre>
+
 
 
 
@@ -129,7 +121,7 @@ dt.score(X_test, y_test)
 A perfect score! Our Decision Tree Classifier can predict whether I'm going to write a blog post or not with 100% accuracy. Let's see how the algorithm partitioned the data.
 
 
-```python
+<pre class="prettyprint">
 from IPython.display import Image  
 import pydotplus
 from sklearn import tree
@@ -144,7 +136,7 @@ dot_data = tree.export_graphviz(
 
 graph = pydotplus.graph_from_dot_data(dot_data)  
 Image(graph.create_png(), width=300)
-```
+</pre>
 
 
 
@@ -158,16 +150,16 @@ We see that the algorithm was able to produce the exact same order of rules I ca
 **Step one:** We have 100% of the train data (8 samples). Our train dataset includes 3 variables: `conceptual_understanding`, `am_i_tired` and `is_there_coffee`. 
 
 
-```python
+<pre class="prettyprint">
 train_data = X_train.merge(y_train, how='inner', on=X_train.index).set_index('key_0')
-
-HTML(train_data.head().to_html(classes="table table-stripped table-hover"))
-```
-
+HTML(train_data.head().to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
 
 
-<table border="1" class="dataframe table table-stripped table-hover">
+
+
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -226,7 +218,7 @@ HTML(train_data.head().to_html(classes="table table-stripped table-hover"))
 
 
 
-```python
+<pre class="prettyprint">
 # Define Entropy function.
 def entropy(y):
     y = list(y)
@@ -239,10 +231,7 @@ def entropy(y):
         # Perform the entropy formula
         entropy_sum.append(prob * np.log2(prob))
     return -sum(entropy_sum)
-```
 
-
-```python
 # Define Information Gain function.
 def information_gain(df, column):
     # Calculate parent_entropy
@@ -255,12 +244,12 @@ def information_gain(df, column):
     child_entropy_weighted_sum = child_0_entropy * child_0_count/len(df['write_blog']) + child_1_entropy * child_1_count/len(df['write_blog'])
     # Return information gain
     return parent_entropy - child_entropy_weighted_sum
-```
+</pre>
 
 Let's calculate the information gain for each 3 variables at the root node.
 
 
-```python
+<pre class="prettyprint">
 print(f'Parent entropy: {entropy(train_data.write_blog)}\n')
 print('Information gain at the root node:\n')
 a = information_gain(train_data, 'conceptual_understanding')
@@ -269,7 +258,8 @@ c = information_gain(train_data, 'is_there_coffee')
 print(f'\t1. conceptual_understanding: {round(a, 3)}')
 print(f'\t2. am_i_tired: {round(b, 3)}')
 print(f'\t3. is_there_coffee: {round(c, 3)}')
-```
+</pre>
+
 
     Parent entropy: 1.0
     
@@ -285,7 +275,7 @@ Since `conceptual_understanding` yields the highest information gain, we choose 
 **Step 2:** We recalculate information gain for the other 5 rows for which `conceptual_understanding` is yes.
 
 
-```python
+<pre class="prettyprint">
 # get the remaining data
 remaining_data = train_data[train_data['conceptual_understanding'] != 0]
 
@@ -298,7 +288,8 @@ c = information_gain(remaining_data, 'is_there_coffee')
 print(f'\t1. conceptual_understanding: {round(a, 3)}')
 print(f'\t2. am_i_tired: {round(b, 3)}')
 print(f'\t3. is_there_coffee: {round(c, 3)}')
-```
+</pre>
+
 
     Parent entropy: 0.722
     
@@ -314,7 +305,7 @@ Notice how information gain for `conceptual_understanding` is now 0, since all r
 **Step 3:** We recalculate information gain for the remaining 2 rows, where both `conceptual_understanding` and `am_i_tired` are yes. 
 
 
-```python
+<pre class="prettyprint">
 # get the remaining data
 remaining_data_2 = remaining_data[remaining_data['am_i_tired'] != 0]
 
@@ -327,7 +318,7 @@ c = information_gain(remaining_data_2, 'is_there_coffee')
 print(f'\t1. conceptual_understanding: {round(a, 3)}')
 print(f'\t2. am_i_tired: {round(b, 3)}')
 print(f'\t3. is_there_coffee: {round(c, 3)}')
-```
+</pre>
 
     Parent entropy: 1.0
     

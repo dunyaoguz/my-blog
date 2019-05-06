@@ -2,19 +2,18 @@
 {% block title %}{{ SITENAME }}{% endblock %}
 {% block content %}
 <div class="row">
-
- <div class="col-sm-8">
+ <div class="col-sm-9">
   {% for article in articles %}
-   <h3><a href="{{ SITEURL }}/{{ article.slug }}.html">{{ article.title }}</a></h3>
-   <label>{{ article.date.strftime('%d %B %Y') }}</label>
-   {{ article.content|truncate(210) }}
+   <h4><a href="{{ SITEURL }}/{{ article.slug }}.html">{{ article.title }}</a></h4>
+   <label><b>{{ article.date.strftime('%d %B %Y') }}</b></label>
+   {{ article.content|truncate(150) }}
+   <br>
   {% else %}
    No posts yet!
   {% endfor %}
  </div>
  <br>
-
- <div class="col-md-3">
+ <!-- <div class="col-md-3">
    <div class="panel panel-default">
    <div class="panel-heading">
      <h1 class="panel-title">Dunya Oguz</h1>
@@ -28,6 +27,7 @@
    <a href="http://github.com/dunyaoguz" style="color:grey" title="GitHub" class="fab fa-github fa-lg"></a>
   </div>
  </div>
+</div> -->
 
 </div>
 

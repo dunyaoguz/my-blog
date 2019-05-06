@@ -6,7 +6,6 @@ import os
 AUTHOR = 'Dunya Oguz'
 SITENAME = 'dunyaoguz.github.io'
 SITEURL = 'https://dunyaoguz.github.io/my-blog'
-TAGLINE = 'Data Science Enthusiast.'
 PATH = 'content'
 STATIC_PATHS = ['images']
 TIMEZONE = 'America/Toronto'
