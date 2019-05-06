@@ -3,11 +3,17 @@
 <head>
  <title>Decision Trees, Ensembles of Trees and their Hyperparameters</title>
  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
- <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
-   <nav class="navbar-expand-lg navbar-dark bg-primary">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <nav class="navbar navbar-dark bg-primary">
      <div class="container">
-     <a href="https://dunyaoguz.github.io/my-blog"><font color="white" size="7"><b>dunyaoguz.github.io</b></font></a>
+     <h1><font color="white"><b>dunyaoguz.github.io</b></font></h1>
+     <div class="btn-group btn-group-lg" role="group">
+     <ul class="row my-2 my-sm-0 mx-md-n5">
+     <a href="https://dunyaoguz.github.io/my-blog"><button type="button" class="btn btn-outline-light">Home</button></a>&nbsp;
+     <button type="button" class="btn btn-outline-light">About</button>&nbsp;
+     <button type="button" class="btn btn-outline-light">Contact</button>
+     </ul>
+     </div>
      <!-- <ul class="nav navbar-nav navbar-right">
        <br>
        <a href="mailto:dunyaoguz13@gmail.com" style="color:white" title="Email" class="fas fa-envelope fa-2x"></a>&nbsp;
@@ -16,15 +22,16 @@
      </ul> -->
      </div>
    </nav>
+   <br>
 </head>
 <body>
  <div class="container">
+   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <div class="row">
- <div class="col-md-8">
+ <div class="col-md-9">
   <h3>Decision Trees, Ensembles of Trees and their Hyperparameters</h3>
-  <label>22 April 2019</label>
-  <p></s></p>
-<p>Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. </p>
+  <b><label>22 April 2019</label></b>
+  <p>Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. </p>
 <p>That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy. </p>
 <h3>Decision Tree Basics</h3>
 <hr>
@@ -55,48 +62,42 @@
 <p>$$ Entropy = \sum_{i=1}^{classes} - {P_i} * {log_2}{P_i} $$</p>
 <p>Entropy and information gain are used interchangeably with something called <strong>gini index</strong>, a slightly different measure of node impurity. They yield very similar results. </p>
 <p>To better understand how decision trees work, let's manually rebuild one. </p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<pre class="prettyprint">
+import numpy as np
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn_pandas import DataFrameMapper
+from sklearn.preprocessing import LabelEncoder, LabelBinarizer
+from sklearn.model_selection import train_test_split
 
-<span class="n">blog_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
-                                                       <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;am_i_tired&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> 
-                                         <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> 
-                                              <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">],</span>
-                          <span class="s1">&#39;write_blog&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> 
-                                         <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">]</span>
-                         <span class="p">})</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn_pandas</span> <span class="kn">import</span> <span class="n">DataFrameMapper</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span><span class="p">,</span> <span class="n">LabelBinarizer</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-
-<span class="c1"># preprocessing the data</span>
-<span class="n">mapper</span> <span class="o">=</span> <span class="n">DataFrameMapper</span><span class="p">([</span>
-    <span class="p">(</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">,</span> <span class="n">LabelEncoder</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;am_i_tired&#39;</span><span class="p">,</span> <span class="n">LabelEncoder</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;is_there_coffee&#39;</span><span class="p">,</span> <span class="n">LabelEncoder</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;write_blog&#39;</span><span class="p">,</span> <span class="n">LabelEncoder</span><span class="p">())</span>
-<span class="p">],</span> <span class="n">df_out</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-<span class="n">blog_post</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">blog_post</span><span class="p">)</span>
-
-<span class="n">X</span> <span class="o">=</span> <span class="n">blog_post</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">blog_post</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">]</span>
-<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-</pre></div>
-
+blog_post = pd.DataFrame({'conceptual_understanding': ['No', 'No', 'No', 'No', 'Yes', 
+                                                       'Yes', 'Yes', 'Yes', 'Yes', 'Yes'],
+                          'am_i_tired': ['No', 'No', 'No', 'Yes', 'No', 
+                                         'No', 'No', 'Yes', 'Yes', 'Yes'],
+                          'is_there_coffee': ['No', 'No', 'No', 'No', 'No', 
+                                              'No', 'No','Yes', 'Yes', 'No'],
+                          'write_blog': ['No', 'No', 'No', 'No', 'Yes', 
+                                         'Yes', 'Yes', 'Yes', 'Yes', 'No']
+                         })
+# preprocessing the data
+mapper = DataFrameMapper([
+    ('conceptual_understanding', LabelEncoder()),
+    ('am_i_tired', LabelEncoder()),
+    ('is_there_coffee', LabelEncoder()),
+    ('write_blog', LabelEncoder())
+], df_out=True)
+blog_post = mapper.fit_transform(blog_post)
+X = blog_post.iloc[:, :-1]
+y = blog_post['write_blog']
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, test_size=0.2)
+</pre>
 
 <p>Check out <a href="https://dunyaoguz.github.io/my-blog/dataframemapper.html">my previous blog post</a> on DataFrameMapper for more information on how it works.</p>
-<div class="highlight"><pre><span></span><span class="c1"># instantiate the Decision Tree</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;entropy&#39;</span><span class="p">)</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-</pre></div>
-
+<pre class="prettyprint">
+# instantiate the Decision Tree
+dt = DecisionTreeClassifier(criterion='entropy')
+dt.fit(X_train, y_train)
+</pre>
 
 <div class="highlight"><pre><span></span>DecisionTreeClassifier(class_weight=None, criterion=&#39;entropy&#39;, max_depth=None,
             max_features=None, max_leaf_nodes=None,
@@ -107,42 +108,41 @@
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="n">dt</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-</pre></div>
-
+<pre class="prettyprint">
+dt.score(X_test, y_test)
+</pre>
 
 <div class="highlight"><pre><span></span>1.0
 </pre></div>
 
 
 <p>A perfect score! Our Decision Tree Classifier can predict whether I'm going to write a blog post or not with 100% accuracy. Let's see how the algorithm partitioned the data.</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>  
-<span class="kn">import</span> <span class="nn">pydotplus</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+<pre class="prettyprint">
+from IPython.display import Image  
+import pydotplus
+from sklearn import tree
 
-<span class="n">dot_data</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">export_graphviz</span><span class="p">(</span>
-    <span class="n">dt</span><span class="p">,</span> 
-    <span class="n">out_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-    <span class="n">filled</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-    <span class="n">rounded</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-    <span class="n">feature_names</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
-    <span class="n">class_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Don</span><span class="se">\&#39;</span><span class="s1">t write&#39;</span><span class="p">,</span> <span class="s1">&#39;Write&#39;</span><span class="p">])</span>
+dot_data = tree.export_graphviz(
+    dt, 
+    out_file=None,
+    filled=True,
+    rounded=True,
+    feature_names=X_train.columns,
+    class_names=['Don\'t write', 'Write'])
 
-<span class="n">graph</span> <span class="o">=</span> <span class="n">pydotplus</span><span class="o">.</span><span class="n">graph_from_dot_data</span><span class="p">(</span><span class="n">dot_data</span><span class="p">)</span>  
-<span class="n">Image</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">create_png</span><span class="p">(),</span> <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-</pre></div>
-
+graph = pydotplus.graph_from_dot_data(dot_data)  
+Image(graph.create_png(), width=300)
+</pre>
 
 <p><img alt="png" src="images/CART_11_0.png"></p>
 <p>We see that the algorithm was able to produce the exact same order of rules I came up with through logic, with math. Here, we can also see the number of samples that got partitioned at each node, along with the entropies that were calculated. Now, let's redo this manually.</p>
 <p><strong>Step one:</strong> We have 100% of the train data (8 samples). Our train dataset includes 3 variables: <code>conceptual_understanding</code>, <code>am_i_tired</code> and <code>is_there_coffee</code>. </p>
-<div class="highlight"><pre><span></span><span class="n">train_data</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;key_0&#39;</span><span class="p">)</span>
+<pre class="prettyprint">
+train_data = X_train.merge(y_train, how='inner', on=X_train.index).set_index('key_0')
+HTML(train_data.head().to_html(classes="table table-stripped table-hover table-dark"))
+</pre>
 
-<span class="n">HTML</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="s2">&quot;table table-stripped table-hover&quot;</span><span class="p">))</span>
-</pre></div>
-
-
-<table border="1" class="dataframe table table-stripped table-hover">
+<table border="1" class="dataframe table table-stripped table-hover table-dark">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -198,47 +198,45 @@
   </tbody>
 </table>
 
-<div class="highlight"><pre><span></span><span class="c1"># Define Entropy function.</span>
-<span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">unique_elements</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">entropy_sum</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c1"># Iterate through each class.</span>
-    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">unique_elements</span><span class="p">:</span>
-        <span class="c1"># Calculate observed probability of class i</span>
-        <span class="n">prob</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-        <span class="c1"># Perform the entropy formula</span>
-        <span class="n">entropy_sum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prob</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">prob</span><span class="p">))</span>
-    <span class="k">return</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">entropy_sum</span><span class="p">)</span>
-</pre></div>
+<pre class="prettyprint">
+# Define Entropy function.
+def entropy(y):
+    y = list(y)
+    unique_elements = set(y)
+    entropy_sum = []
+    # Iterate through each class.
+    for element in unique_elements:
+        # Calculate observed probability of class i
+        prob = (y.count(element) / len(y))
+        # Perform the entropy formula
+        entropy_sum.append(prob * np.log2(prob))
+    return -sum(entropy_sum)
 
-
-<div class="highlight"><pre><span></span><span class="c1"># Define Information Gain function.</span>
-<span class="k">def</span> <span class="nf">information_gain</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
-    <span class="c1"># Calculate parent_entropy</span>
-    <span class="n">parent_entropy</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="c1"># Calculate the weighted sum of child entropies</span>
-    <span class="n">child_0_entropy</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="n">child_1_entropy</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="n">child_0_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="n">child_1_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="n">child_entropy_weighted_sum</span> <span class="o">=</span> <span class="n">child_0_entropy</span> <span class="o">*</span> <span class="n">child_0_count</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">child_1_entropy</span> <span class="o">*</span> <span class="n">child_1_count</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;write_blog&#39;</span><span class="p">])</span>
-    <span class="c1"># Return information gain</span>
-    <span class="k">return</span> <span class="n">parent_entropy</span> <span class="o">-</span> <span class="n">child_entropy_weighted_sum</span>
-</pre></div>
-
+# Define Information Gain function.
+def information_gain(df, column):
+    # Calculate parent_entropy
+    parent_entropy = entropy(df['write_blog'])
+    # Calculate the weighted sum of child entropies
+    child_0_entropy = entropy(df[df[column] == 0]['write_blog'])
+    child_1_entropy = entropy(df[df[column] == 1]['write_blog'])
+    child_0_count = len(df[df[column] == 0]['write_blog'])
+    child_1_count = len(df[df[column] == 1]['write_blog'])
+    child_entropy_weighted_sum = child_0_entropy * child_0_count/len(df['write_blog']) + child_1_entropy * child_1_count/len(df['write_blog'])
+    # Return information gain
+    return parent_entropy - child_entropy_weighted_sum
+</pre>
 
 <p>Let's calculate the information gain for each 3 variables at the root node.</p>
-<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent entropy: {entropy(train_data.write_blog)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Information gain at the root node:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="s1">&#39;am_i_tired&#39;</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">3. is_there_coffee: {round(c, 3)}&#39;</span><span class="p">)</span>
-</pre></div>
-
+<pre class="prettyprint">
+print(f'Parent entropy: {entropy(train_data.write_blog)}\n')
+print('Information gain at the root node:\n')
+a = information_gain(train_data, 'conceptual_understanding')
+b = information_gain(train_data, 'am_i_tired')
+c = information_gain(train_data, 'is_there_coffee')
+print(f'\t1. conceptual_understanding: {round(a, 3)}')
+print(f'\t2. am_i_tired: {round(b, 3)}')
+print(f'\t3. is_there_coffee: {round(c, 3)}')
+</pre>
 
 <div class="highlight"><pre><span></span>Parent entropy: 1.0
 
@@ -252,20 +250,20 @@ Information gain at the root node:
 
 <p>Since <code>conceptual_understanding</code> yields the highest information gain, we choose it as the root node. The 3 rows for which <code>conceptual_understanding</code> is no assume a target value of <code>don't write</code>. </p>
 <p><strong>Step 2:</strong> We recalculate information gain for the other 5 rows for which <code>conceptual_understanding</code> is yes.</p>
-<div class="highlight"><pre><span></span><span class="c1"># get the remaining data</span>
-<span class="n">remaining_data</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+<pre class="prettyprint">
+# get the remaining data
+remaining_data = train_data[train_data['conceptual_understanding'] != 0]
 
-<span class="c1"># calculate information gain for the remaining data</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent entropy: {round(entropy(remaining_data.write_blog), 3)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Information gain at the first internal node:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data</span><span class="p">,</span> <span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data</span><span class="p">,</span> <span class="s1">&#39;am_i_tired&#39;</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data</span><span class="p">,</span> <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">3. is_there_coffee: {round(c, 3)}&#39;</span><span class="p">)</span>
-</pre></div>
-
+# calculate information gain for the remaining data
+print(f'Parent entropy: {round(entropy(remaining_data.write_blog), 3)}\n')
+print('Information gain at the first internal node:\n')
+a = information_gain(remaining_data, 'conceptual_understanding')
+b = information_gain(remaining_data, 'am_i_tired')
+c = information_gain(remaining_data, 'is_there_coffee')
+print(f'\t1. conceptual_understanding: {round(a, 3)}')
+print(f'\t2. am_i_tired: {round(b, 3)}')
+print(f'\t3. is_there_coffee: {round(c, 3)}')
+</pre>
 
 <div class="highlight"><pre><span></span>Parent entropy: 0.722
 
@@ -279,20 +277,20 @@ Information gain at the first internal node:
 
 <p>Notice how information gain for <code>conceptual_understanding</code> is now 0, since all rows have a value of yes. In non-math terms, this variable is no longer useful in determining the outcome of whether I write the blog post or not. Since <code>am_i_tired</code> has the highest information gain here, we select it as the first internal node. The 3 rows for which <code>am_i_tired</code> is no assume a target value of <code>write</code>. </p>
 <p><strong>Step 3:</strong> We recalculate information gain for the remaining 2 rows, where both <code>conceptual_understanding</code> and <code>am_i_tired</code> are yes. </p>
-<div class="highlight"><pre><span></span><span class="c1"># get the remaining data</span>
-<span class="n">remaining_data_2</span> <span class="o">=</span> <span class="n">remaining_data</span><span class="p">[</span><span class="n">remaining_data</span><span class="p">[</span><span class="s1">&#39;am_i_tired&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+<pre class="prettyprint">
+# get the remaining data
+remaining_data_2 = remaining_data[remaining_data['am_i_tired'] != 0]
 
-<span class="c1"># calculate information gain for the remaining data</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parent entropy: {entropy(remaining_data_2.write_blog)}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Information gain at the second internal node:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data_2</span><span class="p">,</span> <span class="s1">&#39;conceptual_understanding&#39;</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data_2</span><span class="p">,</span> <span class="s1">&#39;am_i_tired&#39;</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">information_gain</span><span class="p">(</span><span class="n">remaining_data_2</span><span class="p">,</span> <span class="s1">&#39;is_there_coffee&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">1. conceptual_understanding: {round(a, 3)}&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">2. am_i_tired: {round(b, 3)}&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">3. is_there_coffee: {round(c, 3)}&#39;</span><span class="p">)</span>
-</pre></div>
-
+# calculate information gain for the remaining data
+print(f'Parent entropy: {entropy(remaining_data_2.write_blog)}\n')
+print('Information gain at the second internal node:\n')
+a = information_gain(remaining_data_2, 'conceptual_understanding')
+b = information_gain(remaining_data_2, 'am_i_tired')
+c = information_gain(remaining_data_2, 'is_there_coffee')
+print(f'\t1. conceptual_understanding: {round(a, 3)}')
+print(f'\t2. am_i_tired: {round(b, 3)}')
+print(f'\t3. is_there_coffee: {round(c, 3)}')
+</pre>
 
 <div class="highlight"><pre><span></span>Parent entropy: 1.0
 
