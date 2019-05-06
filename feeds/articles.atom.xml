@@ -38,8 +38,8 @@
 &lt;h4&gt;Affinity Propagation&lt;/h4&gt;
 &lt;hr&gt;
 &lt;p&gt;This is a really weird sounding algorithm, so bear with me. &lt;/p&gt;
-&lt;p&gt;Affinity Propagation works by finding observations that are representative of the cluster they are a member of, called &lt;code&gt;exemplars&lt;/code&gt;. In Affinity Propagation, data points are seen as a network in which messages are sent back and forth between pairs of samples. Exemplars are found through this concept of message-passing whereby samples communicate their suitability to be examplars.  &lt;/p&gt;
-&lt;p&gt;These messages get stored in &lt;code&gt;responsability&lt;/code&gt; (how fit a sample is to serve as the exemplar of the other sample) and &lt;code&gt;availability&lt;/code&gt; (how appropriate it would be for a sample to pick the other sample as its exemplar, taking into account other points' preference for that sample as an exemplar) matrices and get updated iteratively in response to messages from other pairs. In the end, observations whose responsibility and availability for themselves is positive are chosen as the examplars.&lt;/p&gt;
+&lt;p&gt;Affinity Propagation works by finding observations that are representative of the cluster they are a member of, called &lt;code&gt;exemplars&lt;/code&gt;. In Affinity Propagation, data points are seen as a network in which messages are sent back and forth between pairs of samples. Exemplars are found through this concept of message-passing whereby samples communicate their suitability to serve as the exemplar (&lt;code&gt;responsability&lt;/code&gt;) and how appropriate it would be for them to pick the sample they are messaging as their exemplar, taking into account other points' preference for that sample as an exemplar (&lt;code&gt;availability&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;These messages get stored in matrices and are updated iteratively in response to messages from other pairs. In the end, observations whose responsibility and availability are positive are chosen as examplars.&lt;/p&gt;
 &lt;p&gt;&lt;img src="images/affinity.jpg" alt="dt" width="700"/&gt;
 &lt;br&gt;
 &lt;br&gt;&lt;/p&gt;
