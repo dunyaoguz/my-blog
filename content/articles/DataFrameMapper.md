@@ -8,7 +8,7 @@ Data must be cleaned and put in a particular shape and form prior to applying ma
 It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. 
 
 
-![jpeg](images/DataFrameMapper_1_0.jpeg)
+<img src="images/DataFrameMapper_1_0.jpeg" alt="dt"/>
 
 
 

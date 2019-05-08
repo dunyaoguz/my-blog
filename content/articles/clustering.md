@@ -67,9 +67,9 @@ In the below example, the stopping point according to this rule would be at 4 cl
 
 This is a really weird sounding algorithm, so bear with me. 
 
-Affinity Propagation works by finding observations that are representative of the cluster they are a member of, called `exemplars`. In Affinity Propagation, data points are seen as a network in which messages are sent back and forth between pairs of samples. Exemplars are found through this concept of message-passing whereby samples communicate their suitability to be examplars.  
+Affinity Propagation works by finding observations that are representative of the cluster they are a member of, called `exemplars`. In Affinity Propagation, data points are seen as a network in which messages are sent back and forth between pairs of samples. Exemplars are found through this concept of message-passing whereby samples communicate their suitability to serve as the exemplar (`responsability`) and how appropriate it would be for them to pick the sample they are messaging as their exemplar, taking into account other points' preference for that sample as an exemplar (`availability`).
 
-These messages get stored in `responsability` (how fit a sample is to serve as the exemplar of the other sample) and `availability` (how appropriate it would be for a sample to pick the other sample as its exemplar, taking into account other points' preference for that sample as an exemplar) matrices and get updated iteratively in response to messages from other pairs. In the end, observations whose responsibility and availability for themselves is positive are chosen as the examplars.
+These messages get stored in matrices and are updated iteratively in response to messages from other pairs. In the end, observations whose responsibility and availability are positive are chosen as examplars.
 
 
 <img src="images/affinity.jpg" alt="dt" width="700"/>

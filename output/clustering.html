@@ -1,25 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <title>Clustering Algorithms</title>
+ <title>Dunya's Blog</title>
  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
    <nav class="navbar navbar-dark bg-primary">
      <div class="container">
-     <h1><font color="white"><b>dunyaoguz.github.io</b></font></h1>
+     <h2><a href="."><font color="white"><b>dunyaoguz.github.io</b></a></font></h2>
      <div class="btn-group btn-group-lg" role="group">
      <ul class="row my-2 my-sm-0 mx-md-n5">
-     <a href="."><button type="button" class="btn btn-outline-light">Home</button></a>&nbsp;
-     <button type="button" class="btn btn-outline-light">About</button>&nbsp;
-     <button type="button" class="btn btn-outline-light">Contact</button>
+     <a href="."><button type="button" class="btn btn-outline-light">Blog</button></a>&nbsp;
+     <a href="https://dunyaoguz.github.io/my-blog/pages/about"><button type="button" class="btn btn-outline-light">About</button></a>&nbsp;
+     <a href="https://dunyaoguz.github.io/my-blog/pages/contact"><button type="button" class="btn btn-outline-light">Contact</button></a>&nbsp;&nbsp;
      </ul>
      </div>
-     <!-- <ul class="nav navbar-nav navbar-right">
-       <br>
-       <a href="mailto:dunyaoguz13@gmail.com" style="color:white" title="Email" class="fas fa-envelope fa-2x"></a>&nbsp;
-       <a href="http://github.com/dunyaoguz" style="color:white" title="GitHub" class="fab fa-github fa-2x"></a>&nbsp;
-       <a href="https://www.linkedin.com/in/dunya-oguz/" style="color:white" title="Linkedin" class="fab fa-linkedin-in fa-2x"></a>
-     </ul> -->
      </div>
    </nav>
    <br>
@@ -70,8 +64,8 @@
 <h4>Affinity Propagation</h4>
 <hr>
 <p>This is a really weird sounding algorithm, so bear with me. </p>
-<p>Affinity Propagation works by finding observations that are representative of the cluster they are a member of, called <code>exemplars</code>. In Affinity Propagation, data points are seen as a network in which messages are sent back and forth between pairs of samples. Exemplars are found through this concept of message-passing whereby samples communicate their suitability to be examplars.  </p>
-<p>These messages get stored in <code>responsability</code> (how fit a sample is to serve as the exemplar of the other sample) and <code>availability</code> (how appropriate it would be for a sample to pick the other sample as its exemplar, taking into account other points' preference for that sample as an exemplar) matrices and get updated iteratively in response to messages from other pairs. In the end, observations whose responsibility and availability for themselves is positive are chosen as the examplars.</p>
+<p>Affinity Propagation works by finding observations that are representative of the cluster they are a member of, called <code>exemplars</code>. In Affinity Propagation, data points are seen as a network in which messages are sent back and forth between pairs of samples. Exemplars are found through this concept of message-passing whereby samples communicate their suitability to serve as the exemplar (<code>responsability</code>) and how appropriate it would be for them to pick the sample they are messaging as their exemplar, taking into account other points' preference for that sample as an exemplar (<code>availability</code>).</p>
+<p>These messages get stored in matrices and are updated iteratively in response to messages from other pairs. In the end, observations whose responsibility and availability are positive are chosen as examplars.</p>
 <p><img src="images/affinity.jpg" alt="dt" width="700"/>
 <br>
 <br></p>
