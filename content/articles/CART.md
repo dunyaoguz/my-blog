@@ -1,11 +1,12 @@
 Title: Decision Trees, Ensembles of Trees and their Hyperparameters
 Date: 2019-04-22
-Tags: python 
+Tags: python
 Slug: decision-trees
+Category: Machine-Learning
 
-Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works. 
+Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works.
 
-That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy. 
+That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy.
 
 ### Decision Tree Basics
 ---
@@ -24,11 +25,11 @@ Decision trees are essentially a bunch of **if-then-else** rules stacked on top 
 </s>
 
 
-* "*Do I understand the concept?*" is the **root node**. 
-* "*Am I tired?*" and "*Is there coffee?*" are **internal nodes**. 
+* "*Do I understand the concept?*" is the **root node**.
+* "*Am I tired?*" and "*Is there coffee?*" are **internal nodes**.
 * The colored boxes are **leaf nodes** and they store the target variable, i.e. the prediction made by the algorithm.
-* The arrows pointing from internal nodes to leaf nodes are **branches**. 
-* Nodes that precede other nodes are called **parent nodes**. Nodes that immediately proceed them are referred to as their **children**. "*Am I tired*?" and "*Don't write blog*" are the children of "*Do I understand the concept?*". 
+* The arrows pointing from internal nodes to leaf nodes are **branches**.
+* Nodes that precede other nodes are called **parent nodes**. Nodes that immediately proceed them are referred to as their **children**. "*Am I tired*?" and "*Don't write blog*" are the children of "*Do I understand the concept?*".
 * The **depth** of a tree is length of the longest path from the root node to a leaf node. The decision tree above has a depth of 3.
 
 The decision tree algorithm operates by coming up with rules and partitioning the data accordingly at each node in a **sequential** manner. But how does the algorithm figure out the logical order of rules? In the above case, how can it know that my understanding of the concept is the number one question that must be answered yes, before any other thing such as whether or not there is coffee?
@@ -41,17 +42,17 @@ The formula for information gain is as follows:
 
 $$ Information</br>Gain = E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) $$
 
-This can look intimidating at first but it's actually quite simple. The function E() is something called **entropy**. To compute information gain, we simply deduct the weighted sum of the entropies of the children nodes from the entropy of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete. 
+This can look intimidating at first but it's actually quite simple. The function E() is something called **entropy**. To compute information gain, we simply deduct the weighted sum of the entropies of the children nodes from the entropy of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete.
 
-Entropy measures the amount of unpredictability in a random variable. In practical terms, it is a measure of **impurity** of an attribute. If the attribute in question is composed of a single class, for example, all yes's or all no's, then that attribute is considered **pure** and entropy takes on a value of 0. If the classes are equally distributed, for example, 50% yes's and 50% no's, entropy takes on a value of 1. 
+Entropy measures the amount of unpredictability in a random variable. In practical terms, it is a measure of **impurity** of an attribute. If the attribute in question is composed of a single class, for example, all yes's or all no's, then that attribute is considered **pure** and entropy takes on a value of 0. If the classes are equally distributed, for example, 50% yes's and 50% no's, entropy takes on a value of 1.
 
 Here is the formula for entropy:
 
 $$ Entropy = \sum_{i=1}^{classes} - {P_i} * {log_2}{P_i} $$
 
-Entropy and information gain are used interchangeably with something called **gini index**, a slightly different measure of node impurity. They yield very similar results. 
+Entropy and information gain are used interchangeably with something called **gini index**, a slightly different measure of node impurity. They yield very similar results.
 
-To better understand how decision trees work, let's manually rebuild one. 
+To better understand how decision trees work, let's manually rebuild one.
 
 
 <pre class="prettyprint">
@@ -62,13 +63,13 @@ from sklearn_pandas import DataFrameMapper
 from sklearn.preprocessing import LabelEncoder, LabelBinarizer
 from sklearn.model_selection import train_test_split
 
-blog_post = pd.DataFrame({'conceptual_understanding': ['No', 'No', 'No', 'No', 'Yes', 
+blog_post = pd.DataFrame({'conceptual_understanding': ['No', 'No', 'No', 'No', 'Yes',
                                                        'Yes', 'Yes', 'Yes', 'Yes', 'Yes'],
-                          'am_i_tired': ['No', 'No', 'No', 'Yes', 'No', 
+                          'am_i_tired': ['No', 'No', 'No', 'Yes', 'No',
                                          'No', 'No', 'Yes', 'Yes', 'Yes'],
-                          'is_there_coffee': ['No', 'No', 'No', 'No', 'No', 
+                          'is_there_coffee': ['No', 'No', 'No', 'No', 'No',
                                               'No', 'No','Yes', 'Yes', 'No'],
-                          'write_blog': ['No', 'No', 'No', 'No', 'Yes', 
+                          'write_blog': ['No', 'No', 'No', 'No', 'Yes',
                                          'Yes', 'Yes', 'Yes', 'Yes', 'No']
                          })
 # preprocessing the data
@@ -127,7 +128,7 @@ import pydotplus
 from sklearn import tree
 
 dot_data = tree.export_graphviz(
-    dt, 
+    dt,
     out_file=None,
     filled=True,
     rounded=True,
@@ -147,7 +148,7 @@ Image(graph.create_png(), width=300)
 
 We see that the algorithm was able to produce the exact same order of rules I came up with through logic, with math. Here, we can also see the number of samples that got partitioned at each node, along with the entropies that were calculated. Now, let's redo this manually.
 
-**Step one:** We have 100% of the train data (8 samples). Our train dataset includes 3 variables: `conceptual_understanding`, `am_i_tired` and `is_there_coffee`. 
+**Step one:** We have 100% of the train data (8 samples). Our train dataset includes 3 variables: `conceptual_understanding`, `am_i_tired` and `is_there_coffee`.
 
 
 <pre class="prettyprint">
@@ -262,15 +263,15 @@ print(f'\t3. is_there_coffee: {round(c, 3)}')
 
 
     Parent entropy: 1.0
-    
+
     Information gain at the root node:
-    
+
     	1. conceptual_understanding: 0.549
     	2. am_i_tired: 0.049
     	3. is_there_coffee: 0.138
 
 
-Since `conceptual_understanding` yields the highest information gain, we choose it as the root node. The 3 rows for which `conceptual_understanding` is no assume a target value of `don't write`. 
+Since `conceptual_understanding` yields the highest information gain, we choose it as the root node. The 3 rows for which `conceptual_understanding` is no assume a target value of `don't write`.
 
 **Step 2:** We recalculate information gain for the other 5 rows for which `conceptual_understanding` is yes.
 
@@ -292,17 +293,17 @@ print(f'\t3. is_there_coffee: {round(c, 3)}')
 
 
     Parent entropy: 0.722
-    
+
     Information gain at the first internal node:
-    
+
     	1. conceptual_understanding: 0.0
     	2. am_i_tired: 0.322
     	3. is_there_coffee: 0.073
 
 
-Notice how information gain for `conceptual_understanding` is now 0, since all rows have a value of yes. In non-math terms, this variable is no longer useful in determining the outcome of whether I write the blog post or not. Since `am_i_tired` has the highest information gain here, we select it as the first internal node. The 3 rows for which `am_i_tired` is no assume a target value of `write`. 
+Notice how information gain for `conceptual_understanding` is now 0, since all rows have a value of yes. In non-math terms, this variable is no longer useful in determining the outcome of whether I write the blog post or not. Since `am_i_tired` has the highest information gain here, we select it as the first internal node. The 3 rows for which `am_i_tired` is no assume a target value of `write`.
 
-**Step 3:** We recalculate information gain for the remaining 2 rows, where both `conceptual_understanding` and `am_i_tired` are yes. 
+**Step 3:** We recalculate information gain for the remaining 2 rows, where both `conceptual_understanding` and `am_i_tired` are yes.
 
 
 <pre class="prettyprint">
@@ -321,9 +322,9 @@ print(f'\t3. is_there_coffee: {round(c, 3)}')
 </pre>
 
     Parent entropy: 1.0
-    
+
     Information gain at the second internal node:
-    
+
     	1. conceptual_understanding: 0.0
     	2. am_i_tired: 0.0
     	3. is_there_coffee: 1.0
@@ -331,16 +332,16 @@ print(f'\t3. is_there_coffee: {round(c, 3)}')
 
 Now, `is_there_coffee` has the highest information gain because the other two variables no longer impact the outcome. If `is_there_coffee` is no, the target variable is `don't write`. If `is_there_coffee` is yes, the target variable is `write`. Since there is no way to further partition the tree at this point, our decision tree is complete.
 
-This example illustrated how decision trees work with a binary classification problem, but the principles and concepts shown here apply to decision tree regressors as well. 
+This example illustrated how decision trees work with a binary classification problem, but the principles and concepts shown here apply to decision tree regressors as well.
 
 ### Hyperparameters of Decision Trees
 ----
 
 Now that we understand how decision trees work, let's talk about their **hyperparameters**.
 
-In machine learning, **hyperparameters** are built in model configurations whose values are specified before the learning process begins. They are independent from the data on which the model is fit and can be *tuned* as desired. 
+In machine learning, **hyperparameters** are built in model configurations whose values are specified before the learning process begins. They are independent from the data on which the model is fit and can be *tuned* as desired.
 
-Hyperparameters can dramatically change the performance of a model, and finding the combination of hyperparameters that yield the best performance is a common component of machine learning workflows. 
+Hyperparameters can dramatically change the performance of a model, and finding the combination of hyperparameters that yield the best performance is a common component of machine learning workflows.
 
 Let's examine the hyperparameters available in decision trees.
 
@@ -360,14 +361,14 @@ Let's examine the hyperparameters available in decision trees.
 
 * `min_impurity_decrease`: Minimum amount of decrease in impurity that needs to be induced by partitioning a node. If the decrease in impurity would be less than `min_impurity_decrease`, the said partition does not occur. Options = [None, float]. Default = None.
 
-### Tree based ensemble methods 
+### Tree based ensemble methods
 ----
 
 Decision trees tend to suffer from overfitting and perform poorly on unseen data. Tree based ensemble methods combine several decision trees in order to improve the predictive performance of stand alone decision trees. Here, I'm going to talk about two techniques: **bootstrap aggregated trees** and **random forests**.
 
-Bootstrap aggregated trees, or bagging trees in short, withdraw several random samples from the dataset with replacement, and train a decision tree on each sample. When given a new dataset, bagging trees calculate the predictions by averaging the results from each bootstrapped decision tree. 
+Bootstrap aggregated trees, or bagging trees in short, withdraw several random samples from the dataset with replacement, and train a decision tree on each sample. When given a new dataset, bagging trees calculate the predictions by averaging the results from each bootstrapped decision tree.
 
-Random forests also build various decision trees on bootstrapped resamples from the original dataset, but differently than bagged trees, random forests only consider a subset of the features at each iteration. With bagging, the decision trees in the aggregation tend to be strongly correlated to each other since each tree includes all of the original features. The selection of features at random (called the **random subspace method**) in random forests counters the correlation between trees, resulting in an overall model that performs better on unseen data. 
+Random forests also build various decision trees on bootstrapped resamples from the original dataset, but differently than bagged trees, random forests only consider a subset of the features at each iteration. With bagging, the decision trees in the aggregation tend to be strongly correlated to each other since each tree includes all of the original features. The selection of features at random (called the **random subspace method**) in random forests counters the correlation between trees, resulting in an overall model that performs better on unseen data.
 
 ### Hyperparameters of Bagging Trees and Random Forests
 ----

@@ -2,35 +2,36 @@ Title: DataFrameMapper: A cleaner, more robust way to preprocess data
 Date: 2019-04-13 17:00
 Tags: python
 Slug: dataframemapper
+Category: Python
 
-Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. 
+Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow.
 
-It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. 
+It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time.
 
 
 <img src="images/DataFrameMapper_1_0.jpeg" alt="dt"/>
 
 
 
-One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above. 
+One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above.
 
 **Enter DataFrameMapper.** Fortunately, data preprocessing doesn't have to be as tedious as some Kaggle competitors I've seen have made it out to be (!). With DataFrameMapper, code that can clean and transform thousands, millions of rows of data can be written in a very concise, robust and standardized fashion.
 
-Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful. 
+Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful.
 
 ### What is DataFrameMapper?
 ----
 
-DataFrameMapper is a module in an experimental scikit-learn library called sklearn-pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit. 
+DataFrameMapper is a module in an experimental scikit-learn library called sklearn-pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit.
 
-The traditional way of doing things in data science is to clean and prepare the data in pandas, and then pass it on to scikit-learn to apply machine learning models. There are modules available in both pandas and scikit-learn to handle common data preprocessing tasks like imputing nulls and turning categorical columns into numeric values. But, without a standardized way to perform these tasks, the procedure of data preprocessing can get quite fragmented and messy, which becomes a problem when new data needs to be fed to a machine learning model. 
+The traditional way of doing things in data science is to clean and prepare the data in pandas, and then pass it on to scikit-learn to apply machine learning models. There are modules available in both pandas and scikit-learn to handle common data preprocessing tasks like imputing nulls and turning categorical columns into numeric values. But, without a standardized way to perform these tasks, the procedure of data preprocessing can get quite fragmented and messy, which becomes a problem when new data needs to be fed to a machine learning model.
 
-DataFrameMapper enables all the steps of data preprocessing to be grouped together and stored in a single object, and applied to any dataset with a single operation. 
+DataFrameMapper enables all the steps of data preprocessing to be grouped together and stored in a single object, and applied to any dataset with a single operation.
 
 ### How does it work?
 ----
 
-DataFrameMapper maps preprocessing tasks to each column of a given dataset via a list of tuples. Each tuple in the input list refers to a specific column of the dataframe. The first element in the tuple takes the name of the column, and the second element takes the preprocessing task or tasks that want to be applied to that particular column. If there is more than one task, the second element of the tuple needs to be a list, the order of which needs to match the desired order of operations. 
+DataFrameMapper maps preprocessing tasks to each column of a given dataset via a list of tuples. Each tuple in the input list refers to a specific column of the dataframe. The first element in the tuple takes the name of the column, and the second element takes the preprocessing task or tasks that want to be applied to that particular column. If there is more than one task, the second element of the tuple needs to be a list, the order of which needs to match the desired order of operations.
 
 Let's see how DataFrameMapper works with an example. First, `pip install sklearn-pandas`, and import it onto your workspace as follows.
 
@@ -52,55 +53,55 @@ I'm going to spin up a dataframe of my favorite tv shows, including information 
 
 <pre class="prettyprint">
 my_favorite_shows = {
-    'name': ['sense_8', 
-             'handmaidens_tale', 
-             'the_good_place', 
-             'big_little_lies', 
-             'jane_the_virgin', 
-             'game_of_thrones', 
-             'mad_men', 
-             'the_crown', 
-             'narcos', 
-             'house_of_cards', 
-             'girls', 
-             'breaking_bad', 
-             'bad_blood', 
-             'fauda', 
+    'name': ['sense_8',
+             'handmaidens_tale',
+             'the_good_place',
+             'big_little_lies',
+             'jane_the_virgin',
+             'game_of_thrones',
+             'mad_men',
+             'the_crown',
+             'narcos',
+             'house_of_cards',
+             'girls',
+             'breaking_bad',
+             'bad_blood',
+             'fauda',
              'jessica_jones'],
-    'cost': [None, 
-             140000000, 
-             80000000, 
-             170000000, 
-             205000000, 
-             600000000, 
-             300000000, 
-             None, 
-             400000000, 
-             500000000, 
-             112000000, 
-             380000000, 
-             10000000, 
-             75000000, 
+    'cost': [None,
+             140000000,
+             80000000,
+             170000000,
+             205000000,
+             600000000,
+             300000000,
+             None,
+             400000000,
+             500000000,
+             112000000,
+             380000000,
+             10000000,
+             75000000,
              None],
     'seasons': [2, None, 3, 1, 5, 9, 7, 2, 3, 5, 6, 5, 2, None, 2],
-    'popularity': [5.8, 6, 5.7, 7.3, 6.5, 9.8, 8.4, 
+    'popularity': [5.8, 6, 5.7, 7.3, 6.5, 9.8, 8.4,
                    7.6, 8, 9.3, 7, 8.9, 2.3, 5.2, 4.7],
-    'genre': ['science_fiction', 
-              'speculative_fiction', 
-              'comedy', 
-              'drama', 
-              'comedy', 
-              'fantasy', 
-              'period_drama', 
-              'period_drama', 
-              'period_drama', 
-               None, 
-              'comedy', 
-              'crime', 
-              'crime', 
-              'crime', 
+    'genre': ['science_fiction',
+              'speculative_fiction',
+              'comedy',
+              'drama',
+              'comedy',
+              'fantasy',
+              'period_drama',
+              'period_drama',
+              'period_drama',
+               None,
+              'comedy',
+              'crime',
+              'crime',
+              'crime',
               'science_fiction'],
-    'on_netflix': ['yes', 'no', 'yes', 'no', 'yes', 'no', 'yes', 
+    'on_netflix': ['yes', 'no', 'yes', 'no', 'yes', 'no', 'yes',
                    'yes', None, 'yes', 'no', 'yes', None, 'yes', 'yes']
 }
 
@@ -219,9 +220,9 @@ HTML(my_favorite_shows.head(10).to_html(classes="table table-stripped table-hove
 
 
 
-Let's say I want to predict the popularity score of a tv show using its production cost, genre, number of seasons and whether or not it's on netflix. Before I can train a machine learning model with the data I have, I need to get rid of all the NaN values that I intentionally put, and encode all categorical attributes as numbers. 
+Let's say I want to predict the popularity score of a tv show using its production cost, genre, number of seasons and whether or not it's on netflix. Before I can train a machine learning model with the data I have, I need to get rid of all the NaN values that I intentionally put, and encode all categorical attributes as numbers.
 
-Let's see how preprocessing this dataset would look like *without* using DataFrameMapper. 
+Let's see how preprocessing this dataset would look like *without* using DataFrameMapper.
 
 Splitting our dataset into two - data with which we will train our model and data with which we will test the performance of our model - is the first thing we need to do.
 
@@ -652,7 +653,7 @@ HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover table-dar
 
 
 
-I also need to encode the on_netflix column as numbers. 
+I also need to encode the on_netflix column as numbers.
 
 
 <pre class="prettyprint">
@@ -675,7 +676,7 @@ print(f'Train score: {train_score}')
 
 Apparently, our simple linear regression model is able to predict ~98% of the variability in popularity score. Of course, this score is only based on the train dataset - to evaluate the true performance of our regression model, we need to score it on our test data.
 
-I now have go back and replicate everything I did on the training data on the test data in order to be able to pass it onto my model. 
+I now have go back and replicate everything I did on the training data on the test data in order to be able to pass it onto my model.
 
 
 <pre class="prettyprint">
@@ -923,17 +924,17 @@ print(f'Predicted popularity score: {round(float(model.predict(new_Z)), 3)}')
 ----
 #### Notice that:
 
-* We fit transform the training data, but only transform the test data and the data for which we want to get a prediction. 
+* We fit transform the training data, but only transform the test data and the data for which we want to get a prediction.
 
 * The `df_out=True` argument enables us to get a dataframe output from the transform function. By default, `df_out` is set to `False`, so if we don't include it in the mapper we would get a numpy array as the output. Either is fine as far modelling goes, it's more a matter of convenience. I personally prefer seeing pandas dataframes over numpy arrays as I find them easier to read.
 
 * The `LabelEncoder` transformer replaces categorical variables with numerical labels, like the `pd.replace` function used previously.
 
-* When using `SimpleImputer` - which is a sklearn imputation transformer for numeric values - we have to wrap the first element of the tuple, i.e., the column name, within brackets. Otherwise, the mapper will throw an error. This has to do with the fact that `SimpleImputer` needs to take lists as input. 
+* When using `SimpleImputer` - which is a sklearn imputation transformer for numeric values - we have to wrap the first element of the tuple, i.e., the column name, within brackets. Otherwise, the mapper will throw an error. This has to do with the fact that `SimpleImputer` needs to take lists as input.
 
 * I passed two transformers to the genre and on_netflix columns - the `CategoricalImputer` first, followed by the `LabelBinarizer` in the case of genre and `LabelEncoder` in the case of on_netflix. If I had done the reverse, the mapper would throw an error because null values can't be label binarized. **As a rule of thumb and general good practice, imputers need to be the first transformation in a mapper and they need to be applied to *all* columns.**
 
-* I imported `CategoricalImputer` from `pandas` whereas I imported `SimpleImputer` from `sklearn.impute`. This is another great thing about `sklearn-pandas`: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn. 
+* I imported `CategoricalImputer` from `pandas` whereas I imported `SimpleImputer` from `sklearn.impute`. This is another great thing about `sklearn-pandas`: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn.
 
 * The strategy argument in the imputation transformers lets us decide *what* we want to replace the null values with. Available strategies in `SimpleImputer` are median, mean, mode or any constant value of choice. Available strategies in `CategoricalImputer` are the most frequent value or a constant of choice. If strategy is set to constant, the `fill_value` argument also needs to be defined, as I have done above.
 

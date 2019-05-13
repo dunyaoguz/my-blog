@@ -1,7 +1,9 @@
-Title: Contact
+Title: 
 Date: 2019-05-05 17:00
 Tags: python
 Slug: contact
+
+<h1>Contact</h1>
 
 <img src="images/tenor.gif" alt="dt" width="200"/>
 

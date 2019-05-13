@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+ <link rel="shortcut icon" href="https://dunyaoguz.github.io/my-blog/theme/images/alien.png">
  <title>Dunya's Blog</title>
  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <link href="theme/css/custom.css" rel="stylesheet">
    <nav class="navbar navbar-dark bg-primary">
      <div class="container">
-     <h2><a href="."><font color="white"><b>dunyaoguz.github.io</b></a></font></h2>
+     <h2><a href="https://dunyaoguz.github.io/my-blog"><font color="white"><b>dunyaoguz.github.io</b></a></font></h2>
      <div class="btn-group btn-group-lg" role="group">
      <ul class="row my-2 my-sm-0 mx-md-n5">
-     <a href="."><button type="button" class="btn btn-outline-light">Blog</button></a>&nbsp;
+     <a href="https://dunyaoguz.github.io/my-blog"><button type="button" class="btn btn-outline-light">Blog</button></a>&nbsp;
      <a href="https://dunyaoguz.github.io/my-blog/pages/about"><button type="button" class="btn btn-outline-light">About</button></a>&nbsp;
      <a href="https://dunyaoguz.github.io/my-blog/pages/contact"><button type="button" class="btn btn-outline-light">Contact</button></a>&nbsp;&nbsp;
      </ul>
      </div>
      </div>
    </nav>
-   <br>
 </head>
 <body>
- <div class="container">
-   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<div class="container">
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <div class="row">
  <div class="col-md-9">
+  <br>
   <h3>DataFrameMapper: A cleaner, more robust way to preprocess data</h3>
   <b><label>13 April 2019</label></b>
-  <p>Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow. </p>
-<p>It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time. </p>
+  <p>Data must be cleaned and put in a particular shape and form prior to applying machine learning models. This task is referred to as "data preprocessing" and is the first step in any data science and machine learning workflow.</p>
+<p>It's no secret that data preprocessing is a dull, mundane activity. Not only does it not require much brain energy (for the most part), but it can also get quite repetitive. To make matters worse, data preprocessing is said to constitute 80% of most data scientists' working time.</p>
 <p><img src="images/DataFrameMapper_1_0.jpeg" alt="dt"/></p>
-<p>One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above. </p>
+<p>One can safely say that not many data scientists enjoy data preprocessing, as demonstrated by the cartoon above.</p>
 <p><strong>Enter DataFrameMapper.</strong> Fortunately, data preprocessing doesn't have to be as tedious as some Kaggle competitors I've seen have made it out to be (!). With DataFrameMapper, code that can clean and transform thousands, millions of rows of data can be written in a very concise, robust and standardized fashion.</p>
-<p>Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful. </p>
+<p>Let's dive deeper into what DataFrameMapper is and how it can be used to make data preprocessing a little bit less dreadful.</p>
 <h3>What is DataFrameMapper?</h3>
 <hr>
-<p>DataFrameMapper is a module in an experimental scikit-learn library called sklearn-pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit. </p>
-<p>The traditional way of doing things in data science is to clean and prepare the data in pandas, and then pass it on to scikit-learn to apply machine learning models. There are modules available in both pandas and scikit-learn to handle common data preprocessing tasks like imputing nulls and turning categorical columns into numeric values. But, without a standardized way to perform these tasks, the procedure of data preprocessing can get quite fragmented and messy, which becomes a problem when new data needs to be fed to a machine learning model. </p>
-<p>DataFrameMapper enables all the steps of data preprocessing to be grouped together and stored in a single object, and applied to any dataset with a single operation. </p>
+<p>DataFrameMapper is a module in an experimental scikit-learn library called sklearn-pandas, developed to bridge the gap between actual pandas and scikit-learn, the two most common technologies in a data scientist's toolkit.</p>
+<p>The traditional way of doing things in data science is to clean and prepare the data in pandas, and then pass it on to scikit-learn to apply machine learning models. There are modules available in both pandas and scikit-learn to handle common data preprocessing tasks like imputing nulls and turning categorical columns into numeric values. But, without a standardized way to perform these tasks, the procedure of data preprocessing can get quite fragmented and messy, which becomes a problem when new data needs to be fed to a machine learning model.</p>
+<p>DataFrameMapper enables all the steps of data preprocessing to be grouped together and stored in a single object, and applied to any dataset with a single operation.</p>
 <h3>How does it work?</h3>
 <hr>
-<p>DataFrameMapper maps preprocessing tasks to each column of a given dataset via a list of tuples. Each tuple in the input list refers to a specific column of the dataframe. The first element in the tuple takes the name of the column, and the second element takes the preprocessing task or tasks that want to be applied to that particular column. If there is more than one task, the second element of the tuple needs to be a list, the order of which needs to match the desired order of operations. </p>
+<p>DataFrameMapper maps preprocessing tasks to each column of a given dataset via a list of tuples. Each tuple in the input list refers to a specific column of the dataframe. The first element in the tuple takes the name of the column, and the second element takes the preprocessing task or tasks that want to be applied to that particular column. If there is more than one task, the second element of the tuple needs to be a list, the order of which needs to match the desired order of operations.</p>
 <p>Let's see how DataFrameMapper works with an example. First, <code>pip install sklearn-pandas</code>, and import it onto your workspace as follows.</p>
 <pre class="prettyprint">
 #!pip install sklearn-pandas
@@ -55,55 +58,55 @@ warnings.filterwarnings("ignore")
 <p>I'm going to spin up a dataframe of my favorite tv shows, including information on their production cost (made up), number of seasons, mainstream popularity score out of 10 (made up), genre and whether or not they are on netflix.</p>
 <pre class="prettyprint">
 my_favorite_shows = {
-    'name': ['sense_8', 
-             'handmaidens_tale', 
-             'the_good_place', 
-             'big_little_lies', 
-             'jane_the_virgin', 
-             'game_of_thrones', 
-             'mad_men', 
-             'the_crown', 
-             'narcos', 
-             'house_of_cards', 
-             'girls', 
-             'breaking_bad', 
-             'bad_blood', 
-             'fauda', 
+    'name': ['sense_8',
+             'handmaidens_tale',
+             'the_good_place',
+             'big_little_lies',
+             'jane_the_virgin',
+             'game_of_thrones',
+             'mad_men',
+             'the_crown',
+             'narcos',
+             'house_of_cards',
+             'girls',
+             'breaking_bad',
+             'bad_blood',
+             'fauda',
              'jessica_jones'],
-    'cost': [None, 
-             140000000, 
-             80000000, 
-             170000000, 
-             205000000, 
-             600000000, 
-             300000000, 
-             None, 
-             400000000, 
-             500000000, 
-             112000000, 
-             380000000, 
-             10000000, 
-             75000000, 
+    'cost': [None,
+             140000000,
+             80000000,
+             170000000,
+             205000000,
+             600000000,
+             300000000,
+             None,
+             400000000,
+             500000000,
+             112000000,
+             380000000,
+             10000000,
+             75000000,
              None],
     'seasons': [2, None, 3, 1, 5, 9, 7, 2, 3, 5, 6, 5, 2, None, 2],
-    'popularity': [5.8, 6, 5.7, 7.3, 6.5, 9.8, 8.4, 
+    'popularity': [5.8, 6, 5.7, 7.3, 6.5, 9.8, 8.4,
                    7.6, 8, 9.3, 7, 8.9, 2.3, 5.2, 4.7],
-    'genre': ['science_fiction', 
-              'speculative_fiction', 
-              'comedy', 
-              'drama', 
-              'comedy', 
-              'fantasy', 
-              'period_drama', 
-              'period_drama', 
-              'period_drama', 
-               None, 
-              'comedy', 
-              'crime', 
-              'crime', 
-              'crime', 
+    'genre': ['science_fiction',
+              'speculative_fiction',
+              'comedy',
+              'drama',
+              'comedy',
+              'fantasy',
+              'period_drama',
+              'period_drama',
+              'period_drama',
+               None,
+              'comedy',
+              'crime',
+              'crime',
+              'crime',
               'science_fiction'],
-    'on_netflix': ['yes', 'no', 'yes', 'no', 'yes', 'no', 'yes', 
+    'on_netflix': ['yes', 'no', 'yes', 'no', 'yes', 'no', 'yes',
                    'yes', None, 'yes', 'no', 'yes', None, 'yes', 'yes']
 }
 
@@ -217,8 +220,8 @@ HTML(my_favorite_shows.head(10).to_html(classes="table table-stripped table-hove
   </tbody>
 </table>
 
-<p>Let's say I want to predict the popularity score of a tv show using its production cost, genre, number of seasons and whether or not it's on netflix. Before I can train a machine learning model with the data I have, I need to get rid of all the NaN values that I intentionally put, and encode all categorical attributes as numbers. </p>
-<p>Let's see how preprocessing this dataset would look like <em>without</em> using DataFrameMapper. </p>
+<p>Let's say I want to predict the popularity score of a tv show using its production cost, genre, number of seasons and whether or not it's on netflix. Before I can train a machine learning model with the data I have, I need to get rid of all the NaN values that I intentionally put, and encode all categorical attributes as numbers.</p>
+<p>Let's see how preprocessing this dataset would look like <em>without</em> using DataFrameMapper.</p>
 <p>Splitting our dataset into two - data with which we will train our model and data with which we will test the performance of our model - is the first thing we need to do.</p>
 <pre class="prettyprint">
 from sklearn.model_selection import train_test_split
@@ -619,7 +622,7 @@ HTML(Z_train.head(5).to_html(classes="table table-stripped table-hover table-dar
   </tbody>
 </table>
 
-<p>I also need to encode the on_netflix column as numbers. </p>
+<p>I also need to encode the on_netflix column as numbers.</p>
 <pre class="prettyprint">
 Z_train['on_netflix'] = Z_train['on_netflix'].replace({'no': 0, 'yes': 2, 'unknown': 1})
 </pre>
@@ -638,7 +641,7 @@ print(f'Train score: {train_score}')
 
 
 <p>Apparently, our simple linear regression model is able to predict ~98% of the variability in popularity score. Of course, this score is only based on the train dataset - to evaluate the true performance of our regression model, we need to score it on our test data.</p>
-<p>I now have go back and replicate everything I did on the training data on the test data in order to be able to pass it onto my model. </p>
+<p>I now have go back and replicate everything I did on the training data on the test data in order to be able to pass it onto my model.</p>
 <pre class="prettyprint">
 X_test['cost'] = X_test['cost'].fillna(median_budget)
 X_test['genre'] = X_test['genre'].fillna('unknown')
@@ -869,7 +872,7 @@ print(f'Predicted popularity score: {round(float(model.predict(new_Z)), 3)}')
 <h4>Notice that:</h4>
 <ul>
 <li>
-<p>We fit transform the training data, but only transform the test data and the data for which we want to get a prediction. </p>
+<p>We fit transform the training data, but only transform the test data and the data for which we want to get a prediction.</p>
 </li>
 <li>
 <p>The <code>df_out=True</code> argument enables us to get a dataframe output from the transform function. By default, <code>df_out</code> is set to <code>False</code>, so if we don't include it in the mapper we would get a numpy array as the output. Either is fine as far modelling goes, it's more a matter of convenience. I personally prefer seeing pandas dataframes over numpy arrays as I find them easier to read.</p>
@@ -878,13 +881,13 @@ print(f'Predicted popularity score: {round(float(model.predict(new_Z)), 3)}')
 <p>The <code>LabelEncoder</code> transformer replaces categorical variables with numerical labels, like the <code>pd.replace</code> function used previously.</p>
 </li>
 <li>
-<p>When using <code>SimpleImputer</code> - which is a sklearn imputation transformer for numeric values - we have to wrap the first element of the tuple, i.e., the column name, within brackets. Otherwise, the mapper will throw an error. This has to do with the fact that <code>SimpleImputer</code> needs to take lists as input. </p>
+<p>When using <code>SimpleImputer</code> - which is a sklearn imputation transformer for numeric values - we have to wrap the first element of the tuple, i.e., the column name, within brackets. Otherwise, the mapper will throw an error. This has to do with the fact that <code>SimpleImputer</code> needs to take lists as input.</p>
 </li>
 <li>
 <p>I passed two transformers to the genre and on_netflix columns - the <code>CategoricalImputer</code> first, followed by the <code>LabelBinarizer</code> in the case of genre and <code>LabelEncoder</code> in the case of on_netflix. If I had done the reverse, the mapper would throw an error because null values can't be label binarized. <strong>As a rule of thumb and general good practice, imputers need to be the first transformation in a mapper and they need to be applied to <em>all</em> columns.</strong></p>
 </li>
 <li>
-<p>I imported <code>CategoricalImputer</code> from <code>pandas</code> whereas I imported <code>SimpleImputer</code> from <code>sklearn.impute</code>. This is another great thing about <code>sklearn-pandas</code>: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn. </p>
+<p>I imported <code>CategoricalImputer</code> from <code>pandas</code> whereas I imported <code>SimpleImputer</code> from <code>sklearn.impute</code>. This is another great thing about <code>sklearn-pandas</code>: they provide functionality for the imputation of categorical values, which traditionally did not exist in sklearn.</p>
 </li>
 <li>
 <p>The strategy argument in the imputation transformers lets us decide <em>what</em> we want to replace the null values with. Available strategies in <code>SimpleImputer</code> are median, mean, mode or any constant value of choice. Available strategies in <code>CategoricalImputer</code> are the most frequent value or a constant of choice. If strategy is set to constant, the <code>fill_value</code> argument also needs to be defined, as I have done above.</p>
@@ -893,6 +896,13 @@ print(f'Predicted popularity score: {round(float(model.predict(new_Z)), 3)}')
 <h3>Happy mappin'! :)</h3>
  </div>
 </div>
- </div>
+</div>
+ <br>
+ <br>
 </body>
+<footer class="py-3 page-footer">
+  <div class="container">
+    <p class="m-0 text-center">Copyright &copy; Dunya Oguz 2019</p>
+  </div>
+</footer>
 </html>

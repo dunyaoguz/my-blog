@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+ <link rel="shortcut icon" href="https://dunyaoguz.github.io/my-blog/theme/images/alien.png">
  <title>Dunya's Blog</title>
  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <link href="theme/css/custom.css" rel="stylesheet">
    <nav class="navbar navbar-dark bg-primary">
      <div class="container">
-     <h2><a href="."><font color="white"><b>dunyaoguz.github.io</b></a></font></h2>
+     <h2><a href="https://dunyaoguz.github.io/my-blog"><font color="white"><b>dunyaoguz.github.io</b></a></font></h2>
      <div class="btn-group btn-group-lg" role="group">
      <ul class="row my-2 my-sm-0 mx-md-n5">
-     <a href="."><button type="button" class="btn btn-outline-light">Blog</button></a>&nbsp;
+     <a href="https://dunyaoguz.github.io/my-blog"><button type="button" class="btn btn-outline-light">Blog</button></a>&nbsp;
      <a href="https://dunyaoguz.github.io/my-blog/pages/about"><button type="button" class="btn btn-outline-light">About</button></a>&nbsp;
      <a href="https://dunyaoguz.github.io/my-blog/pages/contact"><button type="button" class="btn btn-outline-light">Contact</button></a>&nbsp;&nbsp;
      </ul>
      </div>
      </div>
    </nav>
-   <br>
 </head>
 <body>
- <div class="container">
-   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<div class="container">
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <div class="row">
  <div class="col-md-9">
+  <br>
   <h3>Matplotlib Hacks</h3>
   <b><label>30 March 2019</label></b>
-  <p>New to python and struggling to understand Matplotlib? Actually scratch the first part. Struggling to understand Matplotlib <em>period</em>? You are <strong>NOT</strong> alone my friend. </p>
-<p>Let's get some things straight. Matplotlib's design choices are ... let's just say ... not the most straightforward. Weird. Truly incomprehensible sometimes. It is also poorly documented and at times inconsistent. There's people out there who have been working with Python for years  and still can't wrap their heads around Matplotlib. </p>
-<p>In my DSI cohort at General Assembly, there seems to be two camps of people: those who hate Matplotlib and have pretty much given up on it (everyone except me) vs those who think it is not so bad (me). I've strangely come to appreciate some of Matplotlib's functionalities and found myself reaching back to it again and again even though I now have sexy new libraries like Altair under my belt. In this blog post, I am going to give some tips, tricks and general information that has been useful for me in my data viz journey with Matplotlib. I hope I'll be able to convert some of my hardline anti-Matplotlib class mates to the "matplotlib is not so bad! let's love and appreciate it!" camp. After all, matplotlib is the foundation upon which the bulk of python's data visualisation libraries are built. </p>
+  <p>New to python and struggling to understand Matplotlib? Actually scratch the first part. Struggling to understand Matplotlib <em>period</em>? You are <strong>NOT</strong> alone my friend.</p>
+<p>Let's get some things straight. Matplotlib's design choices are ... let's just say ... not the most straightforward. Weird. Truly incomprehensible sometimes. It is also poorly documented and at times inconsistent. There's people out there who have been working with Python for years  and still can't wrap their heads around Matplotlib.</p>
+<p>In my DSI cohort at General Assembly, there seems to be two camps of people: those who hate Matplotlib and have pretty much given up on it (everyone except me) vs those who think it is not so bad (me). I've strangely come to appreciate some of Matplotlib's functionalities and found myself reaching back to it again and again even though I now have sexy new libraries like Altair under my belt. In this blog post, I am going to give some tips, tricks and general information that has been useful for me in my data viz journey with Matplotlib. I hope I'll be able to convert some of my hardline anti-Matplotlib class mates to the "matplotlib is not so bad! let's love and appreciate it!" camp. After all, matplotlib is the foundation upon which the bulk of python's data visualisation libraries are built.</p>
 <h3>Making pretty charts</h3>
 <hr>
-<p>We can all probably agree that Matplotlib's default charting style is really ugly. Let's see how we can make simple Matplotlib charts a bit easier on the eyes with a few simple lines of code. </p>
+<p>We can all probably agree that Matplotlib's default charting style is really ugly. Let's see how we can make simple Matplotlib charts a bit easier on the eyes with a few simple lines of code.</p>
 <pre class="prettyprint">
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -39,7 +42,7 @@ from IPython.display import HTML
 
 # spin up a random dataframe of size 100
 np.random.seed(13)
-X = np.random.normal(50, 20, size=100) 
+X = np.random.normal(50, 20, size=100)
 Y = 2 * X + np.random.randint(25)
 Z = np.random.choice(['pink', 'blue', 'green', 'red'], p=[0.1, 0.3, 0.4, 0.2], size=100)
 df = pd.DataFrame({'X': X, 'Y': Y, 'Z': Z})
@@ -99,7 +102,7 @@ plt.scatter(X, Y)
 
 
 <p><img alt="png" src="images/Matplotlib_hacks_8_1.png"></p>
-<p>Firstly, we can disable the text output of Matplotlib by placing a <code>;</code> at the end of the code. </p>
+<p>Firstly, we can disable the text output of Matplotlib by placing a <code>;</code> at the end of the code.</p>
 <pre class="prettyprint">
 plt.scatter(X, Y);
 </pre>
@@ -119,7 +122,7 @@ plt.grid(color='gray', linewidth=0.4)
 </pre>
 
 <p><img alt="svg" src="images/Matplotlib_hacks_14_0.svg"></p>
-<p>We can get more granular with our grid lines if we want to by turning on minor ticks, and then customizing the minor grid by setting the <code>which</code> argument to <code>minor</code> inside <code>plt.grid()</code>. </p>
+<p>We can get more granular with our grid lines if we want to by turning on minor ticks, and then customizing the minor grid by setting the <code>which</code> argument to <code>minor</code> inside <code>plt.grid()</code>.</p>
 <pre class="prettyprint">
 plt.scatter(X, Y);
 plt.grid(color='gray', linewidth=0.4)
@@ -137,7 +140,7 @@ plt.grid(color='lightgray', linestyle=':', linewidth=0.2, which='minor')
 </pre>
 
 <p><img alt="svg" src="images/Matplotlib_hacks_18_0.svg"></p>
-<p>Next, let's spin up a bar chart to demonstrate how changing the default colors can help us achieve a more visually appealing aesthetic. </p>
+<p>Next, let's spin up a bar chart to demonstrate how changing the default colors can help us achieve a more visually appealing aesthetic.</p>
 <pre class="prettyprint">
 # group df by each color, get sum of the X column
 s = df.groupby('Z')[['X']].sum()
@@ -151,7 +154,7 @@ plt.bar(s.index, s['X'], color=['deepskyblue','yellowgreen','hotpink','tomato'],
 </pre>
 
 <p><img alt="svg" src="images/Matplotlib_hacks_23_0.svg"></p>
-<p>Matplotlib also has alternative styling options we can use if we want to change the look of the figure. Here is a list of all the available styles. </p>
+<p>Matplotlib also has alternative styling options we can use if we want to change the look of the figure. Here is a list of all the available styles.</p>
 <pre class="prettyprint">
 plt.style.available
 </pre>
@@ -187,7 +190,7 @@ plt.style.available
 
 <pre class="prettyprint">
 # run this code to set a style
-plt.style.use('fivethirtyeight') 
+plt.style.use('fivethirtyeight')
 </pre>
 
 <pre class="prettyprint">
@@ -198,7 +201,7 @@ plt.bar(s.index, s['X'], color=['deepskyblue','yellowgreen','hotpink','tomato'],
 <p><img alt="svg" src="images/Matplotlib_hacks_27_0.svg"></p>
 <h3>Figures and axes</h3>
 <hr>
-<p>You'll often see people use matplotlib in one of the following two ways: </p>
+<p>You'll often see people use matplotlib in one of the following two ways:</p>
 <ol>
 <li>
 <p>Call plotting functions directly on the pyplot object like <code>plt.plot()</code>, <code>plt.scatter()</code>, <code>plt.bar()</code>, etc</p>
@@ -207,13 +210,13 @@ plt.bar(s.index, s['X'], color=['deepskyblue','yellowgreen','hotpink','tomato'],
 <p>Run <code>fig, ax = plt.subplots()</code> first, and then call plotting functions on ax like <code>ax.plot()</code>, <code>ax.bar()</code>, etc</p>
 </li>
 </ol>
-<p>What's the difference between them? </p>
+<p>What's the difference between them?</p>
 <p>TL;DR not that much, most of the time</p>
 <p><code>plt.subplots()</code> is a function that returns a tuple containg a figure and an axes object. <code>fig, ax = plt.subplots()</code> unpacks this tuple onto the fig and ax variables. Fig stores the entire figure, and ax stores the axes object created.</p>
-<p>By running <code>fig, ax = plt.subplots()</code> you are essentially creating a matplotlib object for your plot. With <code>plt.plot()</code>, you are still able to return a chart, but you are not creating an object. Having your chart defined as an object is useful, for example, if you want to save it as png (in which case you would call <code>fig.savefig('filename.png')</code>) or if you are using a for loop to create multiple subplots. It can also be useful when you need access to more intricate functionalities, because creating a matplotlib object unlocks additional matplotlib features. But, for the most part, <code>plt.plot()</code> will get done what you need to get done. </p>
+<p>By running <code>fig, ax = plt.subplots()</code> you are essentially creating a matplotlib object for your plot. With <code>plt.plot()</code>, you are still able to return a chart, but you are not creating an object. Having your chart defined as an object is useful, for example, if you want to save it as png (in which case you would call <code>fig.savefig('filename.png')</code>) or if you are using a for loop to create multiple subplots. It can also be useful when you need access to more intricate functionalities, because creating a matplotlib object unlocks additional matplotlib features. But, for the most part, <code>plt.plot()</code> will get done what you need to get done.</p>
 <h3>Subplots</h3>
 <hr>
-<p>With subplots, we can place multiple charts on the same figure for ease of viewing. It's especially useful when we are faceting charts by a categorical variable. Here is an example. </p>
+<p>With subplots, we can place multiple charts on the same figure for ease of viewing. It's especially useful when we are faceting charts by a categorical variable. Here is an example.</p>
 <pre class="prettyprint">
 # look at X vs Y, faceted by the Z column
 
@@ -223,14 +226,14 @@ fig, ax = plt.subplots(nrows=1, ncols=4, figsize=(9.5, 3))
 colors=['yellowgreen','tomato','deepskyblue','hotpink']
 
 # example of the for loop i talked about earlier
-for i, color in enumerate(df.Z.unique()): 
+for i, color in enumerate(df.Z.unique()):
     filtered_df = df[df.Z == color]
     ax[i].scatter(filtered_df.X, filtered_df.Y, c=colors[i])
     ax[i].set(title=color)
 </pre>
 
 <p><img alt="svg" src="images/Matplotlib_hacks_34_0.svg"></p>
-<p>What's happening here? I created my subplot in the first line. I set it to have 1 row and 4 columns, and I specified that each subplot should be 9.5 inches wide and 3 inches tall. Then, I created a loop that goes through all the unique elements in Z, filters the dataframe by each element, and creates a scatterplot of the filtered dataframe's X's vs Y's. </p>
+<p>What's happening here? I created my subplot in the first line. I set it to have 1 row and 4 columns, and I specified that each subplot should be 9.5 inches wide and 3 inches tall. Then, I created a loop that goes through all the unique elements in Z, filters the dataframe by each element, and creates a scatterplot of the filtered dataframe's X's vs Y's.</p>
 <p>One thing I don't like about this figure is that the X and Y ticks don't match, so it's hard to visually spot the differences in the spread of different colors. Normally, we would want such information to be immediately noticeable for our readers. I'll specify xlim and ylim parameters inside the set method so all the subplots have the same X and Y ticks.</p>
 <pre class="prettyprint">
 fig, ax = plt.subplots(1, 4, figsize=(9.5, 3))
@@ -238,7 +241,7 @@ colors=['yellowgreen','tomato','deepskyblue','hotpink']
 
 for i, color in enumerate(df.Z.unique()):
     filtered_df = df[df.Z == color]
-    ax[i].set(title=color, xlim=(X.min()-10, X.max()+10), ylim=(Y.min()-10, Y.max()+10)) 
+    ax[i].set(title=color, xlim=(X.min()-10, X.max()+10), ylim=(Y.min()-10, Y.max()+10))
     ax[i].scatter(filtered_df.X, filtered_df.Y, c=colors[i])
 </pre>
 
@@ -247,7 +250,7 @@ for i, color in enumerate(df.Z.unique()):
 <h3>Customization</h3>
 <hr>
 <p>We have created pretty charts and subplots but we haven't yet customized our plots with titles, X and Y labels, fonts, markers etc. Matplotlib has a <em>toooon</em> of customization options, and that's actually my favorite aspect about it (and also why I keep going back to it although it's kind of a hassle to use). Here, I'll show you a few that I most frequently use.</p>
-<p>To demonstrate this I am going to create a new column A and populate it based on the color in Z. My goal is to create a scatter plot of X vs A, in which the points will fall into clear cut groups based on what color they are. </p>
+<p>To demonstrate this I am going to create a new column A and populate it based on the color in Z. My goal is to create a scatter plot of X vs A, in which the points will fall into clear cut groups based on what color they are.</p>
 <pre class="prettyprint">
 for size, color in zip([250, 80, 175, 30],['blue','green','pink','red']):    
     color_index = df[df.Z == color].index
@@ -340,7 +343,7 @@ plt.scatter(df[df['Z'] == 'red'].X, df[df['Z'] == 'red'].A
             , color='tomato', marker='<', s=30, label='red');
 
 plt.legend(facecolor='lightgrey', edgecolor='black', fontsize=10);
-plt.grid(color='lightgrey', linewidth=0.2); 
+plt.grid(color='lightgrey', linewidth=0.2);
 plt.title('X vs A based on color group', fontname='serif'
           , fontsize=15, loc='left');
 plt.xlabel('X values', fontname='serif', fontsize=11);
@@ -362,7 +365,7 @@ plt.ylabel('A values', fontname='serif', fontsize=11);
 </ol>
 <h3>Some extra stuff</h3>
 <hr>
-<p>To change the size of a chart you have to run <code>plt.figure(figsize=(width, height))</code> before you run your plotting function. Otherwise, the size of your chart won't actually change. This was something that I mixed up a lot in the past. This is <em>unless</em> you are defining matplotlib objects with <code>fig, ax = plt.subplots()</code>. In that case, you set your figsize inside the <code>subplots()</code> method. </p>
+<p>To change the size of a chart you have to run <code>plt.figure(figsize=(width, height))</code> before you run your plotting function. Otherwise, the size of your chart won't actually change. This was something that I mixed up a lot in the past. This is <em>unless</em> you are defining matplotlib objects with <code>fig, ax = plt.subplots()</code>. In that case, you set your figsize inside the <code>subplots()</code> method.</p>
 <p>I'm going to demonstrate this with a time series chart, so I'm adding a column of random dates to the dataframe.</p>
 <pre class="prettyprint">
 df['date'] = pd.date_range('20180101','20181230')[0:100]
@@ -383,30 +386,37 @@ plt.figure(figsize= (10, 2.5));
 </pre></div>
 
 
-<p>Yikes. As can be seen, the size of the plot was not set to 10 inches wide and 2.5 inches tall when we ran <code>plt.figure()</code> after <code>plt.plot()</code>. Instead of changing figure size, the <code>plt.figure()</code> function returned the text output we see below the chart. In other bad news, the xtick labels are overlapping and the frequency with which matplotlib has decided to show the dates doesn't make sense. Let's fix these. It would be nice, for example, if we had x tick labels for the Monday of every week. </p>
+<p>Yikes. As can be seen, the size of the plot was not set to 10 inches wide and 2.5 inches tall when we ran <code>plt.figure()</code> after <code>plt.plot()</code>. Instead of changing figure size, the <code>plt.figure()</code> function returned the text output we see below the chart. In other bad news, the xtick labels are overlapping and the frequency with which matplotlib has decided to show the dates doesn't make sense. Let's fix these. It would be nice, for example, if we had x tick labels for the Monday of every week.</p>
 <pre class="prettyprint">
 plt.figure(figsize= (10, 2.5))
 plt.plot(df['date'], df['X']);
 
 # rotate xticks by a 45 degree angle so they're more legible
-plt.xticks(rotation=45, fontsize=9) 
+plt.xticks(rotation=45, fontsize=9)
 plt.yticks(fontsize=9)
 
-# module we need to import so matplotlib can identify days of week from datetime 
-import matplotlib.dates as mdates 
+# module we need to import so matplotlib can identify days of week from datetime
+import matplotlib.dates as mdates
 
 # get current axis
-ax = plt.gca() 
+ax = plt.gca()
 ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=0, interval=1)) # tick on mondays every week
 </pre>
 
 <p><img alt="svg" src="images/Matplotlib_hacks_56_0.svg"></p>
 <p>What happened here? I had to import a submodule called mdates from the dates module of Matplotlib to achieve the weekly X tick appearance I was aiming for. Since the xaxis method only exists for axes objects, I had to get the current axis of my plot with the <code>.gca()</code> method.  This is an example for when you may actually need to define matplotlib objects!</p>
 <p>Then, by passing the weekday locator inside the set_major_locator method, I grabbed the days that were Mondays from the date column of my dataframe and set them as my X tick labels.</p>
-<p>To be honest, I didn't know how to this. I just googled something along the lines of "matplotlib set custom X ticks for dates" and was able to find an answer within max 10-15 minutes. <em>That's precisely the beauty of Matplotlib</em>; it's been around for so long that there is an answer for pretty much any problem you may encounter! </p>
+<p>To be honest, I didn't know how to this. I just googled something along the lines of "matplotlib set custom X ticks for dates" and was able to find an answer within max 10-15 minutes. <em>That's precisely the beauty of Matplotlib</em>; it's been around for so long that there is an answer for pretty much any problem you may encounter!</p>
 <p>... aand that's a wrap! I wish you all the very best in your data viz journey with Matplotlib!</p>
  </div>
 </div>
- </div>
+</div>
+ <br>
+ <br>
 </body>
+<footer class="py-3 page-footer">
+  <div class="container">
+    <p class="m-0 text-center">Copyright &copy; Dunya Oguz 2019</p>
+  </div>
+</footer>
 </html>
