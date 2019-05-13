@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>dunyaoguz.github.io - Machine Learning</title><link href="https://dunyaoguz.github.io/my-blog/" rel="alternate"></link><link href="https://dunyaoguz.github.io/my-blog/feeds/machine-learning.atom.xml" rel="self"></link><id>https://dunyaoguz.github.io/my-blog/</id><updated>2019-05-05T17:00:00-04:00</updated><entry><title>Clustering Algorithms</title><link href="https://dunyaoguz.github.io/my-blog/clustering.html" rel="alternate"></link><published>2019-05-05T17:00:00-04:00</published><updated>2019-05-05T17:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-05-05:/my-blog/clustering.html</id><summary type="html">&lt;p&gt;Clustering is the act of assembling data points into distinct groups whereby each group or cluster is made up of observations that are similar to one another, and different from observations in other clusters in some fashion. Clustering falls into the category of unsupervised machine learning, where we don't explicitly …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Clustering is the act of assembling data points into distinct groups whereby each group or cluster is made up of observations that are similar to one another, and different from observations in other clusters in some fashion. Clustering falls into the category of unsupervised machine learning, where we don't explicitly tell algorithms what to output, as we do in classification (is this e-mail spam or not spam?) and regression (how much does this house cost?) problems. Instead, clustering algorithms identify hidden structures and patterns in the data and reveal groupings that we didn't know existed.&lt;/p&gt;
+&lt;p&gt;In this blog post, I'm going to explore and explain different clustering algorithms. Data science courses tend to only cover k-means (the hello world! of clustering), leaving the rest out to be discovered/played around with on one's own as the need to dive deeper into clustering arises, perhaps in the work place or for a particular project. Granted, once one understands the principles and underlying concepts of one clustering algorithm, the rest start to seem pretty straightforward - but i still think there is value to be gained from knowing at least the basics of more than one clustering algorithm from the get-go. 
+&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;h4&gt;K-Means Clustering&lt;/h4&gt;
+&lt;hr&gt;
+&lt;p&gt;As mentioned, K-means is the most popular clustering algorithm. In K-means, the user specifies the number of clusters they want to create in the data - which is what we call &lt;code&gt;K&lt;/code&gt;. The algorithm takes this K, finds that many number of &lt;code&gt;centroids&lt;/code&gt; (points representing the center of their respective cluster) in the data, iterates over the entire dataset and assigns each observation to a cluster based on what centroid they are closest to, using the &lt;code&gt;Eucledian Distance&lt;/code&gt; measurement. &lt;/p&gt;
+&lt;p&gt;The process of finding centroids and iterating over observations to assign them to a centroid is repeated until the best set of centroid points are found - ones which maximize the distance between clusters (&lt;code&gt;silhouette score&lt;/code&gt;) and minimize the distance between observations within clusters (&lt;code&gt;inertia&lt;/code&gt;). &lt;/p&gt;
+&lt;p&gt;&lt;img src="images/K-means.gif" alt="dt" width="450"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h4&gt;Fuzzy C-Means Clustering&lt;/h4&gt;
+&lt;hr&gt;
+&lt;p&gt;Fuzzy C-Means clustering is conceptually very similar to K-means clustering. Fuzzy C-means assigns observations membership probabilities of belonging to certain clusters instead of assigning each observation to a particular cluster. The notion of "x belongs to cluster 1" is thus replaced with "x belongs to cluster 1 with 80% probability, cluster 2 with 16% probability, and cluster 3 with 4% probability." Fuzzy C-Means Clustering can be implemented using the &lt;code&gt;sklearn-fuzzy&lt;/code&gt; library, which includes other algorithms using the fuzzy logic. &lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;Fuzzy Partition Coefficient&lt;/code&gt; or &lt;code&gt;FCP&lt;/code&gt; in short is a metric that denotes how cleanly the data is described by a certain model. Fuzzy C-Means Clustering can be an especially useful replacement to K-Means in situations where we don't know what number K to specifiy, as we can try out a bunch of C's with Fuzzy C-Means and choose the number that delivers the highest FPC, as demonstrated below. This is equivalent to trying out a bunch of K's with K-means and seeing how well separated the clusters are in each modified version, but, is a bit more scientifically sound as we are relying on a numerical metric instead of pure visual inspection.  &lt;/p&gt;
+&lt;p&gt;&lt;img src="images/clustering_4_0.png" alt="dt" width="600"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h4&gt;Density-Based Spatial Clustering of Applications with Noise&lt;/h4&gt;
+&lt;hr&gt;
+&lt;p&gt;Density-Based Spatial Clustering of Applications with Noise is quite a mouthful, so it is commonly referred to as &lt;code&gt;DBSCAN&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;In DBSCAN, clusters are found by identifying areas with high density in the dataset. DBSCAN takes two user-specified inputs: &lt;code&gt;eps&lt;/code&gt;, the maximum distance two samples in the same cluster can have and  &lt;code&gt;min_samples&lt;/code&gt;, the minimum number of observations a grouping needs to include for it to be considered a cluster. With these inputs, the algorithm checks each observation in the dataset to see if there are more than &lt;code&gt;min_samples&lt;/code&gt; observations within a distance of &lt;code&gt;eps&lt;/code&gt;, until all data points in the dataset are visited. &lt;/p&gt;
+&lt;p&gt;Unlike other clustering algorithms, all observations are not necessarily assigned to a cluster in DBSCAN. Those points that don't satisfy the &lt;code&gt;eps&lt;/code&gt; and &lt;code&gt;min_samples&lt;/code&gt; conditions are left out as noise points. &lt;/p&gt;
+&lt;p&gt;&lt;br&gt;
+&lt;img src="images/clustering_6_0.png" alt="dt" width="600"/&gt;
+&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;h4&gt;Agglomerative Hierarchical Clustering&lt;/h4&gt;
+&lt;hr&gt;
+&lt;p&gt;Agglomerative Hierarchical clustering is a clustering method which builds clusters using a &lt;code&gt;hierarchical bottom-up approach&lt;/code&gt;. At the beginning, all data points are considered to be a cluster on their own, and are successively agglomerated in groups of two based on some distance metric, until a single cluster is left. &lt;/p&gt;
+&lt;p&gt;Results of agglomerative hierarchical clustering can be shown using a tree-like diagram called a &lt;code&gt;dendrogram&lt;/code&gt;, one example of which is given below. We start at the bottom where y=0 and go up sequentially as the clusters are agglomerated. The height in the dendrogram at which two clusters merge represents the distance between them prior to the merge.&lt;/p&gt;
+&lt;p&gt;The point at which to stop merging clusters must be specified by the data owner based on domain knowledge, but the dendrogram can help in some cases. Though this is not a hard and fast rule:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;The best choice for the number of clusters in agglomerative hierarchical clustering is the number of vertical lines in the dendrogram when cut by two horizontal lines that transverse the maximum vertical distance in the dendrogram without intersecting a cluster.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In the below example, the stopping point according to this rule would be at 4 clusters.  &lt;/p&gt;
+&lt;p&gt;&lt;img src="images/clustering_8_0.png" alt="dt" width="510"/&gt;
+&lt;img src="images/hierarchical.png" alt="dt" width="600"/&gt;&lt;/p&gt;
+&lt;h4&gt;Affinity Propagation&lt;/h4&gt;
+&lt;hr&gt;
+&lt;p&gt;This is a really weird sounding algorithm, so bear with me. &lt;/p&gt;
+&lt;p&gt;Affinity Propagation works by finding observations that are representative of the cluster they are a member of, called &lt;code&gt;exemplars&lt;/code&gt;. In Affinity Propagation, data points are seen as a network in which messages are sent back and forth between pairs of samples. Exemplars are found through this concept of message-passing whereby samples communicate their suitability to serve as exemplars (&lt;code&gt;responsability&lt;/code&gt;) and how appropriate it would be for them to pick the sample they are messaging as their exemplar, considering other points' preference for that sample as an exemplar (&lt;code&gt;availability&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;These messages get stored in matrices and are updated iteratively in response to messages between every pair. In the end, observations whose responsibility and availability are positive are chosen as examplars.&lt;/p&gt;
+&lt;p&gt;&lt;img src="images/affinity.jpg" alt="dt" width="700"/&gt;
+&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;h4&gt;Mean Shift Clustering&lt;/h4&gt;
+&lt;hr&gt;
+&lt;p&gt;Mean Shift clustering is a &lt;code&gt;centroid&lt;/code&gt; based algorithm like K-means which seeks to find the center points for each cluster. It works by shifting a a circle whose radius is called &lt;code&gt;bandwidth&lt;/code&gt; iteratively through the data points to higher density regions. &lt;/p&gt;
+&lt;p&gt;At every iteration, the algorithm computes the mean of all the points that fall within the circle, and shifts the center of the circle towards that mean - hence the name &lt;code&gt;mean shift&lt;/code&gt;. The shifting continues until there is no direction the circle can be shifted to that will result in more points contained within the circle. &lt;/p&gt;
+&lt;p&gt;&lt;img src="images/clustering_13_0.png" alt="dt" width="600"/&gt;&lt;/p&gt;</content><category term="python"></category></entry><entry><title>Decision Trees, Ensembles of Trees and their Hyperparameters</title><link href="https://dunyaoguz.github.io/my-blog/decision-trees.html" rel="alternate"></link><published>2019-04-22T00:00:00-04:00</published><updated>2019-04-22T00:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-04-22:/my-blog/decision-trees.html</id><summary type="html">&lt;p&gt;Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works.&lt;/p&gt;
+&lt;p&gt;That said, decision trees may lag behind other, more complex machine learning …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Decision Trees, also referred to as CART (Classification and Regression Trees), are one of the most popular and well understood machine learning algorithms. Decision trees are super intuitive and interpretable because they mimic how the human brain works.&lt;/p&gt;
+&lt;p&gt;That said, decision trees may lag behind other, more complex machine learning algorithms (sometimes called 'black box algorithms') in accuracy. However, in many situations, like in the context of a business where you can't make certain decisions without being able to explain why (think of a bank giving out loans to individuals), interpretability is preferred over accuracy.&lt;/p&gt;
+&lt;h3&gt;Decision Tree Basics&lt;/h3&gt;
+&lt;hr&gt;
+&lt;p&gt;Decision trees are essentially a bunch of &lt;strong&gt;if-then-else&lt;/strong&gt; rules stacked on top of each other. Here is a silly example:&lt;/p&gt;
+&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
+&lt;h4&gt;&lt;center&gt; Question: Should I write this blog post? &lt;/center&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;/s&gt;
+&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="images/CART_3_0.png" alt="dt" width="700"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/s&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;"&lt;em&gt;Do I understand the concept?&lt;/em&gt;" is the &lt;strong&gt;root node&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;"&lt;em&gt;Am I tired?&lt;/em&gt;" and "&lt;em&gt;Is there coffee?&lt;/em&gt;" are &lt;strong&gt;internal nodes&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;The colored boxes are &lt;strong&gt;leaf nodes&lt;/strong&gt; and they store the target variable, i.e. the prediction made by the algorithm.&lt;/li&gt;
+&lt;li&gt;The arrows pointing from internal nodes to leaf nodes are &lt;strong&gt;branches&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Nodes that precede other nodes are called &lt;strong&gt;parent nodes&lt;/strong&gt;. Nodes that immediately proceed them are referred to as their &lt;strong&gt;children&lt;/strong&gt;. "&lt;em&gt;Am I tired&lt;/em&gt;?" and "&lt;em&gt;Don't write blog&lt;/em&gt;" are the children of "&lt;em&gt;Do I understand the concept?&lt;/em&gt;".&lt;/li&gt;
+&lt;li&gt;The &lt;strong&gt;depth&lt;/strong&gt; of a tree is length of the longest path from the root node to a leaf node. The decision tree above has a depth of 3.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The decision tree algorithm operates by coming up with rules and partitioning the data accordingly at each node in a &lt;strong&gt;sequential&lt;/strong&gt; manner. But how does the algorithm figure out the logical order of rules? In the above case, how can it know that my understanding of the concept is the number one question that must be answered yes, before any other thing such as whether or not there is coffee?&lt;/p&gt;
+&lt;p&gt;Answer: with the help of some good old math! Decision trees are built in a top-down fashion through finding the attribute that maximizes something called &lt;strong&gt;information gain&lt;/strong&gt; at each split. The idea is that, the higher the information gain, the higher the importance of the attribute in determining the outcome/target variable. Decision trees are often called a &lt;strong&gt;greedy&lt;/strong&gt; algorithm since they find the best partition each individual step, rather than optimizing for a global tree structure that will deliver the best prediction.&lt;/p&gt;
+&lt;p&gt;The formula for information gain is as follows:&lt;/p&gt;
+&lt;script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async&gt;&lt;/script&gt;
+
+&lt;p&gt;$$ Information&lt;/br&gt;Gain = E(\text{parent})  - \sum_{\text{children}}\frac{N_j}{N}E(\text{children}_j) $$&lt;/p&gt;
+&lt;p&gt;This can look intimidating at first but it's actually quite simple. The function E() is something called &lt;strong&gt;entropy&lt;/strong&gt;. To compute information gain, we simply deduct the weighted sum of the entropies of the children nodes from the entropy of the parent node. The attribute that yields the highest information gain when partioned to its children gets chosen as the root node. This process continues with the remaining subset of data until there is no way to further partition the tree, which is when there is one class left in each leaf node. When that is the case, the decision tree is considered complete.&lt;/p&gt;
+&lt;p&gt;Entropy measures the amount of unpredictability in a random variable. In practical terms, it is a measure of &lt;strong&gt;impurity&lt;/strong&gt; of an attribute. If the attribute in question is composed of a single class, for example, all yes's or all no's, then that attribute is considered &lt;strong&gt;pure&lt;/strong&gt; and entropy takes on a value of 0. If the classes are equally distributed, for example, 50% yes's and 50% no's, entropy takes on a value of 1.&lt;/p&gt;
+&lt;p&gt;Here is the formula for entropy:&lt;/p&gt;
+&lt;p&gt;$$ Entropy = \sum_{i=1}^{classes} - {P_i} * {log_2}{P_i} $$&lt;/p&gt;
+&lt;p&gt;Entropy and information gain are used interchangeably with something called &lt;strong&gt;gini index&lt;/strong&gt;, a slightly different measure of node impurity. They yield very similar results.&lt;/p&gt;
+&lt;p&gt;To better understand how decision trees work, let's manually rebuild one.&lt;/p&gt;
+&lt;pre class="prettyprint"&gt;
+import numpy as np
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn_pandas import DataFrameMapper
+from sklearn.preprocessing import LabelEncoder, LabelBinarizer
+from sklearn.model_selection import train_test_split
+
+blog_post = pd.DataFrame({'conceptual_understanding': ['No', 'No', 'No', 'No', 'Yes',
+                                                       'Yes', 'Yes', 'Yes', 'Yes', 'Yes'],
+                          'am_i_tired': ['No', 'No', 'No', 'Yes', 'No',
+                                         'No', 'No', 'Yes', 'Yes', 'Yes'],
+                          'is_there_coffee': ['No', 'No', 'No', 'No', 'No',
+                                              'No', 'No','Yes', 'Yes', 'No'],
+                          'write_blog': ['No', 'No', 'No', 'No', 'Yes',
+                                         'Yes', 'Yes', 'Yes', 'Yes', 'No']
+                         })
+# preprocessing the data
+mapper = DataFrameMapper([
+    ('conceptual_understanding', LabelEncoder()),
+    ('am_i_tired', LabelEncoder()),
+    ('is_there_coffee', LabelEncoder()),
+    ('write_blog', LabelEncoder())
+], df_out=True)
+blog_post = mapper.fit_transform(blog_post)
+X = blog_post.iloc[:, :-1]
+y = blog_post['write_blog']
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, test_size=0.2)
+&lt;/pre&gt;
+
+&lt;p&gt;Check out &lt;a href="https://dunyaoguz.github.io/my-blog/dataframemapper.html"&gt;my previous blog post&lt;/a&gt; on DataFrameMapper for more information on how it works.&lt;/p&gt;
+&lt;pre class="prettyprint"&gt;
+# instantiate the Decision Tree
+dt = DecisionTreeClassifier(criterion='entropy')
+dt.fit(X_train, y_train)
+&lt;/pre&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DecisionTreeClassifier(class_weight=None, criterion=&amp;#39;entropy&amp;#39;, max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+            splitter=&amp;#39;best&amp;#39;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;pre class="prettyprint"&gt;
+dt.score(X_test, y_test)
+&lt;/pre&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;1.0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A perfect score! Our Decision Tree Classifier can predict whether I'm going to write a blog post or not with 100% accuracy. Let's see how the algorithm partitioned the data.&lt;/p&gt;
+&lt;pre class="prettyprint"&gt;
+from IPython.display import Image  
+import pydotplus
+from sklearn import tree
+
+dot_data = tree.export_graphviz(
+    dt,
+    out_file=None,
+    filled=True,
+    rounded=True,
+    feature_names=X_train.columns,
+    class_names=['Don\'t write', 'Write'])
+
+graph = pydotplus.graph_from_dot_data(dot_data)  
+Image(graph.create_png(), width=300)
+&lt;/pre&gt;
+
+&lt;p&gt;&lt;img alt="png" src="images/CART_11_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;We see that the algorithm was able to produce the exact same order of rules I came up with through logic, with math. Here, we can also see the number of samples that got partitioned at each node, along with the entropies that were calculated. Now, let's redo this manually.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step one:&lt;/strong&gt; We have 100% of the train data (8 samples). Our train dataset includes 3 variables: &lt;code&gt;conceptual_understanding&lt;/code&gt;, &lt;code&gt;am_i_tired&lt;/code&gt; and &lt;code&gt;is_there_coffee&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class="prettyprint"&gt;
+train_data = X_train.merge(y_train, how='inner', on=X_train.index).set_index('key_0')
+HTML(train_data.head().to_html(classes="table table-stripped table-hover table-dark"))
+&lt;/pre&gt;
+
+&lt;table border="1" class="dataframe table table-stripped table-hover table-dark"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;conceptual_understanding&lt;/th&gt;
+      &lt;th&gt;am_i_tired&lt;/th&gt;
+      &lt;th&gt;is_there_coffee&lt;/th&gt;
+      &lt;th&gt;write_blog&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;key_0&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;5&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;7&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre class="prettyprint"&gt;
+# Define Entropy function.
+def entropy(y):
+    y = list(y)
+    unique_elements = set(y)
+    entropy_sum = []
+    # Iterate through each class.
+    for element in unique_elements:
+        # Calculate observed probability of class i
+        prob = (y.count(element) / len(y))
+        # Perform the entropy formula
+        entropy_sum.append(prob * np.log2(prob))
+    return -sum(entropy_sum)
+
+# Define Information Gain function.
+def information_gain(df, column):
+    # Calculate parent_entropy
+    parent_entropy = entropy(df['write_blog'])
+    # Calculate the weighted sum of child entropies
+    child_0_entropy = entropy(df[df[column] == 0]['write_blog'])
+    child_1_entropy = entropy(df[df[column] == 1]['write_blog'])
+    child_0_count = len(df[df[column] == 0]['write_blog'])
+    child_1_count = len(df[df[column] == 1]['write_blog'])
+    child_entropy_weighted_sum = child_0_entropy * child_0_count/len(df['write_blog']) + child_1_entropy * child_1_count/len(df['write_blog'])
+    # Return information gain
+    return parent_entropy - child_entropy_weighted_sum
+&lt;/pre&gt;
+
+&lt;p&gt;Let's calculate the information gain for each 3 variables at the root node.&lt;/p&gt;
+&lt;pre class="prettyprint"&gt;
+print(f'Parent entropy: {entropy(train_data.write_blog)}\n')
+print('Information gain at the root node:\n')
+a = information_gain(train_data, 'conceptual_understanding')
+b = information_gain(train_data, 'am_i_tired')
+c = information_gain(train_data, 'is_there_coffee')
+print(f'\t1. conceptual_understanding: {round(a, 3)}')
+print(f'\t2. am_i_tired: {round(b, 3)}')
+print(f'\t3. is_there_coffee: {round(c, 3)}')
+&lt;/pre&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Parent entropy: 1.0
+
+Information gain at the root node:
+
+    1. conceptual_understanding: 0.549
+    2. am_i_tired: 0.049
+    3. is_there_coffee: 0.138
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Since &lt;code&gt;conceptual_understanding&lt;/code&gt; yields the highest information gain, we choose it as the root node. The 3 rows for which &lt;code&gt;conceptual_understanding&lt;/code&gt; is no assume a target value of &lt;code&gt;don't write&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 2:&lt;/strong&gt; We recalculate information gain for the other 5 rows for which &lt;code&gt;conceptual_understanding&lt;/code&gt; is yes.&lt;/p&gt;
+&lt;pre class="prettyprint"&gt;
+# get the remaining data
+remaining_data = train_data[train_data['conceptual_understanding'] != 0]
+
+# calculate information gain for the remaining data
+print(f'Parent entropy: {round(entropy(remaining_data.write_blog), 3)}\n')
+print('Information gain at the first internal node:\n')
+a = information_gain(remaining_data, 'conceptual_understanding')
+b = information_gain(remaining_data, 'am_i_tired')
+c = information_gain(remaining_data, 'is_there_coffee')
+print(f'\t1. conceptual_understanding: {round(a, 3)}')
+print(f'\t2. am_i_tired: {round(b, 3)}')
+print(f'\t3. is_there_coffee: {round(c, 3)}')
+&lt;/pre&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Parent entropy: 0.722
+
+Information gain at the first internal node:
+
+    1. conceptual_understanding: 0.0
+    2. am_i_tired: 0.322
+    3. is_there_coffee: 0.073
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Notice how information gain for &lt;code&gt;conceptual_understanding&lt;/code&gt; is now 0, since all rows have a value of yes. In non-math terms, this variable is no longer useful in determining the outcome of whether I write the blog post or not. Since &lt;code&gt;am_i_tired&lt;/code&gt; has the highest information gain here, we select it as the first internal node. The 3 rows for which &lt;code&gt;am_i_tired&lt;/code&gt; is no assume a target value of &lt;code&gt;write&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 3:&lt;/strong&gt; We recalculate information gain for the remaining 2 rows, where both &lt;code&gt;conceptual_understanding&lt;/code&gt; and &lt;code&gt;am_i_tired&lt;/code&gt; are yes.&lt;/p&gt;
+&lt;pre class="prettyprint"&gt;
+# get the remaining data
+remaining_data_2 = remaining_data[remaining_data['am_i_tired'] != 0]
+
+# calculate information gain for the remaining data
+print(f'Parent entropy: {entropy(remaining_data_2.write_blog)}\n')
+print('Information gain at the second internal node:\n')
+a = information_gain(remaining_data_2, 'conceptual_understanding')
+b = information_gain(remaining_data_2, 'am_i_tired')
+c = information_gain(remaining_data_2, 'is_there_coffee')
+print(f'\t1. conceptual_understanding: {round(a, 3)}')
+print(f'\t2. am_i_tired: {round(b, 3)}')
+print(f'\t3. is_there_coffee: {round(c, 3)}')
+&lt;/pre&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Parent entropy: 1.0
+
+Information gain at the second internal node:
+
+    1. conceptual_understanding: 0.0
+    2. am_i_tired: 0.0
+    3. is_there_coffee: 1.0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now, &lt;code&gt;is_there_coffee&lt;/code&gt; has the highest information gain because the other two variables no longer impact the outcome. If &lt;code&gt;is_there_coffee&lt;/code&gt; is no, the target variable is &lt;code&gt;don't write&lt;/code&gt;. If &lt;code&gt;is_there_coffee&lt;/code&gt; is yes, the target variable is &lt;code&gt;write&lt;/code&gt;. Since there is no way to further partition the tree at this point, our decision tree is complete.&lt;/p&gt;
+&lt;p&gt;This example illustrated how decision trees work with a binary classification problem, but the principles and concepts shown here apply to decision tree regressors as well.&lt;/p&gt;
+&lt;h3&gt;Hyperparameters of Decision Trees&lt;/h3&gt;
+&lt;hr&gt;
+&lt;p&gt;Now that we understand how decision trees work, let's talk about their &lt;strong&gt;hyperparameters&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;In machine learning, &lt;strong&gt;hyperparameters&lt;/strong&gt; are built in model configurations whose values are specified before the learning process begins. They are independent from the data on which the model is fit and can be &lt;em&gt;tuned&lt;/em&gt; as desired.&lt;/p&gt;
+&lt;p&gt;Hyperparameters can dramatically change the performance of a model, and finding the combination of hyperparameters that yield the best performance is a common component of machine learning workflows.&lt;/p&gt;
+&lt;p&gt;Let's examine the hyperparameters available in decision trees.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;criterion&lt;/code&gt;: Measure of impurity that will be used to partition the data. Options = [gini, entropy]. Default = gini.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;splitter&lt;/code&gt;: The strategy used to split the decision tree at each node. If this is set to random, a random value is partitioned at each node instead of the attribute that yields the highest information gain or gini impurity. Options = [best, random]. Default = best.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;max_depth&lt;/code&gt;: The maximum length of the longest path from the root node to a leaf node. Unless max depth is specified, decision tree will automatically extend until all leaf nodes are pure or contain less than &lt;code&gt;min_samples_split&lt;/code&gt; samples. Options = [None, int]. Default = None.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;min_samples_split&lt;/code&gt;: The minimum number of samples required to partition a node. If we had set &lt;code&gt;min_samples_split&lt;/code&gt; to 3 when we instantiated the model above, the data would not be partitioned at &lt;code&gt;is_there_coffee&lt;/code&gt; since only 2 samples remained at that node. Options = [int, float]. Default = 2.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;min_samples_leaf&lt;/code&gt;: The minimum number of samples required to be a leaf node. Data will not be partitioned at a node if any of its children to the right or left would have less samples than min_samples_leaf. As an example, if I had specified &lt;code&gt;min_samples_leaf&lt;/code&gt; as 2, the data would not be split at &lt;code&gt;is_there_coffee&lt;/code&gt; because both of its children have 1 sample. Options = [int, float]. Default = 1.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;max_features&lt;/code&gt;: The maximum number of features to consider when looking for the best split. In the above example, we calculated information gain for all 3 features in the dataset at each partition. If &lt;code&gt;max_features&lt;/code&gt; was specified as 2, information gain would be computed for only 2 of the features at each split. Options = [None, int, string, float]. Default = None.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;max_leaf_nodes&lt;/code&gt;: Maximum number of leaf nodes that can exist in the decision tree. If it is specified, the decision tree stops partitioning once it reaches the set number of leaf nodes. Options = [None, int]. Default = None.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;min_impurity_decrease&lt;/code&gt;: Minimum amount of decrease in impurity that needs to be induced by partitioning a node. If the decrease in impurity would be less than &lt;code&gt;min_impurity_decrease&lt;/code&gt;, the said partition does not occur. Options = [None, float]. Default = None.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Tree based ensemble methods&lt;/h3&gt;
+&lt;hr&gt;
+&lt;p&gt;Decision trees tend to suffer from overfitting and perform poorly on unseen data. Tree based ensemble methods combine several decision trees in order to improve the predictive performance of stand alone decision trees. Here, I'm going to talk about two techniques: &lt;strong&gt;bootstrap aggregated trees&lt;/strong&gt; and &lt;strong&gt;random forests&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Bootstrap aggregated trees, or bagging trees in short, withdraw several random samples from the dataset with replacement, and train a decision tree on each sample. When given a new dataset, bagging trees calculate the predictions by averaging the results from each bootstrapped decision tree.&lt;/p&gt;
+&lt;p&gt;Random forests also build various decision trees on bootstrapped resamples from the original dataset, but differently than bagged trees, random forests only consider a subset of the features at each iteration. With bagging, the decision trees in the aggregation tend to be strongly correlated to each other since each tree includes all of the original features. The selection of features at random (called the &lt;strong&gt;random subspace method&lt;/strong&gt;) in random forests counters the correlation between trees, resulting in an overall model that performs better on unseen data.&lt;/p&gt;
+&lt;h3&gt;Hyperparameters of Bagging Trees and Random Forests&lt;/h3&gt;
+&lt;hr&gt;
+&lt;p&gt;The hyperparameters of bagging trees and random forests are exactly the same as the hyperparameters of decision trees, with a few additions.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;n_estimators&lt;/code&gt;: The number of trees in the ensemble. Options = [int]. Default = 10. (The default option for Random Forest will change to 100 in the new version of sklearn.)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;bootstrap&lt;/code&gt;: Whether samples are drawn with replacement. Options = [True, False]. Default = True. This argument should never be set to False as drawing samples without replacement would be equivalent to duplicating the original dataset.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;n_jobs&lt;/code&gt;: The number of processors to run while training the model and computing predictions from it. If set to 1, no parallel computing code is used. If set to -1, all CPUs are used. Options = [None, int]. Default = None.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;oob_score&lt;/code&gt;: On average, each bootstrapped sample uses about 2/3 of the observations. The remaining 1/3 of the observations not used to fit a given bootstrapped tree are referred to as the out-of-bag (OOB) observations. If this argument is set to true, OOB observations are used to score the performance of their respective bootstrapped tree. Options = [True, False]. Default = False.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;verbose&lt;/code&gt;: If set to true, the output for each decision tree in the ensemble gets printed. Options = [True, False]. Default = False.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content><category term="python"></category></entry></feed>
