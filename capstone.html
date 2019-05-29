@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+ <link rel="shortcut icon" href="https://dunyaoguz.github.io/my-blog/theme/images/alien.png">
+ <title>Dunya's Blog</title>
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <link href="theme/css/custom.css" rel="stylesheet">
+   <nav class="navbar navbar-dark bg-primary">
+     <div class="container">
+     <h2><a href="https://dunyaoguz.github.io/my-blog"><font color="white"><b>dunyaoguz.github.io</b></a></font></h2>
+     <div class="btn-group btn-group-lg" role="group">
+     <ul class="row my-2 my-sm-0 mx-md-n5">
+     <a href="https://dunyaoguz.github.io/my-blog"><button type="button" class="btn btn-outline-light">Blog</button></a>&nbsp;
+     <a href="https://dunyaoguz.github.io/my-blog/pages/about"><button type="button" class="btn btn-outline-light">About</button></a>&nbsp;
+     <a href="https://dunyaoguz.github.io/my-blog/pages/contact"><button type="button" class="btn btn-outline-light">Contact</button></a>&nbsp;&nbsp;
+     </ul>
+     </div>
+     </div>
+   </nav>
+</head>
+<body>
+<div class="container">
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<div class="row">
+ <div class="col-md-9">
+  <br>
+  <h3>LyrIQ</h3>
+  <b><label>29 May 2019</label></b>
+  <p>I am graduating from the data science bootcamp at Bitmaker General Assembly in Toronto in a few days, and have spent the past 2 weeks working on the project that the entire program culminates to: <strong>the capstone</strong>. This blog post is going to be an overview of my capstone project and the main steps involved in building the final product. </p>
+<p>The source code for the project is available on my <a href="https://github.com/dunyaoguz">Github</a>.</p>
+<h2>What?</h2>
+<hr>
+<p>My capstone is a web application that allows users to analyze the topics, polarity and sentiments of song lyrics. The application has 3 main functionalities:</p>
+<ul>
+<li>Drill down on the lyrics of a specific artist</li>
+<li>Compare two artists' lyrics </li>
+<li>Analyse the lyrics of all Billboard year-end hot 100 artists since 2006</li>
+</ul>
+<p><img src="images/capstone_2_0.png" alt="dt" width="950"/></p>
+<h2>How?</h2>
+<hr>
+<p>This was an end-to-end data project, involving every step of the data science process from data acquisition to deployment in the form of an application a user can interact with. Here is an overview of the main steps: </p>
+<ol>
+<li>Get data by scraping lyrics and song-related information from Genius.com </li>
+<li>Extract sentiments, polarity and topics from lyrics </li>
+<li>Cluster artists whose lyrics are similar in sentiments, and songs similar in sentiments for each individual artist</li>
+<li>Create visualisations that'll enable users to explore the information interactively</li>
+<li>Package everything into a web application with which users can analyse any artist of their choice </li>
+</ol>
+<h2>Web Scraping</h2>
+<hr>
+<p>The web scraping component of the project had a lot of moving pieces. At this stage, my idea was still very much in the works, but one thing I knew for sure was that I wanted the application to be able to take any artist and deliver results. As such, for the web scraping part, it was important that I designed a process that would be automated and could scale.</p>
+<p>I was pretty lucky because <a href="https://genius.com">Genius.com</a> has an open API and a wide inventory of lyrics. Unfortunately, the lyrics data isn't available on the API itself, so I had to come up with somewhat a creative way to go from having the name of the artist I want to scrape to having the lyrics for all of his or her songs that exist on Genius.com.</p>
+<p>This diagram summarizes my process:</p>
+<p><img src="images/capstone_5_0.png" alt="dt" width="800"/></p>
+<p>After creating this pipeline and scraping ~20 artists, I realised that constantly having to enter the name of an artist to scrape was getting tiresome. I was also running out of artists that I could think of off the top of my head and was constantly having to google for popular artists. So I decided to also scrape a list of artists I could scrape, and make the original script run continuously on a loop until every artist on the list was scraped. The Year End Top 100 artists chart of <a href="https://www.billboard.com">Billboard</a> was an obvious choice for this. I scraped the top artists of every year since the inception of the chart in 2006. Getting all the lyrics took ~2-3 days of almost non-stop scraping. <strong>Shoutout to Genius.com for not putting a limit on number of API requests users can make! &lt;3</strong></p>
+<p>Having all this data inspired the idea for what became the 3rd component of my project - analysing all artists' lyrics all at once and clustering artists based on the sentiments of their lyrics.</p>
+<h4>Tech stack:</h4>
+<ul>
+<li><code>pandas</code></li>
+<li><code>numpy</code></li>
+<li><code>requests</code></li>
+<li><code>BeautifulSoup</code></li>
+<li><code>regex</code> </li>
+<li><code>dotenv</code></li>
+</ul>
+<h2>Sentiment, polarity and topic extraction</h2>
+<hr>
+<p>For the sentiment analysis component, I used the open-sourced <a href="https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm">NRC Word-Emotion Lexicon</a>, a crowdsourced list of ~15,000 English words and their associations to one or more of 8 basic human emotions (anger, anticipation, fear, disgust, trust, surprise, sadness, joy). With this lexicon at hand, my approach to extract sentiments was as follows:</p>
+<ul>
+<li>Tokenize and lemmatize each song for each artist  </li>
+<li>Remove stop words (words like so, oh, yeah) and punctuation </li>
+<li>Map the remaining words in every song to the emotions they are related to</li>
+<li>Count up total number of words associated with each emotion, and aggregate the data on the basis of album/song release years</li>
+<li>Normalize the data for each release year </li>
+</ul>
+<p>Though the NRC lexicon included positive/negative labels along with sentiments, I was able to get my hands on a less well known lexicon called <a href="https://github.com/cjhutto/vaderSentiment">VADER</a>, also open-sourced, which seemed to be a better option for polarity analysis due to the following reasons: </p>
+<ul>
+<li>It is specifically attuned to sentiments expressed on social media, where the form of expression is similar to the form of expression in songs</li>
+<li>It provides information on how positive or negative a word is rather than just denoting it as one or the other</li>
+<li>It has it's own python module!</li>
+<li>It comes with a unidimensional measure of polarity called the <code>compound score</code>, which yields a normalized and weighted score for the level of positivity or negativity of a given sentence. The compound score ranges between -1 (most extreme negative) and 1 (most extreme positive)</li>
+</ul>
+<p>Finally, to identify the prevalent themes in songs, I used Latent Dirichlet Allocation (LDA) - an unsupervised technique that enables the discovery of topics in a collection of documents. LDA imagines that each document (a document is a song in this case) is described by a distribution of topics, and that each topic is described by a distribution of words. Here is a silly example of how it works under the hood:</p>
+<ul>
+<li><strong>Sentence A:</strong> I went to the mall to buy jeans, shirts and shoes.</li>
+<li><strong>Sentence B:</strong> I spilled coffee all over my clothes. </li>
+<li><strong>Sentence C:</strong> I spilled food on the jeans that I bought yesterday.</li>
+</ul>
+<p>LDA would find something like:</p>
+<ul>
+<li>Distribution of topics:<ul>
+<li>Sentence A is <strong>100%</strong> about <strong>Topic 1</strong></li>
+<li>Sentence B is <strong>100%</strong> about <strong>Topic 2</strong></li>
+<li>Sentence C is <strong>50%</strong> about <strong>Topic 1</strong>, <strong>50%</strong> about <strong>Topic 2</strong>
+<br></li>
+</ul>
+</li>
+<li>Distribution of words:<ul>
+<li><strong>Topic 1:</strong> 30% buy, 20% mall, 20% jeans, 10% shoes, 10% shirts </li>
+<li><strong>Topic 2:</strong> 40% spill, 15% coffee, 15% food, 10% jeans </li>
+</ul>
+</li>
+</ul>
+<p>It is then upto us humans to realise that topic 1 is probably about shopping, and topic 2 is probably about spilling food and beverages on clothes.</p>
+<h4>Tech stack:</h4>
+<ul>
+<li><code>pandas</code></li>
+<li><code>numpy</code></li>
+<li><code>nltk</code></li>
+<li><code>vaderSentiment</code></li>
+<li><code>wordcloud</code></li>
+<li><code>gensim</code></li>
+<li><code>sklearn</code></li>
+</ul>
+<h2>Clustering</h2>
+<hr>
+<p>I wanted to see which songs were similar in sentiments to one another, and which artists were similar in the overall sentiments expressed considering all of their lyrics. </p>
+<p>To cluster songs, I represented each song with its normalized sentiment composition vector (eg. 30% anger, 20% sadness, 5% disgust..). To cluster artists, I took the mean of all the sentiment scores of their songs, and followed the same strategy. I included all 8 basic human emotions plus positivity and negativity from the NRC Lexicon in the vectors and used Principal Component Analysis to reduce vector dimensions from 10 to 2 so I would be able to visually assess the performance of different clustering algorithms. </p>
+<p>After giving a host of clustering algorithms like K-Means, Mean Shift, DBSCAN and Hierarchical clustering a try with a variety of hyperparameters, the groupings produced by K-Means seemed to make the most sense. The main disadvantage of Mean Shift, DBSCAN and Hierarchical clustering was that the respective hyperparameters that yielded reasonable groupings varied significantly from one artist to the next. This was problematic since I wanted my application to be able to output meaningful results for any given artist. 3, 4 and 5 number of neighbors with K-Means seemed to consistently yield logical groupings for the clustering of songs. I eventually decided to show all three number of neighbors in the app, and let the user decide which one was most appropriate for a given artist. </p>
+<p>For the all artists section, though ensuring results would match any given input was no longer a concern, K-Means with 4 neighbors, again, seemed to be the best performing algorithm since the categorization produced was the most well aligned with the musical genre of artists.</p>
+<h4>Tech stack:</h4>
+<ul>
+<li><code>pandas</code></li>
+<li><code>numpy</code></li>
+<li><code>sklearn</code></li>
+</ul>
+<h2>Interactive visualisations</h2>
+<hr>
+<p>This part of my project was very important to me because I love data visualisation, and I think interactive visualisations are the most effective way to communicate information on data. After doing a bit of research, it seemed that <code>Bokeh</code> was the best python data visualisation library for creating interactive charts on web apps. I had never used Bokeh before and so I had to learn how it works, which was a fun challenge. Here is an example of the sentiment and clustering charts I created, for Drake (only appropriate since I am writing this blog post from Toronto):</p>
+<p><img src="images/capstone_10_0.png" alt="dt" width="900"/>
+<img src="images/capstone_11_0.png" alt="dt" width="930"/></p>
+<h4>Tech stack:</h4>
+<ul>
+<li><code>pandas</code></li>
+<li><code>numpy</code></li>
+<li><code>bokeh</code></li>
+<li><code>html</code></li>
+</ul>
+<h2>Web app</h2>
+<hr>
+<p>To build the web app, I used <code>Flask</code>, a micro web framework written in Python - called micro because it doesn't require particular tools and libraries that full-stack web development frameworks like <code>Django</code> do. It's lightweight and so is perfect for the purposes of non-web developers like myself creating simple applications to showcase their work.</p>
+<p>Each page on the app is defined by a flask function and rendered from a html template page. Variables are passed from python onto HTML with <code>jinja2</code>, and pages are prettied up with <code>css</code> and a tiny bit of <code>javascript</code>. </p>
+<p>As someone completely new to HTML, CSS and javascript, this part was a lot of trial, error and googling. But I actually really enjoyed the experience! Creating a tangible product that I can see and interact with was really satisfying, and I'm planning to continue to learn some more web development on the side. I'm particularly interested in learning javascript because of <code>d3.js</code> - a really powerful data visualisation library which some of my favourite websites like <a href="https://pudding.cool">The Pudding</a> and <a href="https://fivethirtyeight.com">FiveThirtyEight</a> use. </p>
+<h4>Tech stack:</h4>
+<ul>
+<li><code>pandas</code></li>
+<li><code>flask</code></li>
+<li><code>jinja2</code></li>
+<li><code>html</code></li>
+<li><code>css</code></li>
+<li><code>javascript</code></li>
+<li><code>bootstrap</code></li>
+</ul>
+<h2>Challenges</h2>
+<hr>
+<p>It turns out that some strange things are stored as lyrics on Genius's API, like awards ceremony speeches, interviews, and even instagram statements. For example:</p>
+<ul>
+<li><a href="https://genius.com/Beyonce-statement-on-jay-z-and-solange-fight-lyrics">Beyonce statement on Jay-Z and Solage fight</a></li>
+<li><a href="https://genius.com/Drake-drake-speaks-lyrics">Drake interview</a></li>
+<li><a href="https://genius.com/Kanye-west-2016-mtv-vmas-speech-lyrics">Kanye West MTV VMA's 2016 speech</a></li>
+</ul>
+<p>Also, many songs have duplicate pages because songs sung in concerts, live sessions or at a particular event sometimes get stored as an original song. See below:</p>
+<ul>
+<li><a href="https://genius.com/Queen-liar-lyrics">Liar by Queen</a></li>
+<li><a href="https://genius.com/Queen-liar-bbc-session-feburary-5th-1973-langham-1-studio-lyrics">Liar by Queen, BBC Session</a></li>
+</ul>
+<p>Filtering these kind of pages from the data was challenging. I had to manually go through numerous lyrics to identify what kinds of patterns were showing up in the urls of pages that were duplicates or non-song texts and define rules to remove pages whose urls included words which hinted that the page was a duplicate or non-song text.</p>
+<h2>Limitations</h2>
+<hr>
+<ol>
+<li>Genius doesn't have a fully exhaustive collection of lyrics for most artists. Beyonce, one of the most prolific singers' of our time, for example, only has lyrics for ~180 unique songs on Genius (that is when we remove duplicates, speeches and statements). </li>
+<li>The sentiment lexicon used doesn't take into account the intensity of sentiments. For example, the words "hate" and "dislike" would both be labeled as expressing anger, though one could argue that hate expresses anger in a more intense way. </li>
+</ol>
+<h2>Next Steps</h2>
+<hr>
+<ol>
+<li>Incorporate information on milestones in artists' careers so it's possible to directly see if certain events caused a change in the content of their songs</li>
+<li>Publish the app!</li>
+</ol>
+ </div>
+</div>
+
+<footer class="py-3 page-footer">
+  <div class="container">
+    <p class="m-0 text-center">Copyright &copy; Dunya Oguz 2019</p>
+  </div>
+</footer>
+</div>
+ <br>
+ <br>
+</body>
+</html>
