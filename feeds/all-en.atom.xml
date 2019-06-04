@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>dunyaoguz.github.io</title><link href="https://dunyaoguz.github.io/my-blog/" rel="alternate"></link><link href="https://dunyaoguz.github.io/my-blog/feeds/all-en.atom.xml" rel="self"></link><id>https://dunyaoguz.github.io/my-blog/</id><updated>2019-05-29T00:00:00-04:00</updated><entry><title>Lyrics Decomposed</title><link href="https://dunyaoguz.github.io/my-blog/capstone.html" rel="alternate"></link><published>2019-05-29T00:00:00-04:00</published><updated>2019-05-29T00:00:00-04:00</updated><author><name>Dunya Oguz</name></author><id>tag:dunyaoguz.github.io,2019-05-29:/my-blog/capstone.html</id><summary type="html">&lt;p&gt;I am graduating from the data science bootcamp at Bitmaker General Assembly in Toronto in a few days, and have spent the past 2 weeks working on the project that the entire program culminates to: &lt;strong&gt;the capstone&lt;/strong&gt;. This blog post is going to be an overview of my capstone project …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I am graduating from the data science bootcamp at Bitmaker General Assembly in Toronto in a few days, and have spent the past 2 weeks working on the project that the entire program culminates to: &lt;strong&gt;the capstone&lt;/strong&gt;. This blog post is going to be an overview of my capstone project and the main steps involved in building the final product. &lt;/p&gt;
 &lt;p&gt;The source code for the project is available on my &lt;a href="https://github.com/dunyaoguz"&gt;Github&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;EDIT: Video Demo&lt;/h4&gt;
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/gbNBbnnfBDI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;h2&gt;What?&lt;/h2&gt;
 &lt;hr&gt;
 &lt;p&gt;My capstone is a web application that allows users to analyze the topics, polarity and sentiments of song lyrics. The application has 3 main functionalities:&lt;/p&gt;
@@ -20,10 +24,6 @@
 &lt;li&gt;Create visualisations that'll enable users to explore the information interactively&lt;/li&gt;
 &lt;li&gt;Package everything into a web application with which users can analyse any artist of their choice &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h4&gt;Video Demo&lt;/h4&gt;
-&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/gbNBbnnfBDI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;h2&gt;Web Scraping&lt;/h2&gt;
 &lt;hr&gt;
 &lt;p&gt;The web scraping component of the project had a lot of moving pieces. At this stage, my idea was still very much in the works, but one thing I knew for sure was that I wanted the application to be able to take any artist and deliver results. As such, for the web scraping part, it was important that I designed a process that would be automated and could scale.&lt;/p&gt;
