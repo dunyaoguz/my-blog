@@ -20,6 +20,10 @@
 &lt;li&gt;Create visualisations that'll enable users to explore the information interactively&lt;/li&gt;
 &lt;li&gt;Package everything into a web application with which users can analyse any artist of their choice &lt;/li&gt;
 &lt;/ol&gt;
+&lt;h4&gt;Video Demo&lt;/h4&gt;
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/gbNBbnnfBDI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;h2&gt;Web Scraping&lt;/h2&gt;
 &lt;hr&gt;
 &lt;p&gt;The web scraping component of the project had a lot of moving pieces. At this stage, my idea was still very much in the works, but one thing I knew for sure was that I wanted the application to be able to take any artist and deliver results. As such, for the web scraping part, it was important that I designed a process that would be automated and could scale.&lt;/p&gt;
